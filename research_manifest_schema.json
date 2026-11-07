@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NSE Bot Research Manifest 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "snapshot_id",
+    "snapshot_sha256",
+    "snapshot_created_at",
+    "sealed_at",
+    "instruments",
+    "provider_version",
+    "calendar_version",
+    "universe_version",
+    "fee_model_version",
+    "software_commit",
+    "config_sha256",
+    "snapshot_start",
+    "snapshot_end",
+    "development_start",
+    "development_end",
+    "holdout_start",
+    "holdout_end"
+  ],
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0"
+      ],
+      "description": "Manifest schema.",
+      "x-provenance": "POLICY"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "UNSEALED",
+        "SEALED"
+      ],
+      "description": "Templates cannot authorize historical research.",
+      "x-provenance": "POLICY"
+    },
+    "snapshot_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Exact immutable dataset identifier.",
+      "x-provenance": "POLICY"
+    },
+    "snapshot_sha256": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Exact dataset hash.",
+      "x-provenance": "POLICY"
+    },
+    "snapshot_created_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Timezone-aware snapshot creation timestamp.",
+      "x-provenance": "POLICY"
+    },
+    "sealed_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Timezone-aware sealing timestamp.",
+      "x-provenance": "POLICY"
+    },
+    "instruments": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Exact instrument identities, not a guessed basket.",
+      "x-provenance": "POLICY"
+    },
+    "provider_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Snapshot provider provenance.",
+      "x-provenance": "POLICY"
+    },
+    "calendar_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Snapshot calendar provenance.",
+      "x-provenance": "POLICY"
+    },
+    "universe_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Snapshot universe provenance.",
+      "x-provenance": "POLICY"
+    },
+    "fee_model_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Cost assumptions bound to research.",
+      "x-provenance": "POLICY"
+    },
+    "software_commit": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Actual commit if available; never invented.",
+      "x-provenance": "POLICY"
+    },
+    "config_sha256": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Exact configuration content bound to seal.",
+      "x-provenance": "POLICY"
+    },
+    "snapshot_start": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Inclusive coverage start.",
+      "x-provenance": "POLICY"
+    },
+    "snapshot_end": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Exclusive coverage end.",
+      "x-provenance": "POLICY"
+    },
+    "development_start": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Inclusive development start.",
+      "x-provenance": "POLICY"
+    },
+    "development_end": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Exclusive development end.",
+      "x-provenance": "POLICY"
+    },
+    "holdout_start": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Inclusive final twelve-month start.",
+      "x-provenance": "POLICY"
+    },
+    "holdout_end": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Exclusive final twelve-month end.",
+      "x-provenance": "POLICY"
+    }
+  }
+}

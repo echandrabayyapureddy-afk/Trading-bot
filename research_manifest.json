@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "status": "UNSEALED",
+  "snapshot_id": null,
+  "snapshot_sha256": null,
+  "snapshot_created_at": null,
+  "sealed_at": null,
+  "instruments": [],
+  "provider_version": null,
+  "calendar_version": null,
+  "universe_version": null,
+  "fee_model_version": null,
+  "software_commit": null,
+  "config_sha256": null,
+  "snapshot_start": null,
+  "snapshot_end": null,
+  "development_start": null,
+  "development_end": null,
+  "holdout_start": null,
+  "holdout_end": null
+}

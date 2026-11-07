@@ -1,0 +1,629 @@
+[
+  {
+    "path": "schema_version",
+    "provenance": "POLICY",
+    "reason": "Strict schema version; unknown versions rejected.",
+    "default": "1.0"
+  },
+  {
+    "path": "config_version",
+    "provenance": "POLICY",
+    "reason": "Version bound to content hash and external approval.",
+    "default": "0.1.0"
+  },
+  {
+    "path": "policy_version",
+    "provenance": "POLICY",
+    "reason": "Fixed initial safety limits.",
+    "default": "POLICY-1.0.0"
+  },
+  {
+    "path": "account.account_id",
+    "provenance": "POLICY",
+    "reason": "Required actual account identifier; never a credential.",
+    "default": null
+  },
+  {
+    "path": "account.capital_inr",
+    "provenance": "POLICY",
+    "reason": "Actual configured capital, not an assumed 5000/10000 balance.",
+    "default": null
+  },
+  {
+    "path": "account.currency",
+    "provenance": "POLICY",
+    "reason": "NSE cash account currency.",
+    "default": "INR"
+  },
+  {
+    "path": "account.market",
+    "provenance": "POLICY",
+    "reason": "Cash equity only.",
+    "default": "NSE_CASH_EQUITY"
+  },
+  {
+    "path": "account.long_only",
+    "provenance": "POLICY",
+    "reason": "No short selling.",
+    "default": true
+  },
+  {
+    "path": "account.delivery_intended",
+    "provenance": "POLICY",
+    "reason": "Delivery-intended trades; protection remains active.",
+    "default": true
+  },
+  {
+    "path": "data.provider",
+    "provenance": "POLICY",
+    "reason": "Unverified until selected explicitly.",
+    "default": null
+  },
+  {
+    "path": "data.provider_version",
+    "provenance": "POLICY",
+    "reason": "Reproducible source version.",
+    "default": null
+  },
+  {
+    "path": "data.snapshot_sha256",
+    "provenance": "POLICY",
+    "reason": "Actual data fingerprint; never inferred.",
+    "default": null
+  },
+  {
+    "path": "data.calendar_version",
+    "provenance": "POLICY",
+    "reason": "Effective-dated NSE cash sessions including special sessions.",
+    "default": null
+  },
+  {
+    "path": "data.universe_version",
+    "provenance": "POLICY",
+    "reason": "Point-in-time universe definition.",
+    "default": null
+  },
+  {
+    "path": "data.point_in_time_verified",
+    "provenance": "POLICY",
+    "reason": "False blocks outcome-based research until verified.",
+    "default": false
+  },
+  {
+    "path": "data.availability_verified",
+    "provenance": "POLICY",
+    "reason": "Historical availability timestamps must be verified.",
+    "default": false
+  },
+  {
+    "path": "data.adjustment_semantics",
+    "provenance": "POLICY",
+    "reason": "Explicit adjustment conversion; no future corporate actions.",
+    "default": "POINT_IN_TIME_SIGNALS_RAW_FILLS"
+  },
+  {
+    "path": "data.missing_data",
+    "provenance": "POLICY",
+    "reason": "Do not fill gaps with synthetic prices.",
+    "default": "BLOCK_NEW_ENTRIES"
+  },
+  {
+    "path": "timeframes.timezone",
+    "provenance": "POLICY",
+    "reason": "Exchange trading-date timezone.",
+    "default": "Asia/Kolkata"
+  },
+  {
+    "path": "timeframes.canonical",
+    "provenance": "POLICY",
+    "reason": "Validated daily OHLCV is authoritative.",
+    "default": "DAILY"
+  },
+  {
+    "path": "timeframes.weekly_period",
+    "provenance": "POLICY",
+    "reason": "Includes special sessions.",
+    "default": "MONDAY_SUNDAY_EXCHANGE_DATES"
+  },
+  {
+    "path": "timeframes.monthly_period",
+    "provenance": "POLICY",
+    "reason": "Aggregate daily bars directly.",
+    "default": "CALENDAR_MONTH"
+  },
+  {
+    "path": "timeframes.completed_only",
+    "provenance": "POLICY",
+    "reason": "No incomplete higher-timeframe decisions.",
+    "default": true
+  },
+  {
+    "path": "timeframes.require_available_at",
+    "provenance": "POLICY",
+    "reason": "Availability must precede each decision.",
+    "default": true
+  },
+  {
+    "path": "timeframes.selection_frequency",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Predeclared schedule, no forced trades.",
+    "default": "WEEKLY"
+  },
+  {
+    "path": "timeframes.monitor_frequency",
+    "provenance": "POLICY",
+    "reason": "Existing exits and reconciliation remain active.",
+    "default": "DAILY"
+  },
+  {
+    "path": "regime.benchmark",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Broad market context, not a tradable instrument here.",
+    "default": "NIFTY_50"
+  },
+  {
+    "path": "regime.adx_period",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Initial baseline; no optimization.",
+    "default": 14
+  },
+  {
+    "path": "regime.ema_period",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Daily EMA baseline.",
+    "default": 200
+  },
+  {
+    "path": "regime.ema_slope_sessions",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Completed daily intervals.",
+    "default": 10
+  },
+  {
+    "path": "regime.atr_period",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Wilder ATR baseline.",
+    "default": 14
+  },
+  {
+    "path": "regime.vol_recent_returns",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Sample standard deviation of log returns.",
+    "default": 20
+  },
+  {
+    "path": "regime.vol_reference_returns",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Immediately preceding non-overlapping returns.",
+    "default": 63
+  },
+  {
+    "path": "regime.adx_trending",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Trending requires strictly greater than this value.",
+    "default": "25"
+  },
+  {
+    "path": "regime.adx_sideways",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Below this is sideways; 20..25 is transitional sideways.",
+    "default": "20"
+  },
+  {
+    "path": "regime.atr_spike_ratio",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Compared with mean of previous 63 ATR values.",
+    "default": "2"
+  },
+  {
+    "path": "regime.vol_spike_ratio",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Immediate new-entry veto at or above ratio.",
+    "default": "2"
+  },
+  {
+    "path": "regime.confirmation_sessions",
+    "provenance": "POLICY",
+    "reason": "Exactly two completed daily trading sessions.",
+    "default": 2
+  },
+  {
+    "path": "regime.volatility_definition",
+    "provenance": "EXPERIMENTAL",
+    "reason": "20 returns versus previous 63; unknown blocks entries.",
+    "default": "LOG_SD_DDOF1_NONOVERLAPPING"
+  },
+  {
+    "path": "regime.regime_mapping",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Directional labels require ADX>25 and matching price/EMA slope direction.",
+    "default": "HIGH_RISK_PRIORITY_ADX_PRICE_SLOPE_ELSE_SIDEWAYS"
+  },
+  {
+    "path": "regime.unknown_behavior",
+    "provenance": "POLICY",
+    "reason": "Never label missing data sideways.",
+    "default": "BLOCK_AND_RESET_PENDING"
+  },
+  {
+    "path": "regime.ema_seed",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Deterministic initialization.",
+    "default": "SMA_N"
+  },
+  {
+    "path": "regime.atr_adx_smoothing",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Independent implementation in later phase.",
+    "default": "WILDER_SMA_SEED"
+  },
+  {
+    "path": "strategy.candidate",
+    "provenance": "EXPERIMENTAL",
+    "reason": "A baseline; B differs only by month-end filter.",
+    "default": "A"
+  },
+  {
+    "path": "strategy.fast_ema",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Daily bars, not weekly periods.",
+    "default": 9
+  },
+  {
+    "path": "strategy.slow_ema",
+    "provenance": "BASELINE HYPOTHESIS",
+    "reason": "Daily bars, not weekly periods.",
+    "default": 21
+  },
+  {
+    "path": "strategy.weekly_eligibility",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Previous fast<=slow, current fast>slow; final week bar still above.",
+    "default": "CROSS_WITHIN_WEEK_STILL_ABOVE"
+  },
+  {
+    "path": "strategy.daily_revalidation",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Retire invalidated opportunity until a later weekly selection.",
+    "default": "FAST_ABOVE_SLOW_ELSE_RETIRE"
+  },
+  {
+    "path": "strategy.entry_regime",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Confirmed benchmark regime plus independent safety gates.",
+    "default": "TRENDING_UP"
+  },
+  {
+    "path": "strategy.stop_atr_multiple",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Fixed prior-close minus two prior available ATRs, not an active order.",
+    "default": "2"
+  },
+  {
+    "path": "strategy.stop_method",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Freeze proposal values; never retroactively update stops.",
+    "default": "PROPOSAL_CLOSE_MINUS_ATR_FIXED"
+  },
+  {
+    "path": "strategy.entry_ceiling",
+    "provenance": "EXPERIMENTAL",
+    "reason": "A price limit does not guarantee any fill.",
+    "default": "PROPOSAL_CLOSE_TICK_FLOOR"
+  },
+  {
+    "path": "strategy.ordinary_exit",
+    "provenance": "EXPERIMENTAL",
+    "reason": "No trailing stop, profit target, or time-based liquidation.",
+    "default": "DAILY_FAST_LE_SLOW_PERSIST_UNTIL_RESOLVED"
+  },
+  {
+    "path": "strategy.ranking",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Single liquidity proxy, no optimized weights.",
+    "default": "MEDIAN_RAW_CLOSE_TIMES_RAW_VOLUME_DESC_ID_ASC"
+  },
+  {
+    "path": "strategy.ranking_sessions",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Completed sessions available at weekly selection.",
+    "default": 20
+  },
+  {
+    "path": "strategy.monthly_filter",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Only Candidate B gates entries; missing required month blocks B.",
+    "default": "MONTH_CLOSE_GT_SAME_MONTH_END_DAILY_EMA200"
+  },
+  {
+    "path": "strategy.force_trades",
+    "provenance": "POLICY",
+    "reason": "Cash is acceptable.",
+    "default": false
+  },
+  {
+    "path": "strategy.pyramid",
+    "provenance": "POLICY",
+    "reason": "One position per instrument.",
+    "default": false
+  },
+  {
+    "path": "risk.trade_risk",
+    "provenance": "POLICY",
+    "reason": "0.5% planned risk, not guaranteed maximum loss.",
+    "default": "0.005"
+  },
+  {
+    "path": "risk.stock_allocation",
+    "provenance": "POLICY",
+    "reason": "40% equity cap including commitments.",
+    "default": "0.4"
+  },
+  {
+    "path": "risk.gross_exposure",
+    "provenance": "POLICY",
+    "reason": "80% equity cap including commitments.",
+    "default": "0.8"
+  },
+  {
+    "path": "risk.max_positions",
+    "provenance": "POLICY",
+    "reason": "Held and committed position slots.",
+    "default": 2
+  },
+  {
+    "path": "risk.total_stop_risk",
+    "provenance": "POLICY",
+    "reason": "1% aggregate planned stop-risk cap.",
+    "default": "0.01"
+  },
+  {
+    "path": "risk.drawdown_review",
+    "provenance": "POLICY",
+    "reason": "Latch entry pause until documented review.",
+    "default": "0.05"
+  },
+  {
+    "path": "risk.drawdown_hard",
+    "provenance": "POLICY",
+    "reason": "Latch suspension requiring explicit authorization.",
+    "default": "0.08"
+  },
+  {
+    "path": "risk.leverage",
+    "provenance": "POLICY",
+    "reason": "No borrowed buying power.",
+    "default": "0"
+  },
+  {
+    "path": "risk.minimum_shares",
+    "provenance": "POLICY",
+    "reason": "Whole shares only; zero affordable shares means skip.",
+    "default": 1
+  },
+  {
+    "path": "risk.whole_shares",
+    "provenance": "POLICY",
+    "reason": "No fractional quantities.",
+    "default": true
+  },
+  {
+    "path": "risk.flow_adjustment",
+    "provenance": "POLICY",
+    "reason": "Cash flows alter units, not investment return.",
+    "default": "UNITIZED_NAV"
+  },
+  {
+    "path": "risk.automatic_resume",
+    "provenance": "POLICY",
+    "reason": "Recovery alone cannot clear a latch.",
+    "default": false
+  },
+  {
+    "path": "risk.liquidate_on_drawdown",
+    "provenance": "POLICY",
+    "reason": "Existing exits/protection/reconciliation continue.",
+    "default": false
+  },
+  {
+    "path": "risk.open_risk_basis",
+    "provenance": "POLICY",
+    "reason": "Unresolved decision; blocks executable recommendations.",
+    "default": null
+  },
+  {
+    "path": "risk.resume_rule",
+    "provenance": "POLICY",
+    "reason": "Both gates independent; high-water mark never resets to permit entries.",
+    "default": "RECOVERY_AND_DOCUMENTED_CLEARANCE"
+  },
+  {
+    "path": "execution.manual_approval",
+    "provenance": "POLICY",
+    "reason": "Explicit version-bound human approval.",
+    "default": true
+  },
+  {
+    "path": "execution.manual_placement",
+    "provenance": "POLICY",
+    "reason": "Human places every broker order.",
+    "default": true
+  },
+  {
+    "path": "execution.broker_submission_api",
+    "provenance": "POLICY",
+    "reason": "No automated order transmission in V1.",
+    "default": false
+  },
+  {
+    "path": "execution.operator_delay_sessions",
+    "provenance": "EXPERIMENTAL",
+    "reason": "One complete exchange session after decision, then eligible opportunity.",
+    "default": 1
+  },
+  {
+    "path": "execution.guaranteed_fills",
+    "provenance": "POLICY",
+    "reason": "Price touches, approval and acceptance are not fills.",
+    "default": false
+  },
+  {
+    "path": "execution.protection_activation",
+    "provenance": "POLICY",
+    "reason": "Separate from planned stops and entry fill.",
+    "default": "BROKER_CONFIRMED_TIMESTAMP"
+  },
+  {
+    "path": "execution.ambiguous_intraday",
+    "provenance": "POLICY",
+    "reason": "Daily bars cannot establish within-bar activation order.",
+    "default": "UNRESOLVED_OR_CONSERVATIVE_BOUNDS"
+  },
+  {
+    "path": "execution.broker_profile_version",
+    "provenance": "POLICY",
+    "reason": "Requires verified session/order/validity rules.",
+    "default": null
+  },
+  {
+    "path": "execution.broker_rules_verified",
+    "provenance": "POLICY",
+    "reason": "No executable recommendations before verification.",
+    "default": false
+  },
+  {
+    "path": "execution.order_cutoff_rule",
+    "provenance": "POLICY",
+    "reason": "Versioned broker-specific timing convention; no invented cutoff.",
+    "default": null
+  },
+  {
+    "path": "execution.protective_order_type",
+    "provenance": "POLICY",
+    "reason": "Actual supported behavior; no silent substitution.",
+    "default": null
+  },
+  {
+    "path": "execution.fee_model_version",
+    "provenance": "POLICY",
+    "reason": "No current rates or historical schedules fabricated.",
+    "default": null
+  },
+  {
+    "path": "execution.fee_source_reference",
+    "provenance": "POLICY",
+    "reason": "Dated authoritative schedule reference.",
+    "default": null
+  },
+  {
+    "path": "execution.fee_effective_start",
+    "provenance": "POLICY",
+    "reason": "Coverage start inclusive.",
+    "default": null
+  },
+  {
+    "path": "execution.fee_effective_end",
+    "provenance": "POLICY",
+    "reason": "Coverage end exclusive.",
+    "default": null
+  },
+  {
+    "path": "execution.fee_schedule_verified",
+    "provenance": "POLICY",
+    "reason": "Phase 7 implements actual fee schedules and accounting.",
+    "default": false
+  },
+  {
+    "path": "execution.slippage_bps",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Explicit estimate, not a guaranteed gap-loss allowance.",
+    "default": null
+  },
+  {
+    "path": "execution.fixed_execution_allowance_inr",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Explicit nonnegative allowance; not a loss guarantee.",
+    "default": null
+  },
+  {
+    "path": "backtesting.candidates",
+    "provenance": "EXPERIMENTAL",
+    "reason": "Only predefined A and B, isolated replay accounts.",
+    "default": [
+      "A",
+      "B"
+    ]
+  },
+  {
+    "path": "backtesting.holdout_months",
+    "provenance": "POLICY",
+    "reason": "Final twelve calendar months of sealed snapshot.",
+    "default": 12
+  },
+  {
+    "path": "backtesting.holdout_evaluations",
+    "provenance": "POLICY",
+    "reason": "Future final-gate authorization required; unavailable here.",
+    "default": 1
+  },
+  {
+    "path": "backtesting.interval_convention",
+    "provenance": "POLICY",
+    "reason": "Prevents shared train/test boundary observations.",
+    "default": "START_INCLUSIVE_END_EXCLUSIVE"
+  },
+  {
+    "path": "backtesting.auto_promote",
+    "provenance": "POLICY",
+    "reason": "Research cannot promote live settings.",
+    "default": false
+  },
+  {
+    "path": "backtesting.optimize_safety_policy",
+    "provenance": "POLICY",
+    "reason": "Safety limits are not search parameters.",
+    "default": false
+  },
+  {
+    "path": "reporting.daily",
+    "provenance": "POLICY",
+    "reason": "Daily positions and reconciliation.",
+    "default": true
+  },
+  {
+    "path": "reporting.weekly",
+    "provenance": "POLICY",
+    "reason": "Weekly ranked opportunities, including NO TRADE.",
+    "default": true
+  },
+  {
+    "path": "reporting.monthly",
+    "provenance": "POLICY",
+    "reason": "Completed-month context.",
+    "default": true
+  },
+  {
+    "path": "reporting.rejection_reasons",
+    "provenance": "POLICY",
+    "reason": "Explain all blocked entries.",
+    "default": true
+  },
+  {
+    "path": "reporting.audit_events",
+    "provenance": "POLICY",
+    "reason": "Version, provenance and operator events required.",
+    "default": true
+  },
+  {
+    "path": "reporting.actual_vs_simulated",
+    "provenance": "POLICY",
+    "reason": "Never merge real and hypothetical fills.",
+    "default": true
+  },
+  {
+    "path": "reporting.paper_minimum_weeks",
+    "provenance": "POLICY",
+    "reason": "Operational minimum, not statistical proof.",
+    "default": 12
+  }
+]

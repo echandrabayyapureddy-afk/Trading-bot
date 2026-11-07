@@ -1,0 +1,1003 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NSE Bot Configuration 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "config_version",
+    "policy_version",
+    "account",
+    "data",
+    "timeframes",
+    "regime",
+    "strategy",
+    "risk",
+    "execution",
+    "backtesting",
+    "reporting"
+  ],
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0"
+      ],
+      "description": "Strict schema version; unknown versions rejected.",
+      "x-provenance": "POLICY"
+    },
+    "config_version": {
+      "type": "string",
+      "description": "Version bound to content hash and external approval.",
+      "x-provenance": "POLICY"
+    },
+    "policy_version": {
+      "enum": [
+        "POLICY-1.0.0"
+      ],
+      "description": "Fixed initial safety limits.",
+      "x-provenance": "POLICY"
+    },
+    "account": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "account_id",
+        "capital_inr",
+        "currency",
+        "market",
+        "long_only",
+        "delivery_intended"
+      ],
+      "properties": {
+        "account_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required actual account identifier; never a credential.",
+          "x-provenance": "POLICY"
+        },
+        "capital_inr": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?\\d+(\\.\\d+)?$",
+              "description": "Exact decimal string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Actual configured capital, not an assumed 5000/10000 balance.",
+          "x-provenance": "POLICY"
+        },
+        "currency": {
+          "enum": [
+            "INR"
+          ],
+          "description": "NSE cash account currency.",
+          "x-provenance": "POLICY"
+        },
+        "market": {
+          "enum": [
+            "NSE_CASH_EQUITY"
+          ],
+          "description": "Cash equity only.",
+          "x-provenance": "POLICY"
+        },
+        "long_only": {
+          "enum": [
+            true
+          ],
+          "description": "No short selling.",
+          "x-provenance": "POLICY"
+        },
+        "delivery_intended": {
+          "enum": [
+            true
+          ],
+          "description": "Delivery-intended trades; protection remains active.",
+          "x-provenance": "POLICY"
+        }
+      },
+      "description": "Actual account input.",
+      "x-provenance": "POLICY"
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "provider_version",
+        "snapshot_sha256",
+        "calendar_version",
+        "universe_version",
+        "point_in_time_verified",
+        "availability_verified",
+        "adjustment_semantics",
+        "missing_data"
+      ],
+      "properties": {
+        "provider": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unverified until selected explicitly.",
+          "x-provenance": "POLICY"
+        },
+        "provider_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Reproducible source version.",
+          "x-provenance": "POLICY"
+        },
+        "snapshot_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Actual data fingerprint; never inferred.",
+          "x-provenance": "POLICY"
+        },
+        "calendar_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Effective-dated NSE cash sessions including special sessions.",
+          "x-provenance": "POLICY"
+        },
+        "universe_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Point-in-time universe definition.",
+          "x-provenance": "POLICY"
+        },
+        "point_in_time_verified": {
+          "type": "boolean",
+          "description": "False blocks outcome-based research until verified.",
+          "x-provenance": "POLICY"
+        },
+        "availability_verified": {
+          "type": "boolean",
+          "description": "Historical availability timestamps must be verified.",
+          "x-provenance": "POLICY"
+        },
+        "adjustment_semantics": {
+          "enum": [
+            "POINT_IN_TIME_SIGNALS_RAW_FILLS"
+          ],
+          "description": "Explicit adjustment conversion; no future corporate actions.",
+          "x-provenance": "POLICY"
+        },
+        "missing_data": {
+          "enum": [
+            "BLOCK_NEW_ENTRIES"
+          ],
+          "description": "Do not fill gaps with synthetic prices.",
+          "x-provenance": "POLICY"
+        }
+      },
+      "description": "Required data conventions.",
+      "x-provenance": "POLICY"
+    },
+    "timeframes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timezone",
+        "canonical",
+        "weekly_period",
+        "monthly_period",
+        "completed_only",
+        "require_available_at",
+        "selection_frequency",
+        "monitor_frequency"
+      ],
+      "properties": {
+        "timezone": {
+          "enum": [
+            "Asia/Kolkata"
+          ],
+          "description": "Exchange trading-date timezone.",
+          "x-provenance": "POLICY"
+        },
+        "canonical": {
+          "enum": [
+            "DAILY"
+          ],
+          "description": "Validated daily OHLCV is authoritative.",
+          "x-provenance": "POLICY"
+        },
+        "weekly_period": {
+          "enum": [
+            "MONDAY_SUNDAY_EXCHANGE_DATES"
+          ],
+          "description": "Includes special sessions.",
+          "x-provenance": "POLICY"
+        },
+        "monthly_period": {
+          "enum": [
+            "CALENDAR_MONTH"
+          ],
+          "description": "Aggregate daily bars directly.",
+          "x-provenance": "POLICY"
+        },
+        "completed_only": {
+          "enum": [
+            true
+          ],
+          "description": "No incomplete higher-timeframe decisions.",
+          "x-provenance": "POLICY"
+        },
+        "require_available_at": {
+          "enum": [
+            true
+          ],
+          "description": "Availability must precede each decision.",
+          "x-provenance": "POLICY"
+        },
+        "selection_frequency": {
+          "enum": [
+            "WEEKLY"
+          ],
+          "description": "Predeclared schedule, no forced trades.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "monitor_frequency": {
+          "enum": [
+            "DAILY"
+          ],
+          "description": "Existing exits and reconciliation remain active.",
+          "x-provenance": "POLICY"
+        }
+      },
+      "description": "Timeframe contracts.",
+      "x-provenance": "POLICY"
+    },
+    "regime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "benchmark",
+        "adx_period",
+        "ema_period",
+        "ema_slope_sessions",
+        "atr_period",
+        "vol_recent_returns",
+        "vol_reference_returns",
+        "adx_trending",
+        "adx_sideways",
+        "atr_spike_ratio",
+        "vol_spike_ratio",
+        "confirmation_sessions",
+        "volatility_definition",
+        "regime_mapping",
+        "unknown_behavior",
+        "ema_seed",
+        "atr_adx_smoothing"
+      ],
+      "properties": {
+        "benchmark": {
+          "enum": [
+            "NIFTY_50"
+          ],
+          "description": "Broad market context, not a tradable instrument here.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "adx_period": {
+          "type": "integer",
+          "description": "Initial baseline; no optimization.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "ema_period": {
+          "type": "integer",
+          "description": "Daily EMA baseline.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "ema_slope_sessions": {
+          "type": "integer",
+          "description": "Completed daily intervals.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "atr_period": {
+          "type": "integer",
+          "description": "Wilder ATR baseline.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "vol_recent_returns": {
+          "type": "integer",
+          "description": "Sample standard deviation of log returns.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "vol_reference_returns": {
+          "type": "integer",
+          "description": "Immediately preceding non-overlapping returns.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "adx_trending": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "Trending requires strictly greater than this value.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "adx_sideways": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "Below this is sideways; 20..25 is transitional sideways.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "atr_spike_ratio": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "Compared with mean of previous 63 ATR values.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "vol_spike_ratio": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "Immediate new-entry veto at or above ratio.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "confirmation_sessions": {
+          "enum": [
+            2
+          ],
+          "description": "Exactly two completed daily trading sessions.",
+          "x-provenance": "POLICY"
+        },
+        "volatility_definition": {
+          "enum": [
+            "LOG_SD_DDOF1_NONOVERLAPPING"
+          ],
+          "description": "20 returns versus previous 63; unknown blocks entries.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "regime_mapping": {
+          "enum": [
+            "HIGH_RISK_PRIORITY_ADX_PRICE_SLOPE_ELSE_SIDEWAYS"
+          ],
+          "description": "Directional labels require ADX>25 and matching price/EMA slope direction.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "unknown_behavior": {
+          "enum": [
+            "BLOCK_AND_RESET_PENDING"
+          ],
+          "description": "Never label missing data sideways.",
+          "x-provenance": "POLICY"
+        },
+        "ema_seed": {
+          "enum": [
+            "SMA_N"
+          ],
+          "description": "Deterministic initialization.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "atr_adx_smoothing": {
+          "enum": [
+            "WILDER_SMA_SEED"
+          ],
+          "description": "Independent implementation in later phase.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        }
+      },
+      "description": "Unvalidated indicator baseline.",
+      "x-provenance": "BASELINE HYPOTHESIS"
+    },
+    "strategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate",
+        "fast_ema",
+        "slow_ema",
+        "weekly_eligibility",
+        "daily_revalidation",
+        "entry_regime",
+        "stop_atr_multiple",
+        "stop_method",
+        "entry_ceiling",
+        "ordinary_exit",
+        "ranking",
+        "ranking_sessions",
+        "monthly_filter",
+        "force_trades",
+        "pyramid"
+      ],
+      "properties": {
+        "candidate": {
+          "type": "string",
+          "enum": [
+            "A",
+            "B"
+          ],
+          "description": "A baseline; B differs only by month-end filter.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "fast_ema": {
+          "type": "integer",
+          "description": "Daily bars, not weekly periods.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "slow_ema": {
+          "type": "integer",
+          "description": "Daily bars, not weekly periods.",
+          "x-provenance": "BASELINE HYPOTHESIS"
+        },
+        "weekly_eligibility": {
+          "enum": [
+            "CROSS_WITHIN_WEEK_STILL_ABOVE"
+          ],
+          "description": "Previous fast<=slow, current fast>slow; final week bar still above.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "daily_revalidation": {
+          "enum": [
+            "FAST_ABOVE_SLOW_ELSE_RETIRE"
+          ],
+          "description": "Retire invalidated opportunity until a later weekly selection.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "entry_regime": {
+          "enum": [
+            "TRENDING_UP"
+          ],
+          "description": "Confirmed benchmark regime plus independent safety gates.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "stop_atr_multiple": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "Fixed prior-close minus two prior available ATRs, not an active order.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "stop_method": {
+          "enum": [
+            "PROPOSAL_CLOSE_MINUS_ATR_FIXED"
+          ],
+          "description": "Freeze proposal values; never retroactively update stops.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "entry_ceiling": {
+          "enum": [
+            "PROPOSAL_CLOSE_TICK_FLOOR"
+          ],
+          "description": "A price limit does not guarantee any fill.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "ordinary_exit": {
+          "enum": [
+            "DAILY_FAST_LE_SLOW_PERSIST_UNTIL_RESOLVED"
+          ],
+          "description": "No trailing stop, profit target, or time-based liquidation.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "ranking": {
+          "enum": [
+            "MEDIAN_RAW_CLOSE_TIMES_RAW_VOLUME_DESC_ID_ASC"
+          ],
+          "description": "Single liquidity proxy, no optimized weights.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "ranking_sessions": {
+          "type": "integer",
+          "description": "Completed sessions available at weekly selection.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "monthly_filter": {
+          "enum": [
+            "MONTH_CLOSE_GT_SAME_MONTH_END_DAILY_EMA200"
+          ],
+          "description": "Only Candidate B gates entries; missing required month blocks B.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "force_trades": {
+          "enum": [
+            false
+          ],
+          "description": "Cash is acceptable.",
+          "x-provenance": "POLICY"
+        },
+        "pyramid": {
+          "enum": [
+            false
+          ],
+          "description": "One position per instrument.",
+          "x-provenance": "POLICY"
+        }
+      },
+      "description": "Predeclared strategy hypotheses.",
+      "x-provenance": "EXPERIMENTAL"
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trade_risk",
+        "stock_allocation",
+        "gross_exposure",
+        "max_positions",
+        "total_stop_risk",
+        "drawdown_review",
+        "drawdown_hard",
+        "leverage",
+        "minimum_shares",
+        "whole_shares",
+        "flow_adjustment",
+        "automatic_resume",
+        "liquidate_on_drawdown",
+        "open_risk_basis",
+        "resume_rule"
+      ],
+      "properties": {
+        "trade_risk": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "0.5% planned risk, not guaranteed maximum loss.",
+          "x-provenance": "POLICY"
+        },
+        "stock_allocation": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "40% equity cap including commitments.",
+          "x-provenance": "POLICY"
+        },
+        "gross_exposure": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "80% equity cap including commitments.",
+          "x-provenance": "POLICY"
+        },
+        "max_positions": {
+          "type": "integer",
+          "description": "Held and committed position slots.",
+          "x-provenance": "POLICY"
+        },
+        "total_stop_risk": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "1% aggregate planned stop-risk cap.",
+          "x-provenance": "POLICY"
+        },
+        "drawdown_review": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "Latch entry pause until documented review.",
+          "x-provenance": "POLICY"
+        },
+        "drawdown_hard": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "Latch suspension requiring explicit authorization.",
+          "x-provenance": "POLICY"
+        },
+        "leverage": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "No borrowed buying power.",
+          "x-provenance": "POLICY"
+        },
+        "minimum_shares": {
+          "enum": [
+            1
+          ],
+          "description": "Whole shares only; zero affordable shares means skip.",
+          "x-provenance": "POLICY"
+        },
+        "whole_shares": {
+          "enum": [
+            true
+          ],
+          "description": "No fractional quantities.",
+          "x-provenance": "POLICY"
+        },
+        "flow_adjustment": {
+          "enum": [
+            "UNITIZED_NAV"
+          ],
+          "description": "Cash flows alter units, not investment return.",
+          "x-provenance": "POLICY"
+        },
+        "automatic_resume": {
+          "enum": [
+            false
+          ],
+          "description": "Recovery alone cannot clear a latch.",
+          "x-provenance": "POLICY"
+        },
+        "liquidate_on_drawdown": {
+          "enum": [
+            false
+          ],
+          "description": "Existing exits/protection/reconciliation continue.",
+          "x-provenance": "POLICY"
+        },
+        "open_risk_basis": {
+          "anyOf": [
+            {
+              "enum": [
+                "ENTRY_TO_STOP",
+                "MARK_TO_STOP"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unresolved decision; blocks executable recommendations.",
+          "x-provenance": "POLICY"
+        },
+        "resume_rule": {
+          "enum": [
+            "RECOVERY_AND_DOCUMENTED_CLEARANCE"
+          ],
+          "description": "Both gates independent; high-water mark never resets to permit entries.",
+          "x-provenance": "POLICY"
+        }
+      },
+      "description": "Fixed safety policy.",
+      "x-provenance": "POLICY"
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manual_approval",
+        "manual_placement",
+        "broker_submission_api",
+        "operator_delay_sessions",
+        "guaranteed_fills",
+        "protection_activation",
+        "ambiguous_intraday",
+        "broker_profile_version",
+        "broker_rules_verified",
+        "order_cutoff_rule",
+        "protective_order_type",
+        "fee_model_version",
+        "fee_source_reference",
+        "fee_effective_start",
+        "fee_effective_end",
+        "fee_schedule_verified",
+        "slippage_bps",
+        "fixed_execution_allowance_inr"
+      ],
+      "properties": {
+        "manual_approval": {
+          "enum": [
+            true
+          ],
+          "description": "Explicit version-bound human approval.",
+          "x-provenance": "POLICY"
+        },
+        "manual_placement": {
+          "enum": [
+            true
+          ],
+          "description": "Human places every broker order.",
+          "x-provenance": "POLICY"
+        },
+        "broker_submission_api": {
+          "enum": [
+            false
+          ],
+          "description": "No automated order transmission in V1.",
+          "x-provenance": "POLICY"
+        },
+        "operator_delay_sessions": {
+          "type": "integer",
+          "description": "One complete exchange session after decision, then eligible opportunity.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "guaranteed_fills": {
+          "enum": [
+            false
+          ],
+          "description": "Price touches, approval and acceptance are not fills.",
+          "x-provenance": "POLICY"
+        },
+        "protection_activation": {
+          "enum": [
+            "BROKER_CONFIRMED_TIMESTAMP"
+          ],
+          "description": "Separate from planned stops and entry fill.",
+          "x-provenance": "POLICY"
+        },
+        "ambiguous_intraday": {
+          "enum": [
+            "UNRESOLVED_OR_CONSERVATIVE_BOUNDS"
+          ],
+          "description": "Daily bars cannot establish within-bar activation order.",
+          "x-provenance": "POLICY"
+        },
+        "broker_profile_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Requires verified session/order/validity rules.",
+          "x-provenance": "POLICY"
+        },
+        "broker_rules_verified": {
+          "type": "boolean",
+          "description": "No executable recommendations before verification.",
+          "x-provenance": "POLICY"
+        },
+        "order_cutoff_rule": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Versioned broker-specific timing convention; no invented cutoff.",
+          "x-provenance": "POLICY"
+        },
+        "protective_order_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "STOP_MARKET",
+                "STOP_LIMIT"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Actual supported behavior; no silent substitution.",
+          "x-provenance": "POLICY"
+        },
+        "fee_model_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "No current rates or historical schedules fabricated.",
+          "x-provenance": "POLICY"
+        },
+        "fee_source_reference": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Dated authoritative schedule reference.",
+          "x-provenance": "POLICY"
+        },
+        "fee_effective_start": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Coverage start inclusive.",
+          "x-provenance": "POLICY"
+        },
+        "fee_effective_end": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Coverage end exclusive.",
+          "x-provenance": "POLICY"
+        },
+        "fee_schedule_verified": {
+          "type": "boolean",
+          "description": "Phase 7 implements actual fee schedules and accounting.",
+          "x-provenance": "POLICY"
+        },
+        "slippage_bps": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?\\d+(\\.\\d+)?$",
+              "description": "Exact decimal string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit estimate, not a guaranteed gap-loss allowance.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "fixed_execution_allowance_inr": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?\\d+(\\.\\d+)?$",
+              "description": "Exact decimal string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit nonnegative allowance; not a loss guarantee.",
+          "x-provenance": "EXPERIMENTAL"
+        }
+      },
+      "description": "Manual workflow and explicit assumptions.",
+      "x-provenance": "POLICY"
+    },
+    "backtesting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidates",
+        "holdout_months",
+        "holdout_evaluations",
+        "interval_convention",
+        "auto_promote",
+        "optimize_safety_policy"
+      ],
+      "properties": {
+        "candidates": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "A",
+              "B"
+            ]
+          },
+          "description": "Only predefined A and B, isolated replay accounts.",
+          "x-provenance": "EXPERIMENTAL"
+        },
+        "holdout_months": {
+          "enum": [
+            12
+          ],
+          "description": "Final twelve calendar months of sealed snapshot.",
+          "x-provenance": "POLICY"
+        },
+        "holdout_evaluations": {
+          "enum": [
+            1
+          ],
+          "description": "Future final-gate authorization required; unavailable here.",
+          "x-provenance": "POLICY"
+        },
+        "interval_convention": {
+          "enum": [
+            "START_INCLUSIVE_END_EXCLUSIVE"
+          ],
+          "description": "Prevents shared train/test boundary observations.",
+          "x-provenance": "POLICY"
+        },
+        "auto_promote": {
+          "enum": [
+            false
+          ],
+          "description": "Research cannot promote live settings.",
+          "x-provenance": "POLICY"
+        },
+        "optimize_safety_policy": {
+          "enum": [
+            false
+          ],
+          "description": "Safety limits are not search parameters.",
+          "x-provenance": "POLICY"
+        }
+      },
+      "description": "Research isolation.",
+      "x-provenance": "POLICY"
+    },
+    "reporting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "daily",
+        "weekly",
+        "monthly",
+        "rejection_reasons",
+        "audit_events",
+        "actual_vs_simulated",
+        "paper_minimum_weeks"
+      ],
+      "properties": {
+        "daily": {
+          "enum": [
+            true
+          ],
+          "description": "Daily positions and reconciliation.",
+          "x-provenance": "POLICY"
+        },
+        "weekly": {
+          "enum": [
+            true
+          ],
+          "description": "Weekly ranked opportunities, including NO TRADE.",
+          "x-provenance": "POLICY"
+        },
+        "monthly": {
+          "enum": [
+            true
+          ],
+          "description": "Completed-month context.",
+          "x-provenance": "POLICY"
+        },
+        "rejection_reasons": {
+          "enum": [
+            true
+          ],
+          "description": "Explain all blocked entries.",
+          "x-provenance": "POLICY"
+        },
+        "audit_events": {
+          "enum": [
+            true
+          ],
+          "description": "Version, provenance and operator events required.",
+          "x-provenance": "POLICY"
+        },
+        "actual_vs_simulated": {
+          "enum": [
+            true
+          ],
+          "description": "Never merge real and hypothetical fills.",
+          "x-provenance": "POLICY"
+        },
+        "paper_minimum_weeks": {
+          "enum": [
+            12
+          ],
+          "description": "Operational minimum, not statistical proof.",
+          "x-provenance": "POLICY"
+        }
+      },
+      "description": "Auditability.",
+      "x-provenance": "POLICY"
+    }
+  }
+}
