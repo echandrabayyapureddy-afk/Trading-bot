@@ -1,38 +1,83 @@
-# Configuration phase validation
+# Prompt 2 closure verification — 2026-11-10
 
-Final command, from `nse_bot_config/`:
+Executed on the current local package based on
+57dd136a596f7850f316f82e0d892c22d4c53406 before publication:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -v
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_review_regressions.py -q
+git diff --check
+```
+
+Full suite: 108 passed, 0 failed, 0 skipped (1.560 seconds).
+Focused subset: 19 passed, 0 failed, 0 skipped (0.434 seconds).
+Whitespace check: passed, exit 0. The subset is included in the 108 total.
+Only synthetic fixtures were exercised; real manifest remains UNSEALED.
+No code was changed during closure preparation. No stored independent-review
+content hashes were available; the reported test count was reproduced and current
+changes inspected. Earlier run records below are historical.
+
+# Focused Prompt 2 follow-up — latest results
+
+Continued from the existing 89-test local correction package, not the remote tree.
+All data and evidence in these tests are synthetic.
+
+Commands actually executed from the repository root:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_review_regressions.py -v
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q
+```
+
+Focused: 19 passed, 0 failed, 0 skipped, 0.324 seconds.
+Full: 108 passed, 0 failed, 0 skipped, 1.132 seconds.
+The existing 89 tests also passed after fixture/schema migration, before adding the
+19 focused regressions. No test failures occurred during this focused correction.
+
+Regressions cover marks above/equal/below trigger through both validation layers;
+unrelated broker versions, typed numeric/source/cutoff/order-type/interval mismatches;
+free-text-only profiles; historical schedules ending before sealing; missing and
+partial-day historical coverage; unavailable evidence; missing/future/expired/revoked
+approvals; explicit retrospective knowledge; naive/pre-seal cutoffs; schema migration;
+and continued operational blocking. No performance research or holdout was accessed.
+
+Earlier package run history follows for provenance, not as the current test count.
+
+# Prompt 2 correction validation
+
+Python standard-library unittest, synthetic metadata only. No market data, live
+credentials, strategy performance or holdout access.
+
+Final command (from repository root):
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -v
 ```
 
-Actual final suite result: **50 tests, 1.314 seconds, OK**. The earlier suite
-contained 46 tests and passed in 1.018 seconds. Four further tests were added for
-precision-independent hashing, future-dated approvals and fee-profile effectivity.
-The final command exited with code 0. Tests use Python 3.12.14 and only the
-standard library; no dependencies were installed.
+Actual final result: 89 passed, 0 failed, 0 skipped, 0.759 seconds, exit 0.
+`git diff --check` also passed, exit 0.
 
-Coverage includes:
+The first intermediate run reported 91 executions and two failures: the previous
+wrong-version fixture now matched default 0.2.0, and importing its TestCase class
+into the new test module caused duplicate discovery. Corrected the mismatch to
+0.3.0 and imported the fixture module instead. Subsequent runs: 80 passed; 86
+passed; final 89 passed after adding arithmetic validation regressions. One earlier
+whitespace check found trailing whitespace; fixed and rechecked successfully.
 
-- Fixed risk and market-scope invariants; 5000/10000 capital; invalid amounts.
-- All missing JSON keys, unknown fields, duplicate keys, strict numeric/boolean
-  types, nonfinite values, versions and nested immutable records.
-- 104 parameter provenance entries; canonical hashing and independent candidate
-  copies; hash sensitivity without decimal-context rounding.
-- Unsealed manifest denial; exact final twelve-calendar-month intervals including
-  leap-day convention; overlap/gap/partial-boundary rejection; snapshot/config/
-  provider/calendar/universe/fee version mismatches; development-only access.
-- Signed approval verification, tampering with both config and adjacent hash,
-  wrong/short keys, external version/hash pins, reviewer metadata, future approval,
-  missing prerequisites and fee dates in Asia/Kolkata.
-- Import without output or files in a clean temporary working directory.
+Coverage: strict types/fields and immutable objects; unchanged safety values;
+canonical hashes and tampered approval/version pins; schema-1 rejection; template,
+sealed development boundaries and profile requirements; missing/partial/triggered
+protection; stale/missing marks; remaining costs; both risk measures and conservative
+maximum, including precision independence; naive/causally anomalous timestamps;
+late acknowledgement and out-of-order receipt; separate partial fills; activation
+quantity; profile purpose/evidence/validity/approval/hash; synthetic operational
+attempts; exact generated-schema equality and serialization round trips.
 
-An initial smoke command ran from the parent directory and could not find
-`config`; it was rerun from the documented project directory and succeeded.
-This was a command working-directory error, not a failed configuration test.
+The old approval test fixture now exercises verify_signed_config_contract, an
+explicitly NON-AUTHORIZING signature checker. Separate regression tests prove
+load_approved_live and require_ready cannot authorize these synthetic credentials.
 
-No market data, historical strategy results, live credentials or final holdout
-were used. All sealed manifests and approval receipts in tests are synthetic.
-Tests do not prove broker behavior, indicator correctness, portfolio accounting,
-profitability, dataset truth or a deployed OS permission boundary; those are not
-implemented in this phase.
+No tests prove actual broker evidence, production identity, account reconciliation,
+OS isolation, portfolio capacity or one-time holdout evaluation. Those require
+future implementations and independent review. This is implementation self-checking,
+not a replacement for the required independent review.

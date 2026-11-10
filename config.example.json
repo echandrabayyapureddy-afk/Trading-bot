@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.0",
-  "config_version": "0.1.0",
+  "schema_version": "3.0",
+  "config_version": "0.3.0",
   "policy_version": "POLICY-1.0.0",
   "account": {
     "account_id": null,
@@ -81,7 +81,7 @@
     "flow_adjustment": "UNITIZED_NAV",
     "automatic_resume": false,
     "liquidate_on_drawdown": false,
-    "open_risk_basis": null,
+    "open_risk_basis": "MAX_ENTRY_AND_MARK",
     "resume_rule": "RECOVERY_AND_DOCUMENTED_CLEARANCE"
   },
   "execution": {
@@ -102,7 +102,9 @@
     "fee_effective_end": null,
     "fee_schedule_verified": false,
     "slippage_bps": null,
-    "fixed_execution_allowance_inr": null
+    "fixed_execution_allowance_inr": null,
+    "profile_sha256": [],
+    "operator_delay_operational_approved": false
   },
   "backtesting": {
     "candidates": [

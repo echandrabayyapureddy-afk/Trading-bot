@@ -1,0 +1,948 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NSE Bot Contracts 3.0",
+  "$defs": {
+    "PositionRiskContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "position_id",
+        "remaining_quantity",
+        "entry_price",
+        "current_mark",
+        "mark_at",
+        "mark_valid_until",
+        "mark_validity_evidence",
+        "protective_trigger",
+        "protective_quantity",
+        "protection_state",
+        "protection_event_id",
+        "remaining_expenses",
+        "expense_basis",
+        "expenses_exclude_booked",
+        "adverse_allowance",
+        "adverse_profile_sha256",
+        "reconciliation",
+        "r_entry",
+        "r_mark",
+        "r_position"
+      ],
+      "properties": {
+        "position_id": {
+          "type": "string",
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "remaining_quantity": {
+          "type": "integer",
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "entry_price": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?$",
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "current_mark": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?\\d+(\\.\\d+)?$",
+              "description": "Exact decimal string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "mark_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "mark_valid_until": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "mark_validity_evidence": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "reference",
+                "sha256",
+                "available_at"
+              ],
+              "properties": {
+                "reference": {
+                  "type": "string",
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "sha256": {
+                  "type": "string",
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "available_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "protective_trigger": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?\\d+(\\.\\d+)?$",
+              "description": "Exact decimal string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "protective_quantity": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "protection_state": {
+          "enum": [
+            "UNKNOWN",
+            "PLANNED",
+            "SUBMITTED",
+            "BROKER_HELD_CONDITIONAL",
+            "EXCHANGE_ACTIVE",
+            "TRIGGERED_UNFILLED",
+            "CANCELLED",
+            "EXPIRED"
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "protection_event_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "remaining_expenses": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?\\d+(\\.\\d+)?$",
+              "description": "Exact decimal string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "expense_basis": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "reference",
+                "sha256",
+                "available_at"
+              ],
+              "properties": {
+                "reference": {
+                  "type": "string",
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "sha256": {
+                  "type": "string",
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "available_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "expenses_exclude_booked": {
+          "type": "boolean",
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "adverse_allowance": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?\\d+(\\.\\d+)?$",
+              "description": "Exact decimal string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "adverse_profile_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "reconciliation": {
+          "enum": [
+            "UNRESOLVED",
+            "CONFIRMED"
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "r_entry": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?\\d+(\\.\\d+)?$",
+              "description": "Exact decimal string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "r_mark": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?\\d+(\\.\\d+)?$",
+              "description": "Exact decimal string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "r_position": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?\\d+(\\.\\d+)?$",
+              "description": "Exact decimal string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        }
+      }
+    },
+    "ExecutionEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "kind",
+        "trade_id",
+        "order_id",
+        "parent_id",
+        "config_version",
+        "config_sha256",
+        "origin",
+        "occurred_at",
+        "recorded_at",
+        "notified_at",
+        "evidence",
+        "quantity",
+        "price",
+        "protection_state"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "kind": {
+          "enum": [
+            "DECISION",
+            "TRADE_APPROVAL",
+            "MANUAL_SUBMISSION",
+            "ACKNOWLEDGEMENT",
+            "FILL",
+            "PROTECTION_ACTIVATION"
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "trade_id": {
+          "type": "string",
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "order_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "config_version": {
+          "type": "string",
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "config_sha256": {
+          "type": "string",
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "origin": {
+          "enum": [
+            "ACTUAL",
+            "SIMULATED"
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "notified_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "reference",
+              "sha256",
+              "available_at"
+            ],
+            "properties": {
+              "reference": {
+                "type": "string",
+                "description": "Required contract field; see CONTRACTS.md",
+                "x-provenance": "POLICY"
+              },
+              "sha256": {
+                "type": "string",
+                "description": "Required contract field; see CONTRACTS.md",
+                "x-provenance": "POLICY"
+              },
+              "available_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Required contract field; see CONTRACTS.md",
+                "x-provenance": "POLICY"
+              }
+            }
+          },
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "price": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?\\d+(\\.\\d+)?$",
+              "description": "Exact decimal string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "protection_state": {
+          "anyOf": [
+            {
+              "enum": [
+                "UNKNOWN",
+                "PLANNED",
+                "SUBMITTED",
+                "BROKER_HELD_CONDITIONAL",
+                "EXCHANGE_ACTIVE",
+                "TRIGGERED_UNFILLED",
+                "CANCELLED",
+                "EXPIRED"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        }
+      }
+    },
+    "VerificationProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "body",
+        "content_sha256",
+        "approval"
+      ],
+      "properties": {
+        "body": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "version",
+            "purpose",
+            "status",
+            "evidence",
+            "verified_at",
+            "effective_start",
+            "effective_end",
+            "validity_basis",
+            "specification",
+            "assumptions",
+            "knowledge_basis"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "BROKER",
+                "FEES",
+                "SLIPPAGE",
+                "ADVERSE_EXECUTION"
+              ],
+              "description": "Required contract field; see CONTRACTS.md",
+              "x-provenance": "POLICY"
+            },
+            "version": {
+              "type": "string",
+              "description": "Required contract field; see CONTRACTS.md",
+              "x-provenance": "POLICY"
+            },
+            "purpose": {
+              "enum": [
+                "SYNTHETIC",
+                "RESEARCH",
+                "OPERATIONAL"
+              ],
+              "description": "Required contract field; see CONTRACTS.md",
+              "x-provenance": "POLICY"
+            },
+            "status": {
+              "enum": [
+                "UNVERIFIED",
+                "VERIFIED",
+                "UNSUPPORTED"
+              ],
+              "description": "Required contract field; see CONTRACTS.md",
+              "x-provenance": "POLICY"
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "reference",
+                  "sha256",
+                  "available_at"
+                ],
+                "properties": {
+                  "reference": {
+                    "type": "string",
+                    "description": "Required contract field; see CONTRACTS.md",
+                    "x-provenance": "POLICY"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "description": "Required contract field; see CONTRACTS.md",
+                    "x-provenance": "POLICY"
+                  },
+                  "available_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Required contract field; see CONTRACTS.md",
+                    "x-provenance": "POLICY"
+                  }
+                }
+              },
+              "description": "Required contract field; see CONTRACTS.md",
+              "x-provenance": "POLICY"
+            },
+            "verified_at": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Required contract field; see CONTRACTS.md",
+              "x-provenance": "POLICY"
+            },
+            "effective_start": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Required contract field; see CONTRACTS.md",
+              "x-provenance": "POLICY"
+            },
+            "effective_end": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Required contract field; see CONTRACTS.md",
+              "x-provenance": "POLICY"
+            },
+            "validity_basis": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "reference",
+                    "sha256",
+                    "available_at"
+                  ],
+                  "properties": {
+                    "reference": {
+                      "type": "string",
+                      "description": "Required contract field; see CONTRACTS.md",
+                      "x-provenance": "POLICY"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "description": "Required contract field; see CONTRACTS.md",
+                      "x-provenance": "POLICY"
+                    },
+                    "available_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Required contract field; see CONTRACTS.md",
+                      "x-provenance": "POLICY"
+                    }
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Required contract field; see CONTRACTS.md",
+              "x-provenance": "POLICY"
+            },
+            "specification": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Required contract field; see CONTRACTS.md",
+              "x-provenance": "POLICY"
+            },
+            "assumptions": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "order_cutoff_rule",
+                    "protective_order_type",
+                    "fee_source_reference",
+                    "slippage_bps",
+                    "fixed_execution_allowance_inr"
+                  ],
+                  "properties": {
+                    "order_cutoff_rule": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Required contract field; see CONTRACTS.md",
+                      "x-provenance": "POLICY"
+                    },
+                    "protective_order_type": {
+                      "anyOf": [
+                        {
+                          "enum": [
+                            "STOP_MARKET",
+                            "STOP_LIMIT"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Required contract field; see CONTRACTS.md",
+                      "x-provenance": "POLICY"
+                    },
+                    "fee_source_reference": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Required contract field; see CONTRACTS.md",
+                      "x-provenance": "POLICY"
+                    },
+                    "slippage_bps": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^-?\\d+(\\.\\d+)?$",
+                          "description": "Exact decimal string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Required contract field; see CONTRACTS.md",
+                      "x-provenance": "POLICY"
+                    },
+                    "fixed_execution_allowance_inr": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^-?\\d+(\\.\\d+)?$",
+                          "description": "Exact decimal string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Required contract field; see CONTRACTS.md",
+                      "x-provenance": "POLICY"
+                    }
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Required contract field; see CONTRACTS.md",
+              "x-provenance": "POLICY"
+            },
+            "knowledge_basis": {
+              "enum": [
+                "UNVERIFIED",
+                "POINT_IN_TIME",
+                "RETROSPECTIVE_RESEARCH"
+              ],
+              "description": "Required contract field; see CONTRACTS.md",
+              "x-provenance": "POLICY"
+            }
+          },
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "content_sha256": {
+          "type": "string",
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        },
+        "approval": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "version",
+                "content_sha256",
+                "purpose",
+                "approved_at",
+                "reviewers",
+                "evidence",
+                "validity_mode",
+                "valid_until",
+                "validity_evidence",
+                "revoked_at"
+              ],
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "content_sha256": {
+                  "type": "string",
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "purpose": {
+                  "enum": [
+                    "SYNTHETIC",
+                    "RESEARCH",
+                    "OPERATIONAL"
+                  ],
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "approved_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "reviewers": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "evidence": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "reference",
+                    "sha256",
+                    "available_at"
+                  ],
+                  "properties": {
+                    "reference": {
+                      "type": "string",
+                      "description": "Required contract field; see CONTRACTS.md",
+                      "x-provenance": "POLICY"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "description": "Required contract field; see CONTRACTS.md",
+                      "x-provenance": "POLICY"
+                    },
+                    "available_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Required contract field; see CONTRACTS.md",
+                      "x-provenance": "POLICY"
+                    }
+                  },
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "validity_mode": {
+                  "enum": [
+                    "UNVERIFIED",
+                    "EXPIRES",
+                    "NO_SCHEDULED_EXPIRY"
+                  ],
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "valid_until": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "validity_evidence": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "reference",
+                        "sha256",
+                        "available_at"
+                      ],
+                      "properties": {
+                        "reference": {
+                          "type": "string",
+                          "description": "Required contract field; see CONTRACTS.md",
+                          "x-provenance": "POLICY"
+                        },
+                        "sha256": {
+                          "type": "string",
+                          "description": "Required contract field; see CONTRACTS.md",
+                          "x-provenance": "POLICY"
+                        },
+                        "available_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Required contract field; see CONTRACTS.md",
+                          "x-provenance": "POLICY"
+                        }
+                      }
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                },
+                "revoked_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Required contract field; see CONTRACTS.md",
+                  "x-provenance": "POLICY"
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required contract field; see CONTRACTS.md",
+          "x-provenance": "POLICY"
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "NSE Bot Configuration 1.0",
+  "title": "NSE Bot Configuration 3.0",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -20,9 +20,9 @@
   "properties": {
     "schema_version": {
       "enum": [
-        "1.0"
+        "3.0"
       ],
-      "description": "Strict schema version; unknown versions rejected.",
+      "description": "Incompatible corrected contracts; no automatic migration of approvals.",
       "x-provenance": "POLICY"
     },
     "config_version": {
@@ -643,18 +643,10 @@
           "x-provenance": "POLICY"
         },
         "open_risk_basis": {
-          "anyOf": [
-            {
-              "enum": [
-                "ENTRY_TO_STOP",
-                "MARK_TO_STOP"
-              ]
-            },
-            {
-              "type": "null"
-            }
+          "enum": [
+            "MAX_ENTRY_AND_MARK"
           ],
-          "description": "Unresolved decision; blocks executable recommendations.",
+          "description": "Both risks include remaining expenses and approved adverse allowance; use their maximum. Approved Prompt 2 correction package.",
           "x-provenance": "POLICY"
         },
         "resume_rule": {
@@ -689,7 +681,9 @@
         "fee_effective_end",
         "fee_schedule_verified",
         "slippage_bps",
-        "fixed_execution_allowance_inr"
+        "fixed_execution_allowance_inr",
+        "profile_sha256",
+        "operator_delay_operational_approved"
       ],
       "properties": {
         "manual_approval": {
@@ -715,7 +709,7 @@
         },
         "operator_delay_sessions": {
           "type": "integer",
-          "description": "One complete exchange session after decision, then eligible opportunity.",
+          "description": "After close D: D+1 is one full intervening exchange session; earliest simulated opportunity D+2, subject to approval, cutoff and revalidation; no assumed fill.",
           "x-provenance": "EXPERIMENTAL"
         },
         "guaranteed_fills": {
@@ -865,6 +859,21 @@
           ],
           "description": "Explicit nonnegative allowance; not a loss guarantee.",
           "x-provenance": "EXPERIMENTAL"
+        },
+        "profile_sha256": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Content hashes of the four approved external profile records; empty remains unverified.",
+          "x-provenance": "POLICY"
+        },
+        "operator_delay_operational_approved": {
+          "enum": [
+            false
+          ],
+          "description": "One-session delay is retained as an experimental contract, not an approved broker capability. Separate operational decision required.",
+          "x-provenance": "POLICY"
         }
       },
       "description": "Manual workflow and explicit assumptions.",

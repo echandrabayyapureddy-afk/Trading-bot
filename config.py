@@ -12,7 +12,7 @@ import json
 import re
 import types
 from dataclasses import dataclass, field, fields, is_dataclass
-from datetime import date, datetime
+from datetime import date, datetime, time
 from decimal import Decimal
 from enum import Enum
 from pathlib import Path
@@ -173,7 +173,7 @@ class RiskConfig(Validated):
     flow_adjustment: Literal["UNITIZED_NAV"] = parameter("UNITIZED_NAV", P, "Cash flows alter units, not investment return.")
     automatic_resume: Literal[False] = parameter(False, P, "Recovery alone cannot clear a latch.")
     liquidate_on_drawdown: Literal[False] = parameter(False, P, "Existing exits/protection/reconciliation continue.")
-    open_risk_basis: Literal["ENTRY_TO_STOP", "MARK_TO_STOP"] | None = parameter(None, P, "Unresolved decision; blocks executable recommendations.")
+    open_risk_basis: Literal["MAX_ENTRY_AND_MARK"] = parameter("MAX_ENTRY_AND_MARK", P, "Both risks include remaining expenses and approved adverse allowance; use their maximum. Approved Prompt 2 correction package.")
     resume_rule: Literal["RECOVERY_AND_DOCUMENTED_CLEARANCE"] = parameter("RECOVERY_AND_DOCUMENTED_CLEARANCE", P, "Both gates independent; high-water mark never resets to permit entries.")
 
     def validate(self):
@@ -196,7 +196,7 @@ class ExecutionConfig(Validated):
     manual_approval: Literal[True] = parameter(True, P, "Explicit version-bound human approval.")
     manual_placement: Literal[True] = parameter(True, P, "Human places every broker order.")
     broker_submission_api: Literal[False] = parameter(False, P, "No automated order transmission in V1.")
-    operator_delay_sessions: int = parameter(1, X, "One complete exchange session after decision, then eligible opportunity.")
+    operator_delay_sessions: int = parameter(1, X, "After close D: D+1 is one full intervening exchange session; earliest simulated opportunity D+2, subject to approval, cutoff and revalidation; no assumed fill.")
     guaranteed_fills: Literal[False] = parameter(False, P, "Price touches, approval and acceptance are not fills.")
     protection_activation: Literal["BROKER_CONFIRMED_TIMESTAMP"] = parameter("BROKER_CONFIRMED_TIMESTAMP", P, "Separate from planned stops and entry fill.")
     ambiguous_intraday: Literal["UNRESOLVED_OR_CONSERVATIVE_BOUNDS"] = parameter("UNRESOLVED_OR_CONSERVATIVE_BOUNDS", P, "Daily bars cannot establish within-bar activation order.")
@@ -211,8 +211,14 @@ class ExecutionConfig(Validated):
     fee_schedule_verified: bool = parameter(False, P, "Phase 7 implements actual fee schedules and accounting.")
     slippage_bps: Decimal | None = parameter(None, X, "Explicit estimate, not a guaranteed gap-loss allowance.")
     fixed_execution_allowance_inr: Decimal | None = parameter(None, X, "Explicit nonnegative allowance; not a loss guarantee.")
+    profile_sha256: tuple[str, ...] = parameter((), P, "Content hashes of the four approved external profile records; empty remains unverified.")
+    operator_delay_operational_approved: Literal[False] = parameter(False, P, "One-session delay is retained as an experimental contract, not an approved broker capability. Separate operational decision required.")
 
     def validate(self):
+        for digest in self.profile_sha256:
+            _sha(digest, 'execution profile hash')
+        if self.profile_sha256 and (len(self.profile_sha256) != 4 or len(set(self.profile_sha256)) != 4):
+            raise ConfigError('four distinct profile hashes required')
         if self.operator_delay_sessions < 1:
             raise ConfigError("operator delay must include at least one complete session")
         for n in ("slippage_bps", "fixed_execution_allowance_inr"):
@@ -324,8 +330,8 @@ def _typed(value: Any, annotation: Any, path: str, *, decode: bool):
 
 @dataclass(frozen=True, slots=True)
 class BotConfig(Validated):
-    schema_version: Literal["1.0"] = parameter("1.0", P, "Strict schema version; unknown versions rejected.")
-    config_version: str = parameter("0.1.0", P, "Version bound to content hash and external approval.")
+    schema_version: Literal["3.0"] = parameter("3.0", P, "Incompatible corrected contracts; no automatic migration of approvals.")
+    config_version: str = parameter("0.3.0", P, "Version bound to content hash and external approval.")
     policy_version: Literal["POLICY-1.0.0"] = parameter("POLICY-1.0.0", P, "Fixed initial safety limits.")
     account: AccountConfig = parameter(AccountConfig(), P, "Actual account input.")
     data: DataConfig = parameter(DataConfig(), P, "Required data conventions.")
@@ -471,7 +477,7 @@ def parameter_catalog(cls=BotConfig, prefix="") -> list[dict]:
     return result
 
 
-def readiness_issues(config: BotConfig) -> tuple[str, ...]:
+def research_prerequisite_issues(config: BotConfig) -> tuple[str, ...]:
     """Explicit prerequisites; no zero-filled costs or guessed operator settings."""
     _validate_types(config)
     config.validate()
@@ -483,14 +489,15 @@ def readiness_issues(config: BotConfig) -> tuple[str, ...]:
                  if getattr(getattr(config, section), name) is None or getattr(getattr(config, section), name) is False)
 
 
-def require_ready(config: BotConfig):
-    issues = readiness_issues(config)
+def require_research_prerequisites(config: BotConfig):
+    issues = research_prerequisite_issues(config)
     if issues:
         raise ConfigError("not executable/research-ready: " + ", ".join(issues))
 
 
 def authorize_development_window(config: BotConfig, manifest: ResearchManifest,
-                                 start: date, end: date, *, expected_manifest_sha256: str):
+                                 start: date, end: date, *, expected_manifest_sha256: str, verification_profiles: tuple = (),
+                                 authorization_at: datetime | None = None):
     """Configuration guard only; never reads data or authorizes the final holdout."""
     _validate_types(manifest)
     manifest.validate()
@@ -499,7 +506,7 @@ def authorize_development_window(config: BotConfig, manifest: ResearchManifest,
         raise ConfigError("manifest hash mismatch")
     if manifest.status is not SealStatus.SEALED:
         raise ConfigError("UNSEALED manifest: outcome-based research prohibited")
-    require_ready(config)
+    require_research_prerequisites(config)
     if manifest.config_sha256 != content_hash(config):
         raise ConfigError("configuration differs from sealed research configuration")
     for n in ("snapshot_sha256", "provider_version", "calendar_version", "universe_version"):
@@ -511,6 +518,47 @@ def authorize_development_window(config: BotConfig, manifest: ResearchManifest,
         raise ConfigError("window is outside development boundaries; holdout access denied")
     if not config.execution.fee_effective_start <= start < end <= config.execution.fee_effective_end:
         raise ConfigError("research window not covered by fee profile")
+    from config_contracts import VerificationProfile
+    _typed(verification_profiles, tuple[VerificationProfile, ...], 'research profiles', decode=False)
+    if sorted(p.body.kind for p in verification_profiles) != sorted(('BROKER','FEES','SLIPPAGE','ADVERSE_EXECUTION')):
+        raise ConfigError('four research verification profiles required')
+    if set(config.execution.profile_sha256) != {p.content_sha256 for p in verification_profiles}:
+        raise ConfigError('research profile pins mismatch')
+    cutoff = manifest.sealed_at if authorization_at is None else authorization_at
+    _typed(cutoff, datetime, 'research authorization cutoff', decode=False)
+    if cutoff < manifest.sealed_at:
+        raise ConfigError('research authorization precedes sealing')
+    zone = ZoneInfo('Asia/Kolkata')
+    window_start, window_end = (datetime.combine(d, time.min, zone) for d in (start, end))
+    execution = config.execution
+    for profile in verification_profiles:
+        issues = profile.issues(cutoff, 'RESEARCH', historical_start=window_start, historical_end=window_end)
+        if issues:
+            raise ConfigError('research profile: ' + ', '.join(issues))
+        body, assumptions = profile.body, profile.body.assumptions
+        if assumptions is None:
+            raise ConfigError('typed execution assumptions required; free text is not a binding')
+        # One explicit binding for every duplicated execution assumption. Other
+        # broker semantics / fee components remain narrative, not machine-proven.
+        if body.kind == 'BROKER':
+            if body.version != execution.broker_profile_version:
+                raise ConfigError('research broker profile version mismatch')
+            if (assumptions.order_cutoff_rule, assumptions.protective_order_type) != (execution.order_cutoff_rule, execution.protective_order_type):
+                raise ConfigError('broker execution assumptions mismatch')
+        elif body.kind == 'FEES':
+            if body.version != manifest.fee_model_version:
+                raise ConfigError('research fee profile version mismatch')
+            if assumptions.fee_source_reference != execution.fee_source_reference:
+                raise ConfigError('fee source reference mismatch')
+            if (body.effective_start, body.effective_end) != (
+                    datetime.combine(execution.fee_effective_start, time.min, zone),
+                    datetime.combine(execution.fee_effective_end, time.min, zone)):
+                raise ConfigError('fee applicability interval mismatch')
+        elif body.kind == 'SLIPPAGE' and assumptions.slippage_bps != execution.slippage_bps:
+            raise ConfigError('slippage assumption mismatch')
+        elif body.kind == 'ADVERSE_EXECUTION' and assumptions.fixed_execution_allowance_inr != execution.fixed_execution_allowance_inr:
+            raise ConfigError('adverse execution allowance mismatch')
+
 
 
 @dataclass(frozen=True, slots=True)
@@ -535,10 +583,12 @@ def approval_payload(receipt: ApprovalReceipt) -> bytes:
     return canonical_json(payload).encode()
 
 
-def load_approved_live(config_path: str | Path, receipt_path: str | Path, *,
+def verify_signed_config_contract(config_path: str | Path, receipt_path: str | Path, *,
                        approval_key: bytes, expected_version: str,
                        expected_config_sha256: str, as_of: datetime) -> BotConfig:
-    """Read-only verification; no signing, saving, promotion, or automatic fallback.
+    """NON-AUTHORIZING signature contract check; no operational readiness.
+
+    Read-only verification; no signing, saving, promotion, or automatic fallback.
 
     Expected version/hash and key MUST come from operator-controlled storage,
     never from the research output or adjacent editable config file itself.
@@ -559,8 +609,34 @@ def load_approved_live(config_path: str | Path, receipt_path: str | Path, *,
             hmac.compare_digest(actual, receipt.config_sha256) and
             hmac.compare_digest(actual, expected_config_sha256)):
         raise ConfigError("approved version/hash mismatch")
-    require_ready(config)
+    require_research_prerequisites(config)
     exchange_date = as_of.astimezone(ZoneInfo("Asia/Kolkata")).date()
     if not config.execution.fee_effective_start <= exchange_date < config.execution.fee_effective_end:
         raise ConfigError("fee profile is not effective on the decision date")
     return config
+
+
+def readiness_issues(config: BotConfig) -> tuple[str, ...]:
+    """Operational readiness is unavailable until external trust is provisioned.
+
+    This public entry point intentionally never equates a valid config or caller
+    supplied HMAC key with deployment authority. Research helpers grant no live
+    authority. Contract-specific checks are in config_contracts.py.
+    """
+    return research_prerequisite_issues(config) + ("operational_trust_not_provisioned",)
+
+
+def require_ready(config: BotConfig):
+    raise ConfigError("operational readiness blocked: " + ", ".join(readiness_issues(config)))
+
+
+def load_approved_live(config_path: str | Path, receipt_path: str | Path, *,
+                       approval_key: bytes, expected_version: str,
+                       expected_config_sha256: str, as_of: datetime) -> BotConfig:
+    # Retain signature/type/hash/date validation but never trust an arbitrary
+    # caller-supplied key as an operational trust anchor.
+    config = verify_signed_config_contract(config_path, receipt_path,
+        approval_key=approval_key, expected_version=expected_version,
+        expected_config_sha256=expected_config_sha256, as_of=as_of)
+    require_ready(config)
+    return config  # unreachable until a separately reviewed deployment integration

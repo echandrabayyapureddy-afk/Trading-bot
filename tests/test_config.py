@@ -18,6 +18,24 @@ import config as c
 ROOT = Path(__file__).resolve().parents[1]
 
 
+
+def research_profiles():
+    from config_contracts import Evidence, ProfileBody, ProfileApproval, VerificationProfile, ExecutionAssumptions
+    from zoneinfo import ZoneInfo
+    t=datetime(2018,1,1,tzinfo=timezone.utc)
+    evidence=Evidence('SYNTHETIC research fixture', 'd'*64,t)
+    result=[]
+    for kind in ('BROKER','FEES','SLIPPAGE','ADVERSE_EXECUTION'):
+        assumptions=ExecutionAssumptions(order_cutoff_rule='SYNTHETIC_RULE', protective_order_type='STOP_LIMIT',
+            fee_source_reference='synthetic fixture, not official rates',slippage_bps=Decimal('5'),fixed_execution_allowance_inr=Decimal('1'))
+        body=ProfileBody(kind,'SYNTHETIC_FEES-1' if kind=='FEES' else ('SYNTHETIC-1' if kind=='BROKER' else 'fixture-1'),'RESEARCH','VERIFIED',
+                         (evidence,),t,datetime(2019,1,1,tzinfo=ZoneInfo('Asia/Kolkata')),
+                         datetime(2024,1,1,tzinfo=ZoneInfo('Asia/Kolkata')),evidence,
+                         'Synthetic test specification', assumptions, 'POINT_IN_TIME')
+        h=c.content_hash(body)
+        result.append(VerificationProfile(body,h,ProfileApproval(body.version,h,'RESEARCH',t,('r1','r2'),evidence,validity_mode='NO_SCHEDULED_EXPIRY',validity_evidence=evidence)))
+    return tuple(result)
+
 def ready_config():
     """Synthetic prerequisites only; not an assertion about an actual broker."""
     return c.BotConfig(
@@ -26,14 +44,15 @@ def ready_config():
                           snapshot_sha256="a" * 64, calendar_version="fixture-calendar-1",
                           universe_version="fixture-universe-1", point_in_time_verified=True,
                           availability_verified=True),
-        risk=c.RiskConfig(open_risk_basis="MARK_TO_STOP"),
+        risk=c.RiskConfig(),
         execution=c.ExecutionConfig(broker_profile_version="SYNTHETIC-1",
                                      broker_rules_verified=True, order_cutoff_rule="SYNTHETIC_RULE",
                                      protective_order_type="STOP_LIMIT", fee_model_version="SYNTHETIC_FEES-1",
                                      fee_source_reference="synthetic fixture, not official rates",
                                      fee_effective_start=date(2019, 1, 1), fee_effective_end=date(2024, 1, 1),
                                      fee_schedule_verified=True, slippage_bps=Decimal("5"),
-                                     fixed_execution_allowance_inr=Decimal("1")))
+                                     fixed_execution_allowance_inr=Decimal("1"),
+                                     profile_sha256=tuple(p.content_sha256 for p in research_profiles())))
 
 
 def sealed_manifest(cfg=None):
@@ -202,21 +221,21 @@ class ConfigurationTests(unittest.TestCase):
             c.from_dict(c.BotConfig, data)
 
     def test_draft_cannot_authorize_executable_recommendations(self):
-        issues = c.readiness_issues(c.BotConfig())
-        for n in ('account.capital_inr', 'risk.open_risk_basis', 'execution.slippage_bps', 'execution.fee_model_version'):
+        issues = c.research_prerequisite_issues(c.BotConfig())
+        for n in ('account.capital_inr', 'execution.slippage_bps', 'execution.fee_model_version'):
             self.assertIn(n, issues)
         with self.assertRaises(c.ConfigError):
-            c.require_ready(c.BotConfig())
+            c.require_research_prerequisites(c.BotConfig())
 
     def test_each_missing_readiness_input_blocks(self):
         cfg = ready_config()
-        self.assertEqual(c.readiness_issues(cfg), ())
-        for section, name, value in [('account', 'capital_inr', None), ('risk', 'open_risk_basis', None),
+        self.assertEqual(c.research_prerequisite_issues(cfg), ())
+        for section, name, value in [('account', 'capital_inr', None),
                                      ('execution', 'slippage_bps', None), ('execution', 'broker_rules_verified', False),
                                      ('data', 'point_in_time_verified', False), ('data', 'availability_verified', False)]:
             changed = replace(cfg, **{section: replace(getattr(cfg, section), **{name: value})})
             with self.subTest(name=name), self.assertRaises(c.ConfigError):
-                c.require_ready(changed)
+                c.require_research_prerequisites(changed)
 
     def test_candidate_fork_is_isolated(self):
         a = c.BotConfig(); digest = c.content_hash(a)
@@ -250,7 +269,7 @@ class ManifestTests(unittest.TestCase):
         m = c.ResearchManifest()
         with self.assertRaisesRegex(c.ConfigError, 'UNSEALED'):
             c.authorize_development_window(c.BotConfig(), m, date(2020, 1, 1), date(2021, 1, 1),
-                                            expected_manifest_sha256=c.content_hash(m))
+                                            expected_manifest_sha256=c.content_hash(m), verification_profiles=research_profiles())
 
     def test_incomplete_seal_rejected(self):
         with self.assertRaises(c.ConfigError):
@@ -288,7 +307,7 @@ class ManifestTests(unittest.TestCase):
     def test_valid_development_window_authorized_metadata_only(self):
         cfg = ready_config(); m = sealed_manifest(cfg)
         c.authorize_development_window(cfg, m, date(2020, 1, 1), date(2023, 1, 1),
-                                       expected_manifest_sha256=c.content_hash(m))
+                                       expected_manifest_sha256=c.content_hash(m), verification_profiles=research_profiles())
 
     def test_holdout_and_crossing_windows_denied(self):
         cfg = ready_config(); m = sealed_manifest(cfg)
@@ -297,17 +316,17 @@ class ManifestTests(unittest.TestCase):
                            (date(2018, 1, 1), date(2020, 1, 1)),
                            (date(2020, 1, 1), date(2020, 1, 1))):
             with self.subTest(start=start, end=end), self.assertRaises(c.ConfigError):
-                c.authorize_development_window(cfg, m, start, end, expected_manifest_sha256=c.content_hash(m))
+                c.authorize_development_window(cfg, m, start, end, expected_manifest_sha256=c.content_hash(m), verification_profiles=research_profiles())
 
     def test_manifest_and_config_tampering_denied(self):
         cfg = ready_config(); m = sealed_manifest(cfg)
         changed = replace(m, snapshot_id='DIFFERENT')
         with self.assertRaisesRegex(c.ConfigError, 'manifest hash'):
             c.authorize_development_window(cfg, changed, date(2020, 1, 1), date(2021, 1, 1),
-                                            expected_manifest_sha256=c.content_hash(m))
+                                            expected_manifest_sha256=c.content_hash(m), verification_profiles=research_profiles())
         with self.assertRaisesRegex(c.ConfigError, 'configuration differs'):
-            c.authorize_development_window(replace(cfg, config_version='0.2.0'), m,
-                date(2020, 1, 1), date(2021, 1, 1), expected_manifest_sha256=c.content_hash(m))
+            c.authorize_development_window(replace(cfg, config_version='0.4.0'), m,
+                date(2020, 1, 1), date(2021, 1, 1), expected_manifest_sha256=c.content_hash(m), verification_profiles=research_profiles())
 
     def test_snapshot_and_fee_version_mismatch(self):
         cfg = ready_config(); m = sealed_manifest(cfg)
@@ -315,14 +334,14 @@ class ManifestTests(unittest.TestCase):
             changed = replace(m, **{name: 'b' * 64 if name.endswith('sha256') else 'DIFFERENT'})
             with self.subTest(name=name), self.assertRaises(c.ConfigError):
                 c.authorize_development_window(cfg, changed, date(2020, 1, 1), date(2021, 1, 1),
-                                               expected_manifest_sha256=c.content_hash(changed))
+                                               expected_manifest_sha256=c.content_hash(changed), verification_profiles=research_profiles())
 
     def test_fee_coverage_required(self):
         cfg = ready_config(); cfg = replace(cfg, execution=replace(cfg.execution, fee_effective_start=date(2021, 1, 1)))
         m = sealed_manifest(cfg)
         with self.assertRaisesRegex(c.ConfigError, 'fee profile'):
             c.authorize_development_window(cfg, m, date(2020, 1, 1), date(2021, 1, 1),
-                                           expected_manifest_sha256=c.content_hash(m))
+                                           expected_manifest_sha256=c.content_hash(m), verification_profiles=research_profiles())
 
 
 class ApprovalTests(unittest.TestCase):
@@ -345,7 +364,7 @@ class ApprovalTests(unittest.TestCase):
     def load(self, **overrides):
         args = dict(approval_key=self.key, expected_version=self.cfg.config_version,
                     expected_config_sha256=self.digest, as_of=datetime(2022, 1, 1, tzinfo=timezone.utc)); args.update(overrides)
-        return c.load_approved_live(self.config_path, self.receipt_path, **args)
+        return c.verify_signed_config_contract(self.config_path, self.receipt_path, **args)
 
     def test_signed_pinned_config_loads_read_only(self):
         before = self.config_path.read_bytes(), self.receipt_path.read_bytes()
@@ -370,7 +389,7 @@ class ApprovalTests(unittest.TestCase):
                 self.load(approval_key=key)
 
     def test_trusted_version_and_hash_pin_required(self):
-        for overrides in ({'expected_version': '0.2.0'}, {'expected_config_sha256': 'f' * 64}):
+        for overrides in ({'expected_version': '0.4.0'}, {'expected_config_sha256': 'f' * 64}):
             with self.subTest(overrides=overrides), self.assertRaises(c.ConfigError):
                 self.load(**overrides)
 
@@ -414,7 +433,7 @@ class ArtifactTests(unittest.TestCase):
 
     def test_checked_in_schema_is_versioned(self):
         schema = json.loads((ROOT / 'config_schema.json').read_text())
-        self.assertEqual(schema['title'], 'NSE Bot Configuration 1.0')
+        self.assertEqual(schema['title'], 'NSE Bot Configuration 3.0')
         self.assertFalse(schema['additionalProperties'])
         self.assertEqual(set(schema['required']), {f.name for f in fields(c.BotConfig)})
 

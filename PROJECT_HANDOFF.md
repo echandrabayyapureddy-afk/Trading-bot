@@ -1,48 +1,66 @@
-# Phase handoff — Prompt 2 configuration only
+# Prompt 2 — approved closure
 
-Status: implementation and 50 configuration tests complete; awaiting human review.
-Do not begin Prompt 3 without authorization. No production settings have been
-approved or activated by this deliverable.
+Primary: chinmaymr37/Trading-bot, main.
+Baseline: 57dd136a596f7850f316f82e0d892c22d4c53406.
+Both remote main branches were verified at this baseline before publication.
+The user approved Prompt 2 closure following independent review and authorized
+publication to the primary repository, then the identical commit/history to
+echandrabayyapureddy-afk/Trading-bot main, without force or overwriting divergence.
+Consult the publication report and Git history for the final verified remote SHA.
 
-## Completed
+Read README.md, APPROVAL_PROVENANCE.md, CONTRACTS.md and TEST_RESULTS.md first.
+Then review config.py, config_contracts.py and tests/test_contracts.py alongside
+existing tests/test_config.py. Generated schemas/examples/catalog are updated.
+Python 3.12+, standard library only; no dependency installation required.
 
-- Typed, frozen, versioned config records for account/data/timeframes/regime/
-  strategy/risk/execution/backtesting/reporting.
-- Strict JSON parsing, semantic validation, canonical hashes, provenance catalog,
-  structural schemas and signed/pinned read-only approval verification.
-- UNSEALED research manifest template; no actual dataset/dates/hash invented.
-- Synthetic offline tests; README records commands and trust boundaries.
+```sh
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -v
+git diff --check
+```
 
-## Fixed constraints
+108 passed / 0 failed / 0 skipped in the final run. No historical/live data used.
 
-New project only; no legacy implementation copied. NSE cash long-only delivery
-intent; zero leverage; manual approval AND placement; no broker submission API.
-0.5% planned risk/trade; 40% stock allocation; 80% gross exposure; 2 positions;
-1% aggregate planned risk; 5% review pause and 8% documented hard suspension.
-Exits/protection/reconciliation continue during entry pauses. Two completed
-daily-session regime confirmation; closed weekly/monthly bars only. Research
-cannot automatically change live settings. Hold final twelve historical months
-sealed before outcome-guided research and evaluate once at the final gate.
+F1: corrected dual-risk input/formula validation, protection coverage and unknowns.
+F2: immutable linked event records; late notifications preserve actual occurrence;
+anomalies retained as reconciliation issues. No persistence/order processor.
+F3: evidence-backed profile contracts, hash/approval/purpose/validity checks and
+configuration pins. Authenticating evidence remains external.
+F4: operational entry points deny all readiness while trust is unprovisioned;
+non-authorizing signature tests cannot enable operations. No bypass flag exists.
+F5: stale documentation corrected; schema 3.0 explicitly rejects old approvals.
+F6: precise experimental D/D+1/D+2 delay documented; operational approval remains
+false pending broker timing evidence and explicit operational workflow decision.
 
-## Open prerequisites
+Unresolved operational prerequisites: real account/data/provider/calendar/universe;
+verified broker/fees/slippage/adverse allowance profiles; mark validity and expense
+basis; authentic protection/reconciliation; trusted operational credentials and
+runtime deployment isolation. Keep blocked; do not invent data or approvals.
 
-Actual account identity/capital; provider/calendar/universe versions and verified
-point-in-time availability; actual snapshot coverage and seal; broker-supported
-order types and cutoffs; dated fees/slippage assumptions; ENTRY_TO_STOP versus
-MARK_TO_STOP decision. All remain null/false where not known and block readiness.
-Live approval keys and trusted pins must reside outside research access; no real
-secret or approval receipt is created. The final holdout one-time evaluator and
-filesystem/process isolation are deliberately not implemented in configuration.
+Holdout manifest remains UNSEALED. No outcome research, tuning, holdout reads,
+legacy edits or broker orders. Portfolio sizing/capacity/ledger engines are not
+implemented. Fixed policy and Candidate A/B timing/EMA semantics are preserved.
 
-## Only next bounded task
+Old artifacts/*.zip and *.bundle intentionally remain historical, not corrected
+releases. Do not use them in place of current working files.
 
-After review and approval, Prompt 3: new data_fetcher.py, data_validator.py, cache
-interfaces, validated daily data and exchange-aware completed weekly/monthly
-aggregation with offline tests. Then Prompt 4: regime_detector.py and tests.
-No trading/risk/accounting algorithms should be implemented ahead of their phases.
+Prompt 2 is closed by user approval following the reported independent 108-test
+review. Release verification reran all 108 tests successfully. Recommendation: GO
+for Prompt 2 closure only; operational trading remains blocked. Prompt 3 requires
+separate approval and has not begun. Before future development, verify checkout
+and both remote SHAs against the publication report; do not use historical archives.
 
-## Carry forward
 
-The complete configuration-phase archive, README, TEST_RESULTS.md and this handoff.
-The archive includes a Git bundle for the new project's initial source history.
-Source hashes and commit identity are provided in the archive's release inventory.
+Focused review follow-up: all three additional findings corrected locally.
+- Marks <= trigger now block position and combined new-entry checks without mutation.
+- Broker version and duplicated typed execution inputs bind explicitly to config.
+- Historical applicability is distinct from evidence/approval cutoff and approval
+  expiry/revocation. Retrospective execution assumptions are explicitly labelled.
+Read CONTRACTS.md temporal semantics before calling research authorization.
+New regression module: tests/test_review_regressions.py (19 passing tests).
+Full suite: 108 passed, 0 failed, 0 skipped. Schema 3.0 / config 0.3.0.
+The closure authorization supersedes the earlier local-only publication restriction.
+No source changes were made during publication preparation; only closure, approval
+provenance and test-result documentation was updated. There is no retained review
+hash manifest, so exact byte identity to the independent review cannot be attested.
+Current code was inspected and its 108-test result reproduced; no unrelated changes
+were identified. Prompt 3 remains behind a separate approval gate.

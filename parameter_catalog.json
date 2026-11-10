@@ -2,14 +2,14 @@
   {
     "path": "schema_version",
     "provenance": "POLICY",
-    "reason": "Strict schema version; unknown versions rejected.",
-    "default": "1.0"
+    "reason": "Incompatible corrected contracts; no automatic migration of approvals.",
+    "default": "3.0"
   },
   {
     "path": "config_version",
     "provenance": "POLICY",
     "reason": "Version bound to content hash and external approval.",
-    "default": "0.1.0"
+    "default": "0.3.0"
   },
   {
     "path": "policy_version",
@@ -428,8 +428,8 @@
   {
     "path": "risk.open_risk_basis",
     "provenance": "POLICY",
-    "reason": "Unresolved decision; blocks executable recommendations.",
-    "default": null
+    "reason": "Both risks include remaining expenses and approved adverse allowance; use their maximum. Approved Prompt 2 correction package.",
+    "default": "MAX_ENTRY_AND_MARK"
   },
   {
     "path": "risk.resume_rule",
@@ -458,7 +458,7 @@
   {
     "path": "execution.operator_delay_sessions",
     "provenance": "EXPERIMENTAL",
-    "reason": "One complete exchange session after decision, then eligible opportunity.",
+    "reason": "After close D: D+1 is one full intervening exchange session; earliest simulated opportunity D+2, subject to approval, cutoff and revalidation; no assumed fill.",
     "default": 1
   },
   {
@@ -544,6 +544,18 @@
     "provenance": "EXPERIMENTAL",
     "reason": "Explicit nonnegative allowance; not a loss guarantee.",
     "default": null
+  },
+  {
+    "path": "execution.profile_sha256",
+    "provenance": "POLICY",
+    "reason": "Content hashes of the four approved external profile records; empty remains unverified.",
+    "default": []
+  },
+  {
+    "path": "execution.operator_delay_operational_approved",
+    "provenance": "POLICY",
+    "reason": "One-session delay is retained as an experimental contract, not an approved broker capability. Separate operational decision required.",
+    "default": false
   },
   {
     "path": "backtesting.candidates",

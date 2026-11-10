@@ -22,8 +22,8 @@ def _schema(annotation):
         return {"type": "object", "additionalProperties": False,
                 "required": [f.name for f in fields(annotation)],
                 "properties": {f.name: {**_schema(hints[f.name]),
-                                        "description": f.metadata['reason'],
-                                        "x-provenance": f.metadata['provenance']}
+                                        "description": f.metadata.get('reason', 'Required contract field; see CONTRACTS.md'),
+                                        "x-provenance": f.metadata.get('provenance', 'POLICY')}
                                for f in fields(annotation)}}
     if isinstance(annotation, type) and issubclass(annotation, Enum):
         return {"type": "string", "enum": [a.value for a in annotation]}
@@ -36,9 +36,17 @@ def _schema(annotation):
 
 def config_schema():
     return {"$schema": "https://json-schema.org/draft/2020-12/schema",
-            "title": "NSE Bot Configuration 1.0", **_schema(BotConfig)}
+            "title": "NSE Bot Configuration 3.0", **_schema(BotConfig)}
 
 
 def manifest_schema():
     return {"$schema": "https://json-schema.org/draft/2020-12/schema",
             "title": "NSE Bot Research Manifest 1.0", **_schema(ResearchManifest)}
+
+
+def contracts_schema():
+    from config_contracts import PositionRiskContract, ExecutionEvent, VerificationProfile
+    return {"$schema": "https://json-schema.org/draft/2020-12/schema",
+            "title": "NSE Bot Contracts 3.0", "$defs": {
+                cls.__name__: _schema(cls) for cls in
+                (PositionRiskContract, ExecutionEvent, VerificationProfile)}}
