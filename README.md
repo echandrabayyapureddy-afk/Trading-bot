@@ -70,4 +70,15 @@ Files under `artifacts/` are historical schema-1 release archives and are NOT th
 corrected schema-3 deliverable. They are retained unchanged for provenance; use the
 current source tree. Prompt 2 closure and publication to both named repositories
 were authorized following independent review. No new archive was generated.
-Prompt 3 requires separate approval. See PROJECT_HANDOFF.md for prerequisites.
+This paragraph records the Prompt 2 publication state. See PROJECT_HANDOFF.md
+for the current Prompt 3 status.
+
+## Prompt 3 — approved release
+
+The offline synthetic data-layer implementation is documented in DATA_LAYER.md.
+It adds validation, revision-aware daily queries, completed weekly/monthly candles,
+split-only nontradable views and an immutable local cache. Real ingestion/calendar
+coverage remain UNVERIFIED; the real manifest remains UNSEALED. See the current
+PROJECT_HANDOFF.md section and SYNTHETIC_DATA_REPORT.json. Prompt 3 closure was
+approved after independent review; publication to both repositories is authorized.
+Prompt 4 implementation has not begun.

@@ -49,3 +49,14 @@ main. No force push or overwrite of divergent work is authorized. This supersede
 earlier local-only restrictions for this package. Prompt 3 and operational trading
 remain unauthorized. Publication preparation changes documentation only; it grants
 no new parameter, profile, dataset or operational approval.
+
+
+## Prompt 3 closure and publication authorization — 2026-11-10
+
+The user explicitly approved Prompt 3 closure after independent review reporting
+177 tests passed and focused split-boundary/mixed-series probes. The subsequent
+instruction "Now push the project till prompt 3 to both the github accounts"
+authorizes publication to chinmaymr37/Trading-bot main and synchronization to
+echandrabayyapureddy-afk/Trading-bot main. Preserve independent history and never
+force-push. This supersedes earlier Prompt 3 status/publication restrictions.
+No Prompt 4 implementation, operational approval or research authorization follows.

@@ -1,0 +1,19 @@
+{
+  "origin": "SYNTHETIC",
+  "snapshot_sha256": "c24298b8300a4170468fe517b47c74cd08052b3884cb246254542ba4b17ee2be",
+  "decision_at": "2024-03-03T16:00:00+05:30",
+  "start": "2024-01-29",
+  "end": "2024-03-04",
+  "instrument_id": "ID1",
+  "valid_visible_daily_records": 25,
+  "status": "VALID",
+  "rejection_reasons": [],
+  "universe_status": "UNAVAILABLE_SURVIVORSHIP_BIAS",
+  "suitable_for_unbiased_historical_validation": false,
+  "limitations": [
+    "real ingestion UNVERIFIED",
+    "calendar SYNTHETIC",
+    "corporate-action feed completeness UNVERIFIED",
+    "no outcome research or holdout authorization"
+  ]
+}

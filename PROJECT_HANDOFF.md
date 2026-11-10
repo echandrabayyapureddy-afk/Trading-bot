@@ -1,3 +1,63 @@
+# Current handoff — Prompt 3 approved release
+
+Primary repository: chinmaymr37/Trading-bot, branch main.
+Implementation baseline commit: 8af831aa8e0da840671fa9e1dbb9975953a1cec7.
+The primary remote main was verified at this commit before implementation.
+Prompt 3 closure and publication to both repositories are explicitly approved.
+Publication baseline: primary 8af831aa8e0da840671fa9e1dbb9975953a1cec7;
+secondary 6961d9a985e53ce69f5200a52b780a8174c7ffb8. Their trees matched.
+Publish identical file trees while preserving each repository history. Commit IDs
+may differ; primary remains authoritative. Consult remote refs for release SHAs.
+
+Read DATA_LAYER.md, SYNTHETIC_DATA_REPORT.json and TEST_RESULTS.md first, then
+data_records.py, data_validator.py, data_fetcher.py, data_cache.py and
+tests/test_data_layer.py. No dependency installation: Python 3.12+ standard library.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -v
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_data_layer.py -q
+git diff --check
+```
+
+Completed: immutable revision-aware synthetic daily data, explicit calendar vintages,
+validation/rejection reporting, completed raw weekly/monthly aggregation, split-only
+nontradable views, dated identity/universe records, content-addressed cache and
+snapshot metadata. All 108 Prompt 2 tests and 69 data-layer tests pass (177 total).
+No performance research, strategy algorithms, holdout reads or operational ingestion.
+Real manifest remains UNSEALED. Prompt 2 code/configuration/safety policies unchanged.
+
+Outstanding: approved real provider and sourced NSE calendar; verified point-in-time
+action-feed completeness and historical universe; production evidence/authentication;
+cache durability/access controls and isolation; current approval/revocation feeds.
+Synthetic metadata is never evidence of unbiased historical validation.
+
+Independent reviewer should challenge period completeness, as-of revision selection,
+calendar vintage selection, unknown/late action evidence, identity availability,
+canonical cache hashing and the explicit research authorization cutoff. Review the
+limitations in DATA_LAYER.md before authorizing any actual data integration.
+
+Focused review follow-up: both confirmed findings corrected locally. Date-only
+split effectivity is explicitly midnight Asia/Kolkata, inclusive; AdjustedView v2
+records the decision/effectivity basis and has a cutoff reuse guard. Daily queries
+reject incompatible selected series while retaining diagnostic records.
+Read tests/test_prompt3_corrections.py (11 passing regressions) and the focused
+correction section in DATA_LAYER.md. Synthetic fixture/report hash is unchanged.
+
+The user explicitly approved Prompt 3 closure after independent review reporting
+177 passing tests and additional split-boundary and mixed-series probes. A local
+verification on 2026-11-10 again ran 177 tests successfully; `git diff --check`
+passed. This approval supersedes the earlier review-candidate status above.
+
+Publication authorization: on 2026-11-10 the user instructed, "Now push the
+project till prompt 3 to both the github accounts". Release preparation updates
+documentation only. Publication must verify both remote trees after branch updates.
+Next development phase: Prompt 4, after publication and receipt of its exact scope.
+Prompt 4 implementation has not begun. Stop for independent review after that phase.
+
+---
+
+# Historical Prompt 2 handoff (superseded phase-status text below)
+
 # Prompt 2 — approved closure
 
 Primary: chinmaymr37/Trading-bot, main.
