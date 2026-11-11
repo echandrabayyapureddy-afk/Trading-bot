@@ -1,3 +1,84 @@
+# Prompt 4 publication verification (2026-11-11)
+
+User authorized publication to both repositories after independent review and
+Prompt 4 closure. Full release check executed:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+Result: 222 passed, 0 failed, 0 skipped in 26.609 seconds; no warnings emitted.
+`git diff --check` passed. Only publication documentation changed after review;
+regime source and tests were preserved. Prompt 5 remains unauthorized.
+
+# Prompt 4 closure review and approval (2026-11-11)
+
+A separate independent read-only review executed the focused suite (45 passed,
+0 failed, 0 skipped), full suite (222 passed, 0 failed, 0 skipped), and
+`git diff --check` successfully. It independently confirmed exact-zero geometric
+volatility, measurable small variance, and two fresh confirmations after revision
+or ordinary UNKNOWN. In-memory restoration of each original defect caused the
+corresponding new regression to fail. The reviewer recommended GO; the user
+approved Prompt 4 closure. Publication was separately authorized by the user after closure.
+
+# Prompt 4 review corrections — latest local verification (2026-11-11)
+
+Independent review reported two HIGH defects after reproducing the original
+220 passing tests: false nonzero variance on exact geometric prices and stale
+confirmation after revised history. Corrections also define ordinary UNKNOWN
+recovery as requiring two fresh consecutive valid completed sessions. Added two
+end-to-end tests covering zero-volatility blocking, tiny genuine variation,
+revision reset and ordinary UNKNOWN recovery.
+
+Commands actually executed after correction from repository root:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_regime_detector.py -q
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q
+git diff --check
+```
+
+Focused suite on final code: 45 passed, 0 failed, 0 skipped (22.165 seconds).
+Complete suite on final code: 222 passed, 0 failed, 0 skipped (21.705 seconds).
+All fixtures are synthetic, and no outcome/holdout evaluation was performed.
+Another independent review remains required.
+
+# Prompt 4 — prior local verification (2026-11-11)
+
+Verified primary baseline f53204c75dc2b6f1274eb9196a28d4f9211f95f2, secondary
+8ec7a0d785a11263b88818423ac1af4488f5ca6a, common release tree
+e60912f5cefd8b3e2d6ebb57e86661960d14e40a. Clean local main before editing.
+
+Commands actually executed from repository root:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_regime_detector.py -q
+git diff --check
+```
+
+Baseline suite before edits: 177 passed / 0 failed / 0 skipped (3.139 seconds).
+Final focused suite: 43 passed / 0 failed / 0 skipped (7.182 seconds).
+Final complete suite: 220 passed / 0 failed / 0 skipped (9.645 seconds).
+Final full suite includes all 177 prior tests unchanged. No warnings or failures
+were emitted in these runs. Intermediate focused runs passed 32, 39 and 42 tests;
+an intermediate complete run passed 219 before the explicit rejected-status guard
+regression. No relevant offline tests were skipped. git diff --check and explicit
+new-file trailing-whitespace checks passed.
+
+Self-review added a previous-result hash for confirmation-chain auditing and an
+explicit rejected-quality-status gate independent of rejection-message presence.
+Tests cover formula seeds and indices, nonconstant Wilder ADX, directional ties,
+zero ranges and denominators, volatility non-overlap, prior-only ATR baseline,
+classification equality/conflicts/priority, unknown/reset and two-session state,
+immediate veto before warmup/confirmation, duplicate calls/closures/special sessions,
+missing/delayed/invalid/mixed-source data, revisions, prefix replay/future invariance,
+identity/pin/history/config isolation, immutable output and operational blocking.
+Adjusted input rejection is tested; adjusted regime histories are unsupported.
+
+All new inputs are synthetic index fixtures, never real benchmark performance. No
+legacy code was imported or executed. No holdout data or research outcomes were read.
+Real provider/index/calendar authenticity, deployment isolation and large production
+throughput were not tested or claimed. Independent review remains required.
+
+Historical results follow.
+
 # Prompt 3 publication verification — 2026-11-10
 
 Command: `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`

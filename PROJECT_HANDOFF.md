@@ -1,3 +1,51 @@
+# Current handoff — Prompt 4 approved closure
+
+Primary main/local baseline: f53204c75dc2b6f1274eb9196a28d4f9211f95f2.
+Secondary main: 8ec7a0d785a11263b88818423ac1af4488f5ca6a.
+Both verified at tree e60912f5cefd8b3e2d6ebb57e86661960d14e40a before editing.
+No repository had advanced; the primary checkout was clean. Existing 177 tests
+passed before implementation. No archive or legacy implementation was used.
+
+Read REGIME_LAYER.md, regime_detector.py and tests/test_regime_detector.py first,
+then TEST_RESULTS.md. Python 3.12+ standard library, no installation required.
+Run `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q` and
+`git diff --check` from the repository root.
+
+Completed locally: required daily regime indicators, raw synthetic index binding,
+causal vintage replay, explicit warmup/zero handling, independent immediate veto,
+two-session confirmation and immutable results with initialization/evidence hashes.
+Real index identity/provider/calendar integration remains UNVERIFIED. Research
+manifest remains UNSEALED; live readiness remains blocked. Prompt 2/3 code and
+configurations are unchanged. No indicators for trade signals or strategy evaluation.
+
+Reviewer focus: indicator indexing and seeds; non-overlapping returns; prior-only
+ATR reference; inclusive spike convention; unknown/reset behavior; same-session
+retries; revised-history rejection; confirmation chain and configuration isolation.
+All semantics and remaining limitations are documented in REGIME_LAYER.md.
+
+Independent Prompt 4 review reproduced 220 passing tests but found two HIGH defects.
+The local corrections use exact rational close ratios to recognize geometric
+prices as zero volatility and pairwise return differences to preserve genuine
+small variance. UNKNOWN or incompatible-history revision now clears current
+confirmation; diagnostic_previous separately records the prior label. Eligibility
+requires two fresh consecutive valid completed sessions after recovery.
+Two new end-to-end regressions cover both defects and ordinary UNKNOWN recovery.
+Corrected full verification: 222 tests passed, 0 failed / 0 skipped; see
+TEST_RESULTS.md for actual commands and timings. A subsequent independent read-only review ran 45 focused and 222 complete tests,
+0 failed / 0 skipped, verified the two corrections with independent probes, and
+recommended GO. The user approved Prompt 4 closure on 2026-11-11. Real integration
+and production throughput remain unverified.
+
+The user authorized publication of the approved Prompt 4 package to both main
+branches on 2026-11-11. Publication preserves each repository’s existing history
+and identical release trees; no force-push is permitted. The release report records
+the resulting commit SHAs after remote verification. Prompt 5 has not begun and
+requires separate authorization. Operational prerequisites above remain blocked.
+
+---
+
+# Historical Prompt 3 release handoff
+
 # Current handoff — Prompt 3 approved release
 
 Primary repository: chinmaymr37/Trading-bot, branch main.

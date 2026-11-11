@@ -71,7 +71,7 @@ corrected schema-3 deliverable. They are retained unchanged for provenance; use 
 current source tree. Prompt 2 closure and publication to both named repositories
 were authorized following independent review. No new archive was generated.
 This paragraph records the Prompt 2 publication state. See PROJECT_HANDOFF.md
-for the current Prompt 3 status.
+for current phase status.
 
 ## Prompt 3 — approved release
 
@@ -81,4 +81,15 @@ split-only nontradable views and an immutable local cache. Real ingestion/calend
 coverage remain UNVERIFIED; the real manifest remains UNSEALED. See the current
 PROJECT_HANDOFF.md section and SYNTHETIC_DATA_REPORT.json. Prompt 3 closure was
 approved after independent review; publication to both repositories is authorized.
-Prompt 4 implementation has not begun.
+Prompt 4's approved regime layer and review corrections are documented in
+REGIME_LAYER.md. Publication to both repositories is authorized following
+independent review and user closure approval. Prompt 5 is not authorized.
+
+## Prompt 4 — approved regime layer
+
+REGIME_LAYER.md documents the new strategy-independent synthetic daily regime
+layer. It consumes the existing typed config and validated data contracts, computes
+causal regime measurements, separates an immediate severe-risk veto from two-session
+confirmation, and emits immutable audit records. Real integration and trading remain
+blocked. Independent review passed and Prompt 4 closure was approved. Publication to both
+repositories is authorized; Prompt 5 is not authorized.
