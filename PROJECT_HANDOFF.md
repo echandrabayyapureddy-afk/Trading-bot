@@ -1,3 +1,63 @@
+# Prompt 5 approved closure and publication — 2026-11-12
+
+The user reports an independent re-review GO and explicitly approves Prompt 5
+closure and publication to both main branches. The exact tick-floor correction
+is included. Preserve separate repository histories with identical release trees;
+no force-push. Prompt 6 requires separate authorization and has not begun.
+Real integration remains UNVERIFIED, operational readiness blocked and the manifest
+UNSEALED. The release report records resulting remote SHAs after verification.
+Earlier review-status sections below are historical and superseded by this approval.
+
+# Prompt 5 focused correction — independent re-review required
+
+Continued on local main 416f87ab74283302e2c27cc9f9c5ea1fa194ad89;
+preserved the six existing uncommitted Prompt 5 files. Independent review issued
+NO-GO for rounded tick-floor arithmetic (MEDIUM). Replaced quotient flooring and
+tick-multiple reconstruction with exact integer arithmetic and Decimal constructors.
+Added direct boundary/context/invariant tests and a full replay regression proving
+109.(60 nines) gives ceiling 109.95, rejects 110, and preserves frozen levels.
+No config, safety policy, earlier-phase source or legacy files changed. No holdout
+access, commit, push or Prompt 6. Correction checks: 38 focused / 260 total passed, zero failures/skips/warnings;
+git diff --check passed. Read TEST_RESULTS.md for exact commands.
+Next action: independent read-only review of the correction and existing package;
+prior implementation PASS is not closure approval.
+
+---
+
+# Current handoff — Prompt 5 local review candidate
+
+Primary main baseline: 416f87ab74283302e2c27cc9f9c5ea1fa194ad89.
+Secondary main: b61ea6de48373b6fb49788c8aaf17e875af4ca54.
+Both remotely verified before implementation at identical tree
+1ca1e3e3bdda1a38726f03ceba49c0a200afe689. Local main was clean.
+Prompt 4 is approved, closed and published. Baseline rerun: 222 passed,
+0 failed, 0 skipped in 38.675 seconds, no warnings emitted.
+
+User authorized Prompt 5 local implementation only on 2026-11-12. Read
+STRATEGY_LAYER.md, strategy.py and tests/test_strategy.py first, followed by
+REGIME_LAYER.md, DATA_LAYER.md and CONTRACTS.md. No additional dependencies.
+This phase implements daily EMA9/21 weekly event selection, daily retirement,
+Candidate B monthly daily-EMA200 evidence, frozen proposal levels, D+2 necessary
+conditions, persistent ordinary exit intents and auditable deterministic replay.
+Regime evidence is checked against Prompt 4 replay; all operational gates remain
+blocked. No ranking, sizing, fees, execution simulator or broker integration.
+Known effective actions block raw strategy histories; adjusted views unsupported.
+Real data, calendar, ticks, universe and benchmark authenticity remain UNVERIFIED.
+Research manifest remains UNSEALED. No performance research or holdout access.
+
+Run the focused and full unittest commands in STRATEGY_LAYER.md; actual final
+results are in TEST_RESULTS.md: 36 focused / 258 full passed, zero failed/skipped,
+no warnings; git diff --check passed. Independent reviewer should challenge selection
+identity/lifecycle, late missing-data recovery and revisions, monthly cutoff basis,
+exit resolution, frozen levels and supplied regime evidence authenticity boundaries.
+All changes remain local, uncommitted and unpushed. Next authorized action is
+independent read-only Prompt 5 review. Prompt 6 requires separate user approval.
+Historical sections below describe earlier phases and do not override this status.
+
+---
+
+# Historical Prompt 4 closure/publication handoff
+
 # Current handoff — Prompt 4 approved closure
 
 Primary main/local baseline: f53204c75dc2b6f1274eb9196a28d4f9211f95f2.

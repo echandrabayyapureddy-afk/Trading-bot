@@ -1,3 +1,67 @@
+# Prompt 5 publication verification — 2026-11-12
+
+User reports independent re-review GO and approves closure/publication to both
+repositories. Source and tests unchanged during publication preparation; only
+closure/publication documentation updated. Release command:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+260 passed, 0 failed, 0 skipped in 88.495s. No warnings emitted.
+`git diff --check` passed. No holdout/outcome research. Prompt 6 not begun.
+
+# Prompt 5 exact tick-floor correction — 2026-11-12
+
+Verified existing local main baseline 416f87ab74283302e2c27cc9f9c5ea1fa194ad89
+and preserved the uncommitted Prompt 5 package. Independent MEDIUM finding confirmed:
+close=Decimal('109.'+'9'*60), tick=0.05: old expression returned 110.00;
+corrected exact arithmetic returned 109.95. Full replay regression verifies frozen
+levels, signal eligibility and rejection of price 110. Direct tests cover below/on/
+above boundaries, tick sizes, exact multiple/next-tick inequalities using Fraction,
+and ambient precisions 2/28/50/100 with rounding traps and different rounding modes.
+
+Actual commands:
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_strategy.py -q`
+  38 passed, 0 failed, 0 skipped in 64.482s.
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+  260 passed, 0 failed, 0 skipped in 90.275s.
+- `git diff --check`: passed.
+No warnings emitted. Suites ran concurrently; all new fixtures synthetic.
+Protected configuration and earlier-phase source diff checks passed unchanged.
+Changed in this correction: strategy.py, tests/test_strategy.py, STRATEGY_LAYER.md,
+TEST_RESULTS.md and PROJECT_HANDOFF.md. Existing README changes preserved.
+No commit/push, research, holdout access or Prompt 6. Ready for independent re-review,
+not closure. Production integration and extreme-size resource limits remain untested.
+
+# Prompt 5 local verification — 2026-11-12
+
+Baseline before edits:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+222 passed, 0 failed, 0 skipped in 38.675s.
+
+Initial focused run (25 tests): 23 passed, 1 failed, 1 error, 0 skipped.
+The test expected exact Decimal equality for a recurring EMA computation and
+requested an older week outside the synthetic calendar coverage. Corrected the
+expected-value assertion to a 1e-45 numerical error bound, and made incomplete
+calendar coverage explicitly reject. No production threshold tolerance was added.
+Intermediate focused run: 33 passed, 0 failed, 0 skipped in 47.732s.
+
+Final focused command:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_strategy.py -q`
+36 passed, 0 failed, 0 skipped in 79.538s. No warnings emitted.
+Final complete command:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+258 passed, 0 failed, 0 skipped in 107.798s. No warnings emitted.
+`git diff --check` passed. Six files added/modified; no commit or push.
+
+Final focused and full suites ran concurrently, so elapsed times include contention.
+All strategy fixtures are synthetic; no market outcomes or holdout data accessed.
+
+Safety probe loaded config.example.json and research_manifest.json: UNSEALED,
+manual approval/placement true, broker API false, all seven fixed safety limits
+unchanged. readiness_issues still reports operational_trust_not_provisioned and
+unverified account/data/broker/fee inputs. Protected configuration and Prompt 2–4
+source files have no diff. A first manifest filename lookup used a nonexistent
+research_manifest.template.json; the actual research_manifest.json was then located
+and checked successfully. This was a path lookup error, not a test failure.
+
 # Prompt 4 publication verification (2026-11-11)
 
 User authorized publication to both repositories after independent review and

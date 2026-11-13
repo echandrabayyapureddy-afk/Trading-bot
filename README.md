@@ -93,3 +93,22 @@ causal regime measurements, separates an immediate severe-risk veto from two-ses
 confirmation, and emits immutable audit records. Real integration and trading remain
 blocked. Independent review passed and Prompt 4 closure was approved. Publication to both
 repositories is authorized; Prompt 5 is not authorized.
+
+
+## Prompt 5 — local strategy review candidate
+
+`strategy.py` implements the minimal daily EMA9/21 strategy with completed-week
+crossover selection, daily revalidation, Candidate B monthly context, frozen price
+proposals and persistent ordinary exit intents. See STRATEGY_LAYER.md for interfaces
+and lifecycle conventions. It consumes validated synthetic data and verified replay
+of Prompt 4 regime outputs; it never authorizes an order. The preceding phase-status
+paragraphs are historical. Prompt 5 is local pending independent review; no publication
+or Prompt 6 is authorized. Fixed settings and the UNSEALED manifest are unchanged.
+
+
+## Prompt 5 — approved closure and publication
+
+Following the reported independent re-review GO, the user approved Prompt 5 closure
+and publication to both repositories on 2026-11-12. This supersedes earlier local-only
+status text. The reviewed strategy and exact tick-floor correction are included;
+operational readiness remains blocked. Prompt 6 is not authorized.
