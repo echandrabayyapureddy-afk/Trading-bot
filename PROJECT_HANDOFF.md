@@ -1,4 +1,90 @@
-# Prompt 5 approved closure and publication — 2026-11-12
+# Current handoff — Prompt 6 approved closure and release
+
+2026-11-14: the user reports a separate planning-chat read-only review with GO,
+54 focused and 314 complete tests passing, and explicitly approves Prompt 6 closure
+and publication to both repositories. Both causal corrections are included.
+Release preparation independently reran 54 focused and 314 complete tests with
+zero failures/skips/warnings; git diff --check passed. See TEST_RESULTS.md.
+
+Primary main was verified at f4146432e662c37028e411e33d4496e3021cd51f;
+secondary main at 907c8f06bb6d3b3f1d1dce82214c26cfa1a33567. Both baseline trees
+were fc3521fab33b4ed38892f024c4f12ffe1e911438. Neither remote had advanced.
+The release preserves separate parent histories and publishes identical trees.
+Final remote commit IDs and tree verification are recorded in the publication
+completion report after branch updates; this text does not claim an unexecuted push.
+
+Only release-status documentation changed during publication preparation. No saved
+checksum from the separate review was supplied; exact identity to that review
+cannot independently be attested. Current source/tests were inspected and rerun.
+No unrelated implementation changes were identified. Synthetic source/test hashes:
+- execution_records.py: 2cbee4bc506d4cdd176fcad34986a88428a099896c8112ebdf034792de9a7691
+- execution_engine.py: a3ced383435d2f7346a383a34dd900ca95a084349f9031358fab897366bc41af
+- tests/test_execution.py: b4f4882456f801c1c5f62317a7ac5c2f608c73755c4f5111b659052b0ec54ab0
+
+Operational prerequisites remain blocked: real providers/calendar/broker evidence,
+production dependency adapters, settlement, durable ledger and reconciliation.
+Partial execution and in-place reconciliation/resumption remain unsupported.
+Safety policy/manual placement are unchanged; the real manifest remains UNSEALED.
+Prompt 7 requires separate authorization. Historical review records below are
+superseded only as to closure/publication status.
+
+---
+
+# Historical Prompt 6 local implementation and correction handoff
+
+2026-11-14 correction: read-only review found a protective fill accepted before
+its trigger and an intent resolved before observation. Trigger occurrence/evidence
+are now retained; direct sell guards and the expanded late-mutation guard quarantine
+both reproductions. TRIGGER, EXIT_INTENT and unresolved BAR transitions participate.
+Original facts remain in audit; no impossible account effects are applied. Equal
+timestamp semantics are documented in EXECUTION_LAYER.md. Re-review is required.
+Baseline and prior local work preserved; no commit/push or Prompt 7.
+Correction verification: 54 focused and 314 complete-suite tests passed, zero
+failures/skips and no warnings emitted; git diff --check passed. Both reproductions
+are rejected without account effects. Next: independent read-only re-review of
+trigger evidence, late mutation quarantine, equal-time ordering and intent resolution.
+The remote verification and 48/308 counts below describe the original implementation,
+not this correction's verification. See the latest TEST_RESULTS.md entry for current
+local results. Remotes were not reverified during this correction.
+
+Verified primary main/local baseline: f4146432e662c37028e411e33d4496e3021cd51f.
+Verified secondary main: 907c8f06bb6d3b3f1d1dce82214c26cfa1a33567.
+Both remote trees: fc3521fab33b4ed38892f024c4f12ffe1e911438. Working tree was clean.
+Prompt 5 is approved, closed and published, including exact tick-floor correction.
+Baseline reproduced: 260 tests passed, 0 failed/skipped in 70.614 seconds.
+
+Prompt 6 user authorization is local implementation/tests/docs only. New files:
+execution_records.py (immutable synthetic contracts/dependency protocol),
+execution_engine.py (shared account, reservation, receipt replay and sole exit path),
+tests/test_execution.py and EXECUTION_LAYER.md. README.md, TEST_RESULTS.md and this
+handoff updated. No new dependencies; Python 3.12+ standard library.
+
+Read EXECUTION_LAYER.md first, then records, engine, tests and Prompt 2/3/5 contracts.
+Run `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_execution.py -q`,
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`, and `git diff --check`.
+Actual checks are recorded in TEST_RESULTS.md. All fixtures are synthetic.
+Final verification: 48 focused tests and 308 complete-suite tests passed, zero
+failures/skips/warnings; git diff --check passed. Both remotes remain at the above
+Prompt 5 commits. Self-review corrected the intraday opening-evidence gap and its
+temporary validation-wrapper regression; details and intermediate failures are logged.
+
+Review focus: entry D+2 and missed opens; source availability; risk/cash dependency
+binding; atomic multi-instrument reservations; no implicit protection; trigger/fill
+separation; stop-limit nonexecution; late notifications; idempotence and competing
+exits. Daily-OHLC commands deliberately remain unresolved, never account fills.
+Partial execution, cancellation/replacement, settlement credits, in-place ambiguity
+clearance and drawdown resumption are unsupported. Existing exits remain available.
+Production risk sizing/fees/equity/drawdown/ledger belong to Prompt 7, not this engine.
+Production data/calendar/broker/evidence integration and performance remain UNVERIFIED.
+
+Fixed policies, prior source, configuration, real UNSEALED manifest and legacy files
+are unchanged. No outcomes/holdout access or broker connection. No commit or push.
+Next action: independent read-only Prompt 6 review, then user approval. Prompt 6 is
+not closed and Prompt 7 has not begun. Historical handoffs below are superseded.
+
+---
+
+# Historical Prompt 5 approved closure and publication — 2026-11-12
 
 The user reports an independent re-review GO and explicitly approves Prompt 5
 closure and publication to both main branches. The exact tick-floor correction

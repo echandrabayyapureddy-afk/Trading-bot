@@ -1,4 +1,99 @@
-# Prompt 5 publication verification — 2026-11-12
+# Prompt 6 closure release verification — 2026-11-14
+
+User approved closure after reporting separate independent GO. Release reruns:
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_execution.py -q`
+  54 passed, 0 failed, 0 skipped in 26.010s.
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+  314 passed, 0 failed, 0 skipped in 99.572s.
+- `git diff --check`: passed. No test warnings emitted.
+
+Source/tests unchanged during release preparation; only closure documentation updated.
+Protected earlier-phase files unchanged. Credential-pattern scan of release files
+found no matches. No generated Python files, caches, datasets or legacy sources are
+included in the seven-file release. Existing archives retain historical status.
+Both remote baseline heads/trees verified unchanged; final publication SHAs and
+remote tree verification are reported after publication. No outcome/holdout research.
+
+---
+
+# Prompt 6 causal correction verification — 2026-11-14
+
+Baseline: `f4146432e662c37028e411e33d4496e3021cd51f`, local main.
+Corrections retain trigger occurrence/evidence, enforce activation/trigger/fill
+ordering and prevent intent resolution before observation. The late-state guard
+also covers TRIGGER, EXIT_INTENT and unresolved BAR transitions. Original anomalous
+facts are retained without account effects, requiring explicit reconciliation.
+
+Focused command:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_execution.py -q`
+Final result: 54 passed, 0 failed, 0 skipped in 22.828s; no warnings emitted.
+Earlier correction run: 52 passed in 21.197s before two additional tests.
+
+Complete command:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+Final result: 314 passed, 0 failed, 0 skipped in 100.089s; no warnings emitted.
+`git diff --check` passed. Protected configuration/strategy/data/regime diff check
+passed. No commit or push; remote heads were not reverified for this correction.
+Intermediate result: 312 passed, 0 failed, 0 skipped in 102.119s, before the final
+two tests were collected; no warnings emitted. A prior completion output was not
+recoverable and is not counted as verified.
+
+Direct and replay regressions cover both reported reproductions, chronological and
+equal-time protective fills, already-observed intent resolution, receipt ordering,
+late receipts, duplicate idempotence, preserved historical prefixes and account
+conservation. Existing late-acknowledgement regressions remain in the full suite.
+All fixtures are synthetic. No production integration, research or holdout access.
+The original implementation results below are historical, not correction results.
+
+---
+
+# Prompt 6 local execution verification — 2026-11-13
+
+Baseline on primary f4146432e662c37028e411e33d4496e3021cd51f:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+260 passed, 0 failed, 0 skipped in 70.614 seconds. No warnings emitted.
+
+Focused command throughout development:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_execution.py -q`
+
+- First run: 68 tests, 67 passed, 1 failed, 0 skipped in 47.033s. This accidentally
+  collected 35 imported strategy tests; changed the fixture import to a module.
+  The failure compared receipt-alias audit labels rather than conserved account
+  state. The regression now checks cash, quantities, orders and accepted events.
+- Subsequent focused runs: 42 passed (10.640s), 47 passed (13.953s),
+  47 passed (11.890s), 47 passed (12.587s); zero failures/skips.
+- Two intermediate complete suites: 307 passed in 85.300s and 86.482s,
+  zero failures/skips. Later source changes required final reruns.
+- Self-review added a missing opening-price check for intraday entries, including
+  below-stop rebound blocking and separately evidenced trades after an above-limit
+  open. Initial implementation of that guard built an invalid EVENT wrapper:
+  48 tests, 23 passed, 7 failed, 18 errors, 0 skipped in 11.317s. Fixed validation
+  to accept the separate observation without changing or fabricating a command.
+- Final focused suite: 48 passed, 0 failed, 0 skipped in 17.775s.
+
+Final complete command on the final source:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+308 passed, 0 failed, 0 skipped in 77.106s. No warnings emitted.
+`git diff --check` passed. Protected-file `git diff --exit-code` passed.
+Both remote heads were rechecked unchanged at the approved Prompt 5 commits.
+Seven local files added/modified; no commit or push. Recommendation: GO for
+independent review only, not Prompt 6 closure or Prompt 7 authorization.
+
+No warnings emitted. All new scenarios use synthetic data and explicit synthetic
+approval/cost/cash adapters; no market outcomes, real broker connections or holdout
+access. Source code and test files are inspected; exact tick-floor, prior source,
+configuration, parameter catalog and actual UNSEALED manifest remain unchanged.
+Tests cover D+2 timing, gaps, slippage, explicit opening/intraday evidence, protection,
+stop types, ordinary exits, quantity/cash conservation, conflicts, causal anomalies,
+data revisions, source rejection, receipt replay and operational isolation.
+
+Production dependencies, durable ledger, settlement, cancellation/replacement,
+partial execution, in-place reconciliation/resumption and throughput are untested
+and unsupported. See EXECUTION_LAYER.md. No commit/push or Prompt 7.
+
+---
+
+# Historical Prompt 5 publication verification — 2026-11-12
 
 User reports independent re-review GO and approves closure/publication to both
 repositories. Source and tests unchanged during publication preparation; only

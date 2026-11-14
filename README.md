@@ -1,4 +1,15 @@
-# NEW NSE bot — Prompt 2 corrected configuration contracts
+# NEW NSE bot — Prompt 6 approved execution simulator
+
+Prompt 5 is approved and published. Prompt 6 adds a synthetic shared-account
+execution simulator with one exit state machine, explicit event timing and fill
+assumptions, cash reservations, protection activation, persistent ordinary exits
+and unresolved daily-OHLC outcomes. Read EXECUTION_LAYER.md and PROJECT_HANDOFF.md.
+The user approved Prompt 6 closure after separate review and authorized publication
+to both repositories. Prompt 7 is not authorized.
+Operational readiness remains blocked and the actual manifest remains UNSEALED.
+Earlier phase descriptions below are historical and do not override this status.
+
+## Prompt 2 corrected configuration contracts
 
 Python 3.12+, standard library only. No installation required.
 
