@@ -1,0 +1,13 @@
+{
+  "phase": 7,
+  "status": "LOCAL_REVIEW_CANDIDATE",
+  "baseline": "ffb38ef4c11987fe508113443e58747c1db6ea5e",
+  "sha256": {
+    "fee_model.py": "65e201207be3439e2732248f36c93faeb717ab2f1f955eebfee7b10d6490c232",
+    "ledger.py": "a56c55ba4e08cbbc40147e4ab30818c340f57112042fa5ecbc6f7314a82b8c3d",
+    "portfolio.py": "559507b337044e4ffeb04c3919619c0db28b3df0d2860d2892b78a26aeacb770",
+    "risk_manager.py": "3d799237dd123161bcaeff52e7ca868f3aa7bcf4ca8e68e76647952e43973c41",
+    "accounting_adapter.py": "5c92748631350564be4ae1c2ad6d94b67a60d6bbaf0aa41cf5eff14b2973ab85",
+    "tests/test_accounting_risk.py": "ef2a5215ae65d40fda2555cab0fce5536288fe43e981abe5605bd03354b5b3cf"
+  }
+}

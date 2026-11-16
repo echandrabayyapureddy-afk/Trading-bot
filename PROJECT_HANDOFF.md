@@ -1,3 +1,115 @@
+# Prompt 7 — approved closure and authorized release
+
+2026-11-16: the user approved Prompt 7 closure following a separate independent
+read-only GO review (66 focused / 380 complete tests). This release preserves all
+six reviewed source/test hashes in REVIEW_MANIFEST.json. That manifest remains an
+immutable record of the reviewed local candidate; its status is historical.
+
+Release verification reproduced 66 focused tests (4.087s) and 380 complete tests
+(60.707s), zero failures/skips and no emitted warnings. Whitespace checks passed.
+Primary baseline: ffb38ef4c11987fe508113443e58747c1db6ea5e.
+Secondary baseline: 941212a5e36632e52ddbb53f2b3bdccb75f08350.
+Both remote heads were verified at tree 3deb71e7ed29305f443d3a44ef99046612c0b7c0.
+Publication is authorized to both main branches, preserving separate parents and
+using an identical release tree. Final remote commit/tree verification belongs in
+the release completion report; this pre-publication record does not assert success.
+
+Operational readiness remains blocked, real profiles remain unverified and the
+research manifest remains UNSEALED. Manual approval/manual broker placement,
+fixed safety limits and legacy files are unchanged. Production integration and
+unsupported workflows remain bounded by ACCOUNTING_RISK_LAYER.md.
+Prompt 8 requires separate authorization. Earlier status entries below are historical.
+
+---
+
+# Prompt 7 purchase-conservation corrections — re-review required
+
+2026-11-16: verified baseline ffb38ef4c11987fe508113443e58747c1db6ea5e and all
+six source/test hashes before editing. Preserved the existing local candidate.
+Corrected MEDIUM zero-cost BUY and HIGH competing-reservation cash defects in
+ledger.py only. Both checks run before any holding, cash or reservation mutation.
+Original representable BUY records survive in the journal as blocking anomalies.
+The prior paid-fee/refund and side-aware fee corrections are unchanged.
+
+Tests cover both reproductions, exact/just-over boundaries, valid positive purchases,
+own-versus-other reservations, duplicate/conflicting receipts and durable restart.
+Read the newest TEST_RESULTS.md entry for actual results; REVIEW_MANIFEST.json
+contains regenerated source/test hashes. Final verification: 66 focused and 380
+total tests passed, zero failures/skips/warnings; diff check passed.
+Prompt 7 is NOT closed or published.
+Next: separate independent read-only re-review. No Prompt 8 authorization.
+
+---
+
+# Prompt 7 focused corrections — independent re-review required
+
+Baseline verified: ffb38ef4c11987fe508113443e58747c1db6ea5e, main.
+All six pre-correction REVIEW_MANIFEST.json hashes matched the local candidate.
+Existing Prompt 7 work was preserved. Prompt 7 is NOT approved for closure.
+
+Both separate-review findings reproduced before editing:
+F1 (HIGH): paid estimate reduction consumed an unrelated payable, and ADJUST
+could book a second benefit. F2 (MEDIUM): an opposite-side quote reversed a
+previously accrued side-only scoped charge. Both are corrected locally.
+
+ledger.py now attributes due/paid balances to individual CHARGE IDs. PAY parents
+are explicit in the projector; legacy unlinked payments require unique attribution.
+ACTUAL_CHARGE affects only its own charge and creates a nonspendable receivable
+for excess payments. REFUND receipts consume that receivable once. Generic ADJUST
+and sale SETTLE cannot bypass this workflow. Ambiguities retain facts with anomalies.
+
+fee_model.py now exposes ScopeTotals with scope identity and separate BUY/SELL
+turnovers, plus bound cumulative FeeQuote.accrued/previous state. Opposite-side
+quotes preserve accruals. Unbound charged tuples and ambiguous dependent bases
+are rejected. Explicit correction evidence permits tested negative revisions.
+One-shot scalar estimates remain supported; they cannot seed incremental quotes.
+The execution adapter still rejects unsupported cross-order fee scopes.
+
+Read ACCOUNTING_RISK_LAYER.md for correction workflow and limitations. Exact new
+source/test hashes are in regenerated REVIEW_MANIFEST.json. Final actual tests
+are recorded at the top of TEST_RESULTS.md. No published source/configuration,
+safety values, manual placement or operational gate changed. Manifest UNSEALED.
+No commit, push, broker connection, holdout access, research or Prompt 8.
+Next: separate independent read-only re-review of F1/F2 and the complete candidate.
+Correction verification: 60 focused and 374 complete tests passed, zero failures/
+skips/warnings; git diff --check passed. Earlier counts/status below are historical,
+not closure approval.
+
+---
+
+# Current handoff — Prompt 7 local review candidate, 2026-11-15
+
+Primary main baseline ffb38ef4c11987fe508113443e58747c1db6ea5e; secondary main
+941212a5e36632e52ddbb53f2b3bdccb75f08350; both remotes verified at common tree
+3deb71e7ed29305f443d3a44ef99046612c0b7c0 before editing. Local tree was clean.
+Baseline reproduced: 314 tests passed in 86.460s, zero failures/skips/warnings.
+
+Read ACCOUNTING_RISK_LAYER.md, then fee_model.py, ledger.py, portfolio.py,
+risk_manager.py, accounting_adapter.py and tests/test_accounting_risk.py.
+No new dependencies; standard-library SQLite provides atomic local journal storage.
+REVIEW_MANIFEST.json records exact source/test hashes for subsequent release checks.
+Final verification: 45 focused and 359 total tests passed, zero failures/skips/
+warnings; git diff --check passed. Exact commands appear in TEST_RESULTS.md.
+
+Ownership: Prompt 6 remains the only exit/fill engine; accepted audit facts project
+into one accounting reducer and optional durable journal. Entry checks reconcile
+that projection with the simulator before computing risk approval. No published
+execution/configuration/strategy files changed. Real manifest stays UNSEALED.
+No legacy imports, holdout access, performance research, commit or push.
+
+Outstanding: real broker/rate approval, production provider/evidence authentication,
+complete historical marks, deployment storage security and scalability. Prompt 6
+settlement/flow/resumption injection, partial execution, order replacement and
+cross-order fee-scope integration remain explicitly unsupported. Standalone journal
+settlement/flows/clearance must not be presented as supported simulator resumption.
+Review focus: conservation, exactly-once projection, worst-price costs, own versus
+other reservations, mark vintage, NAV flows/clearance and late receipt quarantine.
+
+Next action: separate independent read-only Prompt 7 review and user approval.
+Prompt 7 is NOT closed. Prompt 8 is NOT authorized. Earlier handoffs are historical.
+
+---
+
 # Current handoff — Prompt 6 approved closure and release
 
 2026-11-14: the user reports a separate planning-chat read-only review with GO,

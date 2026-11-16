@@ -1,3 +1,126 @@
+# Prompt 7 closure release verification — 2026-11-16
+
+Actual release commands and results:
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_accounting_risk.py -q`
+  66 passed, 0 failed, 0 skipped in 4.087s.
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+  380 passed, 0 failed, 0 skipped in 60.707s.
+- `git diff --check`: passed; repeated after closure documentation updates.
+No warnings emitted. Six reviewed source/test SHA-256 hashes match REVIEW_MANIFEST.json.
+Only synthetic tests were run; no holdout or performance research was accessed.
+The user approved closure after separate independent GO review. Earlier results
+and pre-approval status below are historical; publication verification is recorded
+in the release completion report.
+
+---
+
+# Prompt 7 purchase-conservation correction verification — 2026-11-16
+
+Verified local main baseline ffb38ef4c11987fe508113443e58747c1db6ea5e and all six
+pre-edit review hashes. Both confirmed purchase defects corrected with atomic
+precondition checks; prior fee/refund and side-aware fee corrections preserved.
+
+Actual final commands:
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_accounting_risk.py -q`
+  66 passed, 0 failed, 0 skipped in 4.274s.
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+  380 passed, 0 failed, 0 skipped in 57.104s.
+- `git diff --check`: passed; new source/test no-index whitespace checks passed.
+No test warnings emitted. All inputs synthetic. No failing test run in this correction.
+
+Six new tests cover zero consideration, underfunded commitments, exact/just-over
+cash boundaries, small positive prices, own reservation exclusion, duplicates,
+conflicting receipts and SQLite restart. Invalid purchases preserve pre-transition
+cash/payables/reservations/holdings/receivables/P&L/flows/buying power. Their original
+records remain durable; anomalies make current equity unavailable for readiness.
+Valid boundary example: cash 100, own reserve 60, other reserve 40, payable 30,
+purchase 30 -> cash 70, payable 30, other reserve 40, buying power 0, equity 70
+at cost mark. Purchase 30 plus 1e-28 is rejected with no account effects.
+
+Updated files in this correction: ledger.py, tests/test_accounting_risk.py,
+ACCOUNTING_RISK_LAYER.md, PROJECT_HANDOFF.md, TEST_RESULTS.md, REVIEW_MANIFEST.json.
+Regenerated hashes for all six source/test files verified. Protected configuration,
+safety policy, strategy and Prompt 6 execution sources unchanged. No legacy/holdout
+access, performance research, commit, push or Prompt 8. Independent re-review next.
+
+---
+
+# Prompt 7 F1/F2 correction verification — 2026-11-15
+
+Verified baseline main ffb38ef4c11987fe508113443e58747c1db6ea5e and all six
+pre-correction REVIEW_MANIFEST.json source/test hashes. Both reported defects
+reproduced before editing. F1 gave cash 90/payables 15/buying power 75 with no
+anomaly; ADJUST +5 gave cash 95/payables 15/equity 80. F2 gave BUY fee +5 then
+opposite-side SELL fee -5. These were confirmed defects, not hypothetical risks.
+
+Final focused command:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_accounting_risk.py -q`
+60 passed, 0 failed, 0 skipped in 8.313s. No warnings emitted.
+
+Final complete command:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+374 passed, 0 failed, 0 skipped in 102.253s. No warnings emitted.
+
+`git diff --check`: passed. Additional no-index checks cover the untracked source
+and test files. Regenerated review hashes matched all six source/test files.
+Intermediate correction run: 57 focused passed in 8.174s before three further
+boundary tests. No failing correction-suite run occurred.
+
+Added 15 tests (including a 12-case payment/actual-charge matrix): unpaid/part-paid/
+fully-paid corrections; unrelated liabilities; refund receipt/duplicates/conflicts;
+ambiguous payments; restart; BUY/SELL scoped updates; side-specific rates;
+dependent tax/rounding; explicit negative corrections; scope/profile isolation;
+prior-accrual forgery; and preserved adapter cross-order rejection.
+Fixed reproduction: cash 90, payable 20, nonspendable refund 5, buying power 70,
+equity 75, realized P&L -25. Explicit REFUND produces cash 95, payable 20,
+buying power 75, equity 75 and unchanged P&L -25. Opposite-side bound quote
+increment is zero. Ambiguous old charged tuples now reject rather than infer sides.
+
+All tests synthetic. Configuration/safety/Prompt 6 execution source unchanged.
+No production integration, holdout/outcome research, commit, push or Prompt 8.
+Prompt 7 remains open for separate independent read-only re-review.
+
+---
+
+# Prompt 7 local verification — 2026-11-15
+
+Baseline before editing:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+314 passed, 0 failed, 0 skipped in 86.460s; no warnings emitted.
+
+Final focused command:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_accounting_risk.py -q`
+45 passed, 0 failed, 0 skipped in 4.827s; no warnings emitted.
+
+Final complete command:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+359 passed, 0 failed, 0 skipped in 118.101s; no warnings emitted.
+`git diff --check`: passed. New source/test no-index whitespace checks passed.
+REVIEW_MANIFEST.json hashes independently recalculated and matched all six files.
+
+Development results, not final claims:
+- Initial focused run: 36 tests, 13 passed, 23 errors, 0 failures/skips in 3.368s.
+  Strict shared config validation rejected blank optional journal identifiers;
+  changed those fields to explicit None. Missing exit positions now raise ConfigError
+  instead of StopIteration. No published Prompt 6 source was changed.
+- After fixes: 36 passed in 4.359s, then 44 passed in 6.216s.
+- Following risk coverage checks: 44 passed in 5.180s; 358 complete tests passed in
+  112.089s. Final self-review then included cash adjustments in realized P&L and
+  added durable clearance coverage; final counts above supersede these runs.
+
+All inputs synthetic. Tests exercise fees/scopes/rounding, journal conservation,
+restart/rollback/corruption, duplicates/conflicts, settlement/calendar evidence,
+marks/P&L, exact risk boundaries, unitization/clearance and computed execution
+integration. No broker, real rates, performance research or holdout observations.
+Unverified production features and unsupported execution integration are documented
+in ACCOUNTING_RISK_LAYER.md; exhaustive event permutations, concurrency/load,
+external authenticity and production database recovery were not tested.
+Prior configuration, safety settings, execution, strategy and data sources have
+no diff. No legacy imports or credential-pattern matches in new source/tests.
+No commit/push. Separate independent review is the next gate; Prompt 8 not begun.
+
+---
+
 # Prompt 6 closure release verification — 2026-11-14
 
 User approved closure after reporting separate independent GO. Release reruns:

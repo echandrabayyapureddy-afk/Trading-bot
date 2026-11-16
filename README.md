@@ -1,3 +1,13 @@
+# Prompt 7 — approved accounting/risk release
+
+Fees, a durable synthetic journal, portfolio valuation, unitized NAV, whole-share
+risk sizing and a computed Prompt 6 dependency adapter are implemented.
+Read ACCOUNTING_RISK_LAYER.md and PROJECT_HANDOFF.md for integration limits.
+Operational readiness remains blocked; no real tariff or broker is approved.
+Prompt 7 closure is approved following independent GO review; publication to both
+repositories is authorized. Prompt 8 is not authorized.
+Earlier phase status below is historical.
+
 # NEW NSE bot — Prompt 6 approved execution simulator
 
 Prompt 5 is approved and published. Prompt 6 adds a synthetic shared-account
