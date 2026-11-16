@@ -1,3 +1,49 @@
+# Prompt 8 — approved closure and authorized release
+
+The user approved closure after a separate independent read-only GO review reporting
+33 focused / 413 total passing tests and all seven P8_REVIEW_MANIFEST.json hashes.
+Release preparation independently verified all seven hashes before edits and both
+expected remote main heads: primary e93f63259e51cfc0589a219ee6ec933afee8c499,
+secondary 55f91a83ab0c885d53f40898550f3f3e9a50eb4a, common baseline tree
+0920b5a58d15dac08adef973a6af7af65b1546b9. No unexpected divergence was found.
+
+Reviewed source/tests remain byte-identical. P8_REVIEW_MANIFEST.json is retained as
+the historical review snapshot; its documentation hashes predate the explicitly
+authorized closure documentation edits. See the newest TEST_RESULTS.md entry for
+release test results. Publication is authorized to both repositories with separate
+parents and an identical release tree. Final resulting SHAs are verified and reported
+after publishing; this pre-publication entry does not assert a completed remote update.
+
+Read SUITABILITY_LAYER.md first. Ranked rows are individual alternatives, not an
+additive basket. Review-to-execution submission remains unsupported and blocked;
+operational readiness remains blocked. Actor authentication, production storage and
+real data/broker integration remain unverified. The real manifest remains UNSEALED.
+No holdout research or broker connection occurred. Prompt 9 requires separate user
+authorization. All earlier review/approval status entries below are historical.
+
+---
+
+# Prompt 8 — local independent-review candidate
+
+Baseline primary main e93f63259e51cfc0589a219ee6ec933afee8c499; secondary main
+55f91a83ab0c885d53f40898550f3f3e9a50eb4a. Both heads verified unchanged at start.
+Prompt 7 closure/publication is authoritative; older phase restrictions below are
+historical. Starting working tree was clean. Only Prompt 8 local work is authorized.
+
+Read SUITABILITY_LAYER.md, suitability.py, human_review.py and tests/test_suitability.py.
+Important review targets: individual alternative sizing versus additive basket use;
+upstream strategy provenance; evidence expiry and exact proposal binding; durable
+receipt ordering/conflicts; conservative revalidation; unconditional submission block.
+Only Prompt 6 may handle downstream execution facts. Fixed policies and all earlier
+source/test files are unchanged. Real research manifest remains UNSEALED.
+No commit/push, real market/holdout research, broker access or Prompt 9 work.
+Verification: 33 focused / 413 complete tests passed, zero failures/skips/warnings;
+whitespace checks passed. P8_REVIEW_MANIFEST.json binds the local review files.
+See TEST_RESULTS.md for actual runs. Next: separate independent read-only review;
+closure/publication requires the user's separate approval.
+
+---
+
 # Prompt 7 — approved closure and authorized release
 
 2026-11-16: the user approved Prompt 7 closure following a separate independent

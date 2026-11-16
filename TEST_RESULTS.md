@@ -1,3 +1,51 @@
+# Prompt 8 closure release verification — 2026-11-16
+
+The user approved closure after separate independent GO review. All seven reviewed
+P8_REVIEW_MANIFEST.json hashes matched before release preparation. Source/tests are
+unchanged; closure documentation changes are explicitly authorized. The manifest
+remains the historical pre-release review snapshot, not a hash of updated release docs.
+
+Actual release commands:
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_suitability.py -q`
+  33 passed, 0 failed, 0 skipped in 18.515s.
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+  413 passed, 0 failed, 0 skipped in 76.763s.
+- `git diff --check`: passed, repeated after documentation edits.
+- `git diff --cached --check`: release staging whitespace check.
+No test warnings or errors emitted. All test data synthetic. No source/test changes
+were needed, and no failing test run occurred during this release preparation.
+No holdout, performance research or broker access. Operational/submission gates
+remain blocked. Final remote publication SHAs are in the release completion report.
+Earlier results and local-only status below are historical.
+
+---
+
+# Prompt 8 local verification — 2026-11-16
+
+Baseline suite before edits:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+380 passed, 0 failed, 0 skipped, 56.395s. No warnings emitted.
+
+Final focused command:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_suitability.py -q`
+33 passed, 0 failed, 0 skipped, 13.210s. No warnings emitted.
+Final complete command:
+`PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+413 passed, 0 failed, 0 skipped, 70.358s. No warnings emitted.
+`git diff --check`: passed. New untracked files separately checked for trailing whitespace.
+
+Development runs were not all green: initial 20-test runs had 18 constructor errors,
+then 18 blank-ID validation errors, then 10 heterogeneous-tuple validation errors.
+These were corrected in the new layer without changing shared validation. Subsequent
+20-test (5.681s), 29-test (10.738s), and final 33-test runs passed. All runs synthetic.
+
+All six Prompt 7 reviewed hashes remain unchanged. P8_REVIEW_MANIFEST.json binds
+this new local review package; the old REVIEW_MANIFEST.json is preserved historically.
+No publication, holdout research or operational approval is claimed. Production
+integration/identity authentication/concurrency security remain unverified.
+
+---
+
 # Prompt 7 closure release verification — 2026-11-16
 
 Actual release commands and results:

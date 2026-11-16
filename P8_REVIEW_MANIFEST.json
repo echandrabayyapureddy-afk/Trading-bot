@@ -1,0 +1,14 @@
+{
+  "phase": 8,
+  "status": "LOCAL_REVIEW_CANDIDATE",
+  "baseline": "e93f63259e51cfc0589a219ee6ec933afee8c499",
+  "sha256": {
+    "suitability.py": "7c06e9f26e9f07f79f5f669273f5be58267878e49d1dbf6bd77943023f5efce6",
+    "human_review.py": "a1b5dd674b1d3f4b9b5b01bf18166ac642508f73207eeb55e35fa9f58fea0b1f",
+    "tests/test_suitability.py": "1b0bedf8ab7a10362ef52ab171dbf233034c75e73286251f396d45c572b4c363",
+    "SUITABILITY_LAYER.md": "7594308b9eb9d5c5aed0ae7dd9fbeaf726f4205eefad96cb312775fe189738a2",
+    "README.md": "b869abb41195a01e22f97e5304dd78a2d9d16b3a918c65c5d7b67ec4da936947",
+    "PROJECT_HANDOFF.md": "3ea0ed336ffc692ead4498454c8b0b9853058f12512c2556d79394056b681172",
+    "TEST_RESULTS.md": "60dc93ce78cbdf68a9124b9ba02278102b78a328b8ee31f4ad352e449e4d13a3"
+  }
+}

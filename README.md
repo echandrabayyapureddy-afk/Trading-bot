@@ -1,3 +1,12 @@
+# Prompt 8 — approved suitability and human review release
+
+Prompt 7 is closed and published. Prompt 8 adds synthetic weekly recommendation
+alternatives and an auditable review journal. Read SUITABILITY_LAYER.md for the JSON
+report format, operator workflow and blocked submission bridge. Operational readiness
+remains blocked. The user approved Prompt 8 closure after independent GO review
+and authorized publication to both main branches. Prompt 9 is not authorized.
+Earlier phase-status entries below are historical.
+
 # Prompt 7 — approved accounting/risk release
 
 Fees, a durable synthetic journal, portfolio valuation, unitized NAV, whole-share
