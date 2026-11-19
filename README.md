@@ -1,3 +1,12 @@
+# Prompt 9 — approved synthetic research evidence release
+
+Prompt 8 is closed and published. Prompt 9 adds a fixed synthetic evidence pipeline
+and separate durable research-attempt store. Read RESEARCH_LAYER.md for boundaries,
+legacy dispositions and the offline example. No historical backtest, optimization,
+holdout access or automatic promotion is implemented. Submission/live readiness remain
+blocked. The user approved Prompt 9 closure following independent re-review. Prompt 10 requires separate authorization.
+Earlier phase-status text below is historical.
+
 # Prompt 8 — approved suitability and human review release
 
 Prompt 7 is closed and published. Prompt 8 adds synthetic weekly recommendation

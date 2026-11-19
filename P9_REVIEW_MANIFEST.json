@@ -1,0 +1,16 @@
+{
+  "phase": 9,
+  "status": "LOCAL_REVIEW_CANDIDATE",
+  "baseline": "85c5df8f0f975bbf888357cd2663c4dc5b60880e",
+  "branch": "prompt9-research",
+  "sha256": {
+    "research_records.py": "2e122fc6a022c26a061f6bc85f0c745d49a82ad99a9a325b1e343175b72058fa",
+    "research_pipeline.py": "6a596493dcdb5e1d56a5091abcb325642dd26a5f010a902b592affbad408d343",
+    "research_journal.py": "35568c2b1a389e6e11ef9033ca50f1f4c3d46b56fd79d487df0d1024541cf4d2",
+    "tests/test_research_pipeline.py": "a26b397e548d5fced82248cd9c707c918a3c08d0b1fe57109fd34589b2f25e75",
+    "RESEARCH_LAYER.md": "35d8446c4afa8aaecd2e146c0fe24fe309c836ceb426ce8f3751070f4c391c4f",
+    "README.md": "76becb0bf345ca5db16c765b3e1f879588de9a13800efe7ba267f60bae32a741",
+    "TEST_RESULTS.md": "66b26ec1cb85ef7b4ef16ba756ac7188776e698eb8e00df892dd4bfa730b3389",
+    "PROJECT_HANDOFF.md": "bf756e810fd00915fc5edc7a9a69822bd2af986dd05caaa2e69ffdbdeb87678e"
+  }
+}

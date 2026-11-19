@@ -1,3 +1,85 @@
+# Prompt 9 closure release verification — 2026-11-19
+
+All eight candidate hashes matched the independent review manifest before closure
+documentation edits. Release verification used only offline synthetic fixtures.
+
+| Command | Result |
+|---|---|
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_research_pipeline.py -q` | 43 passed in 15.827s |
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q` | 456 passed in 173.943s |
+
+Both commands exited successfully with zero failures, errors, skips or emitted
+warnings. Whitespace checks covered tracked and newly added files. The original
+P9_REVIEW_MANIFEST.json retains all eight pre-closure hashes.
+
+# Prompt 9 second correction verification — 2026-11-19
+
+The pre-fix probes reproduced a false PASS at the conflicting event receipt
+cutoff and false PASS results for both correctly rehashed suitability mismatches.
+During development a local variable shadowed the command helper. The initial
+focused and complete runs each reported 12 failures and 18 errors. That error
+was corrected before the following final synthetic runs.
+
+| Command | Final result |
+|---|---|
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_research_pipeline.py -q` | 43 passed in 17.023s |
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q` | 456 passed in 179.116s |
+| `git diff --check` | Passed |
+
+Zero final failures, errors, skips or emitted warnings. Untracked files passed
+separate whitespace checks. The eight incoming hashes matched before editing.
+
+# Prompt 9 correction verification — 2026-11-18
+
+Both original false PASS results were reproduced before editing the implementation.
+The two targeted red tests reported 13 failing assertions/subtests. The new replay
+test supplies altered JSON with a freshly computed SHA-256, retains the raw terminal
+receipt and checks the reconstructed state before and after reopening the database.
+
+Final synthetic runs on baseline 85c5df8f0f975bbf888357cd2663c4dc5b60880e:
+
+| Command | Result |
+|---|---|
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_research_pipeline.py -q` | 41 passed in 6.705s |
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q` | 454 passed in 75.135s |
+| `git diff --check` | Passed |
+
+Both final suites had zero failures, errors, skips or emitted warnings. New untracked
+files were checked separately for whitespace. All eight initial candidate hashes
+matched before correction. The regenerated P9 manifest binds the corrected package.
+
+# Prompt 9 local verification — 2026-11-17
+
+Published Prompt 8 baseline reproduced in the separate clean primary-based checkout:
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_suitability.py -q`
+  33 passed, 0 failed, 0 skipped, 15.916s.
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+  413 passed, 0 failed, 0 skipped, 74.570s.
+
+Final Prompt 9 checks:
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_research_pipeline.py -q`
+  36 passed, 0 failed, 0 skipped, 6.781s.
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q`
+  449 passed, 0 failed, 0 skipped, 76.126s.
+- `git diff --check`: passed. New untracked files separately whitespace-checked.
+No errors or warnings emitted in these runs. Synthetic data only, no historical
+performance, holdout or live-provider testing. No third-party dependencies added.
+
+Earlier development runs: 29 tests passed (3.069s), 35 passed (6.148s), 35 passed
+(6.265s), full 448 passed (75.018s). No failing test run occurred. Final inspection
+identified that a future conflicting outcome ID could invalidate an earlier view;
+conflict validation was limited to visible receipts and a regression added. The final
+36/449 runs above include that change; earlier runs are not presented as final checks.
+
+Source inspection includes all new modules/tests and documentation, plus a static-only
+legacy audit recorded in RESEARCH_LAYER.md. Previous source/tests, fixed configuration,
+real UNSEALED manifest and P7/P8 historical review manifests are byte-unchanged.
+Production sandboxing, external provenance/authentication, adversarial concurrency,
+real data/provider research authorization and operational integrations remain unverified.
+Next: separate independent read-only review, not automatic closure/publication.
+
+---
+
 # Prompt 8 closure release verification — 2026-11-16
 
 The user approved closure after separate independent GO review. All seven reviewed

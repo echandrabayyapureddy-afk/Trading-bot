@@ -1,3 +1,72 @@
+# Prompt 9 closure — 2026-11-19
+
+The user approved closure and publication on both main branches after a separate
+independent read-only GO review. The reviewer checked delayed fill conflicts in
+both input orders and suitability hash contradictions across journal restart.
+The release uses the reviewed implementation and tests. All eight review hashes
+matched before edits to README.md, RESEARCH_LAYER.md, TEST_RESULTS.md and this
+handoff. P9_REVIEW_MANIFEST.json preserves the pre-release review record.
+
+Read RESEARCH_LAYER.md for the supported synthetic workflow and TEST_RESULTS.md
+for release checks. The release completion report records the verified remote
+heads and shared file tree. Real research, holdout access, broker connections,
+submission and operational readiness remain blocked. The real manifest remains
+UNSEALED. Prompt 10 requires separate authorization. Earlier entries are historical.
+
+# Prompt 9 second correction package awaiting independent read-only review
+
+The latest corrections cover conflicting execution event IDs across different
+command IDs and contradictory daily suitability hashes inside a saved report.
+Verify P9_REVIEW_MANIFEST.json, then run the focused and complete suites listed
+in TEST_RESULTS.md. Repeat the delayed conflict in both input orders and both
+directions of suitability hash mismatch through the journal before and after
+restart. The earlier command-ID and semantic replay regressions remain in scope.
+Candidate is local on prompt9-research at baseline
+85c5df8f0f975bbf888357cd2663c4dc5b60880e. Prompt 9 remains open.
+
+# Prompt 9 corrections awaiting independent re-review
+
+Both MEDIUM findings from the separate NO-GO review reproduced on the eight-hash
+candidate. Visible outcome command conflicts now fail before digest selection. The
+report constructor and durable replay share semantic checks for PASS and INCOMPLETE.
+The append journal preserves inconsistent terminal receipts for diagnosis across restart.
+See RESEARCH_LAYER.md and the newest TEST_RESULTS.md entry. Verify the regenerated
+P9_REVIEW_MANIFEST.json and independently repeat the two original reproductions,
+including late/duplicate receipts and correctly rehashed invalid reports after restart.
+Local branch prompt9-research, baseline 85c5df8f0f975bbf888357cd2663c4dc5b60880e.
+Prompt 9 closure and publication await separate authorization.
+
+# Prompt 9 — local implementation; separate review required
+
+Verified primary release 85c5df8f0f975bbf888357cd2663c4dc5b60880e and secondary
+3bca79977d7448cef138df68a5e19d2a784eca7a at common tree
+989e8b1e2aa6e8c15fbf4e5a9c1a6a8a8e8412e7. Remotes are unchanged.
+Local review path: /workspace/scratch/36d4b58ef0cb/prompt9-research
+Branch: prompt9-research; based on the primary release. The older
+prompt2-corrections folder was stale (Prompt 6 plus uncommitted Prompt 7); it and
+its unrelated work were preserved. See RESEARCH_LAYER.md for baseline retrieval.
+
+New records, fixed pipeline and research-only SQLite store consume genuine immutable
+upstream records without implementing another signal/fee/risk/exit engine. Static
+legacy dispositions are in RESEARCH_LAYER.md; no legacy code imported/executed/reused.
+All earlier source/tests/config/manifest and historical P7/P8 manifests remain intact.
+
+Read RESEARCH_LAYER.md, research_records.py, research_pipeline.py,
+research_journal.py and tests/test_research_pipeline.py. Review preflight before fixture
+access, predictive/outcome time separation, hash/source bindings, incomplete statuses,
+run versus retry identity, crash/restart/conflict behavior, protected-path checks and
+in-process isolation limits. No actual historical authorization path exists here.
+
+Final checks: 36 focused and 449 complete tests passed; zero failures/skips/warnings.
+Whitespace checks passed. No commit/push, phase closure, holdout access, broker
+connection or Prompt 10 work.
+The real manifest is UNSEALED; review-to-execution bridge and operational readiness
+remain blocked. TEST_RESULTS.md records actual test results; P9_REVIEW_MANIFEST.json
+binds final candidate files. Next: separate independent read-only review, then user
+approval before any closure/publication or subsequent phase.
+
+---
+
 # Prompt 8 — approved closure and authorized release
 
 The user approved closure after a separate independent read-only GO review reporting
