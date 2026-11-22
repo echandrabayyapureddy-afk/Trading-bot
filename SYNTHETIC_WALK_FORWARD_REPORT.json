@@ -1,0 +1,756 @@
+{
+  "report": {
+    "origin": "SYNTHETIC",
+    "paired_net_differences": [
+      "0",
+      "0"
+    ],
+    "study_sha256": "5e5bc647fb2091ef24b205109f35d47c94e13661f233a1773759fea8e962bc02",
+    "trials": [
+      {
+        "candidate": "A",
+        "closes": [
+          {
+            "account_sha256": "7214cb42e7c6d8c330218917bc9dfbf6096bdec660823dbb741e7b2fb681d02e",
+            "at": "2020-11-13T10:30:00+00:00",
+            "buying_power": "10000",
+            "charges": "0",
+            "held": 0,
+            "marked_equity": "10000",
+            "pending_orders": 0,
+            "protected": 0,
+            "settled_cash": "10000"
+          },
+          {
+            "account_sha256": "86cf15eafd30d6bb48402d2c84f9d51867002cf704dd6a1383c205b59f3cb3da",
+            "at": "2020-11-16T10:30:00+00:00",
+            "buying_power": "10000",
+            "charges": "0",
+            "held": 0,
+            "marked_equity": "10000",
+            "pending_orders": 0,
+            "protected": 0,
+            "settled_cash": "10000"
+          },
+          {
+            "account_sha256": "6fdb7770831550340c769f13e26eaa9b7445eba6591ea73698ce9ced220a1966",
+            "at": "2020-11-17T10:30:00+00:00",
+            "buying_power": "9779",
+            "charges": "1",
+            "held": 2,
+            "marked_equity": "9999",
+            "pending_orders": 0,
+            "protected": 0,
+            "settled_cash": "9779"
+          }
+        ],
+        "decisions": [
+          {
+            "at": "2020-11-10T10:30:00+00:00",
+            "eligible": false,
+            "monthly": null,
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": false,
+            "signal_hash": "2450b5084d53d37ac882e701b9b720532e4ecc73c3601192475c89dadd7c311d"
+          },
+          {
+            "at": "2020-11-11T10:30:00+00:00",
+            "eligible": false,
+            "monthly": null,
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": false,
+            "signal_hash": "b616dac5fc615eff699ade4885114255454b0c4bd6c366b1368e3e77b8e6db6a"
+          },
+          {
+            "at": "2020-11-12T10:30:00+00:00",
+            "eligible": false,
+            "monthly": null,
+            "rebalance_observation": "THURSDAY_SHADOW",
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "fcd4165e64e122904237694a96a676296a5f3641f785395336bda4a002128b79"
+          },
+          {
+            "at": "2020-11-13T10:30:00+00:00",
+            "eligible": true,
+            "monthly": null,
+            "rebalance_observation": "FRIDAY_REFERENCE",
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "0186b4bdf46b4218138f43ef03177e32187ca9759f5c3d6c24200318b7043dbb"
+          },
+          {
+            "at": "2020-11-16T10:30:00+00:00",
+            "eligible": true,
+            "monthly": null,
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "ca8e44bb18af29adb003d73ca79379a8d0dad000de9ca2ce43dc4b4bed4a1ffa"
+          },
+          {
+            "at": "2020-11-17T10:30:00+00:00",
+            "eligible": true,
+            "monthly": null,
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "86338ad5ff6535bef7755c6aef77dd486e969c53381c3cd75904e7430a32d57b"
+          }
+        ],
+        "fold": {
+          "end": "2020-11-18",
+          "selection": "2020-11-12",
+          "test": "2020-11-13",
+          "train": "2020-11-10",
+          "warmup": "2020-01-01"
+        },
+        "metrics": {
+          "buy_fills": 1,
+          "cash_benchmark_return": "0",
+          "cash_closes": 2,
+          "closing_equity": "9999",
+          "low_turnover_benchmark": "UNAVAILABLE: no independent tradable benchmark tape",
+          "max_drawdown": "1/10000",
+          "net_return": "-1/10000",
+          "sessions": 3
+        },
+        "reasons": [],
+        "status": "COMPLETE",
+        "trial_id": "1eed3b705df0bfec28191a9013d9b3ecf57098138082009bc28e11fd871218b0"
+      },
+      {
+        "candidate": "B",
+        "closes": [
+          {
+            "account_sha256": "62a197c9c2c0b11855095e8e004cc5c707a4acc10e95c4d8bfa6fd651fab82c2",
+            "at": "2020-11-13T10:30:00+00:00",
+            "buying_power": "10000",
+            "charges": "0",
+            "held": 0,
+            "marked_equity": "10000",
+            "pending_orders": 0,
+            "protected": 0,
+            "settled_cash": "10000"
+          },
+          {
+            "account_sha256": "c24927e89de6f45e12947506a857928ac78a8195405849fcc0ada9580b4f0d7d",
+            "at": "2020-11-16T10:30:00+00:00",
+            "buying_power": "10000",
+            "charges": "0",
+            "held": 0,
+            "marked_equity": "10000",
+            "pending_orders": 0,
+            "protected": 0,
+            "settled_cash": "10000"
+          },
+          {
+            "account_sha256": "ca7b0ca0b62271c061ee6771c926b3b1d41bfe740e87565dd81f09f7f3fa78e3",
+            "at": "2020-11-17T10:30:00+00:00",
+            "buying_power": "9779",
+            "charges": "1",
+            "held": 2,
+            "marked_equity": "9999",
+            "pending_orders": 0,
+            "protected": 0,
+            "settled_cash": "9779"
+          }
+        ],
+        "decisions": [
+          {
+            "at": "2020-11-10T10:30:00+00:00",
+            "eligible": false,
+            "monthly": {
+              "available_at": "2020-11-10T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": false,
+            "signal_hash": "286b42dd8a28cc2e8280b1acd563f68b03427eda079472f9812c391316f31a5a"
+          },
+          {
+            "at": "2020-11-11T10:30:00+00:00",
+            "eligible": false,
+            "monthly": {
+              "available_at": "2020-11-11T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": false,
+            "signal_hash": "1ecc23727812fe474bbd6a372db57dfe5ac2471e02c793d60cf1d2068429d957"
+          },
+          {
+            "at": "2020-11-12T10:30:00+00:00",
+            "eligible": false,
+            "monthly": {
+              "available_at": "2020-11-12T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": "THURSDAY_SHADOW",
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "9ada7aa9472c0f0f71be975d5a0d483ddcfd5926f3711246be804c17b935789e"
+          },
+          {
+            "at": "2020-11-13T10:30:00+00:00",
+            "eligible": true,
+            "monthly": {
+              "available_at": "2020-11-13T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": "FRIDAY_REFERENCE",
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "e894a3a4230d2397f0085b6f235b667c7075be9b16f4106451ac43ceb2d564bc"
+          },
+          {
+            "at": "2020-11-16T10:30:00+00:00",
+            "eligible": true,
+            "monthly": {
+              "available_at": "2020-11-16T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "fc7fa7e238755a3be884b8b28270ad5d2814c5b747a03f8d349840450afdd032"
+          },
+          {
+            "at": "2020-11-17T10:30:00+00:00",
+            "eligible": true,
+            "monthly": {
+              "available_at": "2020-11-17T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "17dcc5e1faf7d2543b5d2ca9dce743643e3cf1215a34887748c664f32aae3804"
+          }
+        ],
+        "fold": {
+          "end": "2020-11-18",
+          "selection": "2020-11-12",
+          "test": "2020-11-13",
+          "train": "2020-11-10",
+          "warmup": "2020-01-01"
+        },
+        "metrics": {
+          "buy_fills": 1,
+          "cash_benchmark_return": "0",
+          "cash_closes": 2,
+          "closing_equity": "9999",
+          "low_turnover_benchmark": "UNAVAILABLE: no independent tradable benchmark tape",
+          "max_drawdown": "1/10000",
+          "net_return": "-1/10000",
+          "sessions": 3
+        },
+        "reasons": [],
+        "status": "COMPLETE",
+        "trial_id": "ec1e2debfe18e37a4cf52a1f26d8713a127eff2a9199e928663e06d9b6244b89"
+      },
+      {
+        "candidate": "A",
+        "closes": [
+          {
+            "account_sha256": "330c81bad54f48f9db918f1ab70d0a3bfe7dc7bfb50d0f01fdc0850b9ab731c9",
+            "at": "2020-11-19T10:30:00+00:00",
+            "buying_power": "10000",
+            "charges": "0",
+            "held": 0,
+            "marked_equity": "10000",
+            "pending_orders": 0,
+            "protected": 0,
+            "settled_cash": "10000"
+          },
+          {
+            "account_sha256": "330c81bad54f48f9db918f1ab70d0a3bfe7dc7bfb50d0f01fdc0850b9ab731c9",
+            "at": "2020-11-20T10:30:00+00:00",
+            "buying_power": "10000",
+            "charges": "0",
+            "held": 0,
+            "marked_equity": "10000",
+            "pending_orders": 0,
+            "protected": 0,
+            "settled_cash": "10000"
+          },
+          {
+            "account_sha256": "330c81bad54f48f9db918f1ab70d0a3bfe7dc7bfb50d0f01fdc0850b9ab731c9",
+            "at": "2020-11-23T10:30:00+00:00",
+            "buying_power": "10000",
+            "charges": "0",
+            "held": 0,
+            "marked_equity": "10000",
+            "pending_orders": 0,
+            "protected": 0,
+            "settled_cash": "10000"
+          }
+        ],
+        "decisions": [
+          {
+            "at": "2020-11-10T10:30:00+00:00",
+            "eligible": false,
+            "monthly": null,
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": false,
+            "signal_hash": "2450b5084d53d37ac882e701b9b720532e4ecc73c3601192475c89dadd7c311d"
+          },
+          {
+            "at": "2020-11-11T10:30:00+00:00",
+            "eligible": false,
+            "monthly": null,
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": false,
+            "signal_hash": "b616dac5fc615eff699ade4885114255454b0c4bd6c366b1368e3e77b8e6db6a"
+          },
+          {
+            "at": "2020-11-12T10:30:00+00:00",
+            "eligible": false,
+            "monthly": null,
+            "rebalance_observation": "THURSDAY_SHADOW",
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "fcd4165e64e122904237694a96a676296a5f3641f785395336bda4a002128b79"
+          },
+          {
+            "at": "2020-11-13T10:30:00+00:00",
+            "eligible": true,
+            "monthly": null,
+            "rebalance_observation": "FRIDAY_REFERENCE",
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "0186b4bdf46b4218138f43ef03177e32187ca9759f5c3d6c24200318b7043dbb"
+          },
+          {
+            "at": "2020-11-16T10:30:00+00:00",
+            "eligible": true,
+            "monthly": null,
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "ca8e44bb18af29adb003d73ca79379a8d0dad000de9ca2ce43dc4b4bed4a1ffa"
+          },
+          {
+            "at": "2020-11-17T10:30:00+00:00",
+            "eligible": true,
+            "monthly": null,
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "86338ad5ff6535bef7755c6aef77dd486e969c53381c3cd75904e7430a32d57b"
+          },
+          {
+            "at": "2020-11-18T10:30:00+00:00",
+            "eligible": true,
+            "monthly": null,
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "ab58f48471540398d23509df7d021fa383f2c8d1f9540d5d636ea2cd2c142265"
+          },
+          {
+            "at": "2020-11-19T10:30:00+00:00",
+            "eligible": true,
+            "monthly": null,
+            "rebalance_observation": "THURSDAY_SHADOW",
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "a805b1592ab322725fa301feeb8f4d0813547f80c434105949b62bf6603e3ff0"
+          },
+          {
+            "at": "2020-11-20T10:30:00+00:00",
+            "eligible": true,
+            "monthly": null,
+            "rebalance_observation": "FRIDAY_REFERENCE",
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "753e7e48dcde34f41b864ee87dab07cf81aeedccc796f4ffab78ed996e449688"
+          },
+          {
+            "at": "2020-11-23T10:30:00+00:00",
+            "eligible": true,
+            "monthly": null,
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "381564724906fc98a1225267fc1f57bcbefae3001319ea34582c25d3f618562b"
+          }
+        ],
+        "fold": {
+          "end": "2020-11-24",
+          "selection": "2020-11-18",
+          "test": "2020-11-19",
+          "train": "2020-11-10",
+          "warmup": "2020-01-01"
+        },
+        "metrics": {
+          "buy_fills": 0,
+          "cash_benchmark_return": "0",
+          "cash_closes": 3,
+          "closing_equity": "10000",
+          "low_turnover_benchmark": "UNAVAILABLE: no independent tradable benchmark tape",
+          "max_drawdown": "0",
+          "net_return": "0",
+          "sessions": 3
+        },
+        "reasons": [],
+        "status": "COMPLETE",
+        "trial_id": "b1307dd8f1e2ca01183af1648a1352b73bd498f413d53c421e15fe132e6c4557"
+      },
+      {
+        "candidate": "B",
+        "closes": [
+          {
+            "account_sha256": "330c81bad54f48f9db918f1ab70d0a3bfe7dc7bfb50d0f01fdc0850b9ab731c9",
+            "at": "2020-11-19T10:30:00+00:00",
+            "buying_power": "10000",
+            "charges": "0",
+            "held": 0,
+            "marked_equity": "10000",
+            "pending_orders": 0,
+            "protected": 0,
+            "settled_cash": "10000"
+          },
+          {
+            "account_sha256": "330c81bad54f48f9db918f1ab70d0a3bfe7dc7bfb50d0f01fdc0850b9ab731c9",
+            "at": "2020-11-20T10:30:00+00:00",
+            "buying_power": "10000",
+            "charges": "0",
+            "held": 0,
+            "marked_equity": "10000",
+            "pending_orders": 0,
+            "protected": 0,
+            "settled_cash": "10000"
+          },
+          {
+            "account_sha256": "330c81bad54f48f9db918f1ab70d0a3bfe7dc7bfb50d0f01fdc0850b9ab731c9",
+            "at": "2020-11-23T10:30:00+00:00",
+            "buying_power": "10000",
+            "charges": "0",
+            "held": 0,
+            "marked_equity": "10000",
+            "pending_orders": 0,
+            "protected": 0,
+            "settled_cash": "10000"
+          }
+        ],
+        "decisions": [
+          {
+            "at": "2020-11-10T10:30:00+00:00",
+            "eligible": false,
+            "monthly": {
+              "available_at": "2020-11-10T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": false,
+            "signal_hash": "286b42dd8a28cc2e8280b1acd563f68b03427eda079472f9812c391316f31a5a"
+          },
+          {
+            "at": "2020-11-11T10:30:00+00:00",
+            "eligible": false,
+            "monthly": {
+              "available_at": "2020-11-11T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": false,
+            "signal_hash": "1ecc23727812fe474bbd6a372db57dfe5ac2471e02c793d60cf1d2068429d957"
+          },
+          {
+            "at": "2020-11-12T10:30:00+00:00",
+            "eligible": false,
+            "monthly": {
+              "available_at": "2020-11-12T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": "THURSDAY_SHADOW",
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "9ada7aa9472c0f0f71be975d5a0d483ddcfd5926f3711246be804c17b935789e"
+          },
+          {
+            "at": "2020-11-13T10:30:00+00:00",
+            "eligible": true,
+            "monthly": {
+              "available_at": "2020-11-13T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": "FRIDAY_REFERENCE",
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "e894a3a4230d2397f0085b6f235b667c7075be9b16f4106451ac43ceb2d564bc"
+          },
+          {
+            "at": "2020-11-16T10:30:00+00:00",
+            "eligible": true,
+            "monthly": {
+              "available_at": "2020-11-16T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "fc7fa7e238755a3be884b8b28270ad5d2814c5b747a03f8d349840450afdd032"
+          },
+          {
+            "at": "2020-11-17T10:30:00+00:00",
+            "eligible": true,
+            "monthly": {
+              "available_at": "2020-11-17T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "17dcc5e1faf7d2543b5d2ca9dce743643e3cf1215a34887748c664f32aae3804"
+          },
+          {
+            "at": "2020-11-18T10:30:00+00:00",
+            "eligible": true,
+            "monthly": {
+              "available_at": "2020-11-18T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "8d6fbf91e8bf1b2a9920ec57483ec9d88edb1e89bf816f3c2d17d9ebda86307c"
+          },
+          {
+            "at": "2020-11-19T10:30:00+00:00",
+            "eligible": true,
+            "monthly": {
+              "available_at": "2020-11-19T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": "THURSDAY_SHADOW",
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "511ebe3a3d3c072a59b9c90fd41b9cbdf85e49979cece36118843358f5e239d7"
+          },
+          {
+            "at": "2020-11-20T10:30:00+00:00",
+            "eligible": true,
+            "monthly": {
+              "available_at": "2020-11-20T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": "FRIDAY_REFERENCE",
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "2f9bc14b912a1459bc915c42bdf41559a641506366f452953420131dddf73fb4"
+          },
+          {
+            "at": "2020-11-23T10:30:00+00:00",
+            "eligible": true,
+            "monthly": {
+              "available_at": "2020-11-23T10:30:00+00:00",
+              "close": "317",
+              "daily_ema200": "217.49999999999999999999999999999999999999999999999",
+              "final_session": "2020-10-30",
+              "lineage": "012ef9b524b6eb5f958975ecb09448f2d77c1418f0b9d2e7860d3b78b79edcbc",
+              "month_end": "2020-11-01",
+              "month_start": "2020-10-01",
+              "passes": true
+            },
+            "rebalance_observation": null,
+            "regime_candidate": "TRENDING_UP",
+            "shadow_one": true,
+            "shadow_three": true,
+            "signal_hash": "37546bfd42023213c6d4b031ce13fbb86f0393c57454426c16f28f16755ac126"
+          }
+        ],
+        "fold": {
+          "end": "2020-11-24",
+          "selection": "2020-11-18",
+          "test": "2020-11-19",
+          "train": "2020-11-10",
+          "warmup": "2020-01-01"
+        },
+        "metrics": {
+          "buy_fills": 0,
+          "cash_benchmark_return": "0",
+          "cash_closes": 3,
+          "closing_equity": "10000",
+          "low_turnover_benchmark": "UNAVAILABLE: no independent tradable benchmark tape",
+          "max_drawdown": "0",
+          "net_return": "0",
+          "sessions": 3
+        },
+        "reasons": [],
+        "status": "COMPLETE",
+        "trial_id": "f2bff71d4da318fdf2d23bfbf1d9c15bf1b494fa95615890c51b1832d668bf6a"
+      }
+    ]
+  },
+  "study": {
+    "account_rule": "RESET_AT_TEST_START",
+    "baseline": "3f82ef80410c7004e2183bd75290c9bb436ee337",
+    "benchmarks": "ZERO_INTEREST_CASH,LOW_TURNOVER_IF_EVIDENCED",
+    "candidates": "A,B",
+    "configs": [
+      "f6aacb4fd221ac55c9844e979ba92eb5404420615ca766e77c2b5ff9c7a67a69",
+      "ddeff46e8660004d71c9bf51e89025a99496858601c328acdd70a3f204a29121"
+    ],
+    "declared_at": "2019-12-31T10:30:00+00:00",
+    "diagnostics": "SHADOW_STREAK_1_3,THU_FRI_OBSERVATIONS,NO_INTERVAL",
+    "fixture_sha256": "85164eeb6d241896ec3154866ec5dad8c1496d4e7ecd7cd8ad70a6e18eadeaa7",
+    "folds": [
+      {
+        "end": "2020-11-18",
+        "selection": "2020-11-12",
+        "test": "2020-11-13",
+        "train": "2020-11-10",
+        "warmup": "2020-01-01"
+      },
+      {
+        "end": "2020-11-24",
+        "selection": "2020-11-18",
+        "test": "2020-11-19",
+        "train": "2020-11-10",
+        "warmup": "2020-01-01"
+      }
+    ],
+    "measures": "BUY_FILLS,CASH_CLOSES,NET_NAV,MAX_CLOSE_DRAWDOWN",
+    "metric": "PAIRED_B_MINUS_A_NET_NAV_RETURN",
+    "scope": {
+      "fixture": "paired",
+      "origin": "SYNTHETIC",
+      "purpose": "METHOD_TEST"
+    },
+    "selection_rule": "RETAIN_BOTH_NO_FIT",
+    "source_sha256": "1de17520bb590f67d6347489c32ae1371af29e4f4c39c3e8882e1356506f8494",
+    "training": "EXPANDING_PRIOR_TEST_ALLOWED",
+    "version": "SYN-WF-1"
+  }
+}

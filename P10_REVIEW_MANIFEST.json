@@ -1,0 +1,17 @@
+{
+  "phase": 10,
+  "status": "LOCAL_REVIEW_CANDIDATE",
+  "baseline": "3f82ef80410c7004e2183bd75290c9bb436ee337",
+  "branch": "prompt9-research",
+  "sha256": {
+    "walk_forward.py": "041d5e71608b46c39b2a7b06fa57a252dea15b83400a9ebe77e841d201b935ea",
+    "walk_forward_fixture.py": "fec2f2886e21eb809b2fba32e7d435f3f655ebe8bd7669735ec08dc371ca298a",
+    "walk_forward_audit.py": "a1a70776226a6766b5a1a6196374968a38dd23a4711dba6e48f8cccf9754650a",
+    "tests/test_walk_forward.py": "051a5a03a13989c7fa601906d34944111086c1ce68d2d36f19e5d3a1c6b8c4a8",
+    "SYNTHETIC_WALK_FORWARD_REPORT.json": "9328651cb20fe93b3c885425735bc8c7eefd4eea40730026c35a9eecb5fef197",
+    "WALK_FORWARD_LAYER.md": "13402546bd20b6e85b0994c9147221b1574f7ff1023f21c565d1720a69093f29",
+    "README.md": "3a868d405a7f7e334f3d3cec80b76454836606a1aaaa2370c1223da33eb98cd4",
+    "TEST_RESULTS.md": "1ac7f61a7f9aff22c1a66059135d6ce473e8b2adb5a116e117ebdd78b4f4ff24",
+    "PROJECT_HANDOFF.md": "5ebe919e16060ebb97d55babf321012227fe407a0dff2aaf3f5ef6d11799b014"
+  }
+}

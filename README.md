@@ -1,3 +1,12 @@
+# Prompt 10 release · synthetic walk-forward validation
+
+Prompt 10 is closed following independent read-only review and owner approval.
+The study compares A and B on predeclared chronological folds using generated
+fixtures. See [WALK_FORWARD_LAYER.md](WALK_FORWARD_LAYER.md) for the method and
+[TEST_RESULTS.md](TEST_RESULTS.md) for verification. The real research manifest
+remains UNSEALED and submission remains blocked. Prompt 11 requires separate
+authorization. Earlier phase-status entries below are historical.
+
 # Prompt 9 — approved synthetic research evidence release
 
 Prompt 8 is closed and published. Prompt 9 adds a fixed synthetic evidence pipeline

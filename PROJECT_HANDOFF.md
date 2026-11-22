@@ -1,3 +1,18 @@
+# Prompt 10 closure · 2026-11-22
+
+The owner approved closure and publication after a separate independent GO review.
+The reviewer reproduced the synthetic report and challenged fold boundaries,
+receipt timing, gaps, missing marks and restart behavior. All nine candidate
+hashes matched before release preparation. P10_REVIEW_MANIFEST.json preserves
+the independent review snapshot. Only this handoff, README.md and TEST_RESULTS.md
+received closure edits after review.
+
+The primary and secondary release parents are the respective published Prompt 9
+heads. See WALK_FORWARD_LAYER.md for reproduction and TEST_RESULTS.md for the
+release checks. No real outcome research or broker action is authorized. The
+real manifest stays UNSEALED, submission and operational readiness stay blocked,
+and Prompt 11 requires separate owner authorization.
+
 # Prompt 9 closure — 2026-11-19
 
 The user approved closure and publication on both main branches after a separate

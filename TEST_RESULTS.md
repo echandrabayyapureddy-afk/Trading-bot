@@ -1,3 +1,38 @@
+# Prompt 10 closure verification · 2026-11-22
+
+The independent reviewer recommended GO and the owner approved closure and
+publication. The release check matched the review manifest and all nine
+candidate hashes before the three closure-only documentation edits.
+
+| Release command | Result |
+|---|---|
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_walk_forward.py -q` | 20 passed in 124.823 s |
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q` | 476 passed in 230.523 s |
+
+Both runs exited successfully with zero failures, errors, skips or emitted
+warnings. The release checks included Git whitespace validation and a scan
+of all seven new files. The stored synthetic report matched the reviewed
+canonical digest below. P10_REVIEW_MANIFEST.json records the review candidate.
+Only README.md, PROJECT_HANDOFF.md and this test record differ from its hashes.
+
+# Historical Prompt 10 implementation verification
+
+All runs used offline synthetic fixtures. Each unittest run below had zero failures,
+errors and skips. No warnings were emitted.
+
+| Check | Command | Result |
+|---|---|---|
+| Clean Prompt 9 baseline | `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q` | 456 passed in 181.096s |
+| Final Prompt 10 candidate | `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_walk_forward.py -q` | 20 passed in 190.850s |
+| Complete local candidate | `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q` | 476 passed in 363.714s |
+
+A fresh replay of the paired fixture reproduced the complete stored JSON data and
+13 expected audit receipts. The canonical report digest is
+`f2ffa9660e7c30d0ebb54c3e4b42cda9d05d243d056b44c354f89d4814ff9fbd`.
+The final checks include `git diff --check` and an explicit whitespace scan of
+all untracked files. Source, fixture, report, tests and documentation are pinned
+in P10_REVIEW_MANIFEST.json. Separate independent review is pending.
+
 # Prompt 9 closure release verification — 2026-11-19
 
 All eight candidate hashes matched the independent review manifest before closure
