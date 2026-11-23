@@ -548,5 +548,21 @@ class ExecutionTests(unittest.TestCase):
         self.reason(after,'late state-changing occurrence')
 
 
+    def test_fill_redelivery_reserves_alias_against_conflicting_exit(self):
+        chain = self.chain()
+        alias = replace(chain[-1], command_id='zz-redelivery')
+        prefix = chain + (alias, alias) + self.protect() + (self.trigger(),)
+        before = self.run_sim(prefix)
+        conflict = replace(self.exit_fill(), command_id=alias.command_id)
+        after = self.run_sim(prefix + (conflict,))
+        self.assertEqual(after.audit[-1].command, conflict)
+        self.assertEqual(after.audit[-1].outcome, 'REJECTED')
+        self.assertIn('conflicting command identifier', after.entry_blocks)
+        for field in ('positions', 'orders', 'events', 'settled_cash', 'unsettled_proceeds'):
+            self.assertEqual(getattr(after, field), getattr(before, field))
+        self.assertEqual(before.positions[0].quantity, 2)
+        self.assertEqual(self.run_sim(prefix + (self.exit_fill(),)).positions[0].quantity, 0)
+
+
 if __name__ == '__main__':
     unittest.main()

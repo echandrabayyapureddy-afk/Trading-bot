@@ -385,6 +385,9 @@ def replay(snapshot: Snapshot, config: BotConfig, funding: Funding, capabilities
                             a.command.event.event_id == command.event.event_id), None)
                 if old is not None:
                     require(replace(old, command_id=command.command_id) == command, 'conflicting event identifier')
+                    # This receipt reserves its command identity without applying the event twice.
+                    state = replace(state, audit=state.audit+(Audit(command, 'REDELIVERED', ()),))
+                    seen[command.command_id] = command
                     continue
             if command.action == 'EVENT':
                 state, lineage = _event(state, command, snapshot, config, capabilities, dependencies)

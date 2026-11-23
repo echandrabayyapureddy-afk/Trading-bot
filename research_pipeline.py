@@ -2,10 +2,11 @@
 from dataclasses import replace
 from config import ConfigError, SealStatus, ResearchManifest, content_hash
 from data_records import digest, encoded, IST
+from data_validator import universe_as_of
 from data_fetcher import completed_candle, period_bounds
 from execution_engine import require, _signal
 from suitability import command
-from research_records import RunSpec, InputBundle, Stage, ResearchReport, AttemptEvent
+from research_records import UNIVERSE_LIMITATION, RunSpec, InputBundle, Stage, ResearchReport, AttemptEvent
 from research_journal import ResearchJournal
 
 LIMITATIONS=('Synthetic evidence is not authenticated provenance or profitability evidence.',
@@ -21,6 +22,11 @@ def preflight(spec):
 
 
 def validate_inputs(spec,bundle):
+    _validate_inputs(spec, bundle)
+    return bundle
+
+
+def _validate_inputs(spec,bundle):
     require(type(bundle) is InputBundle,'typed immutable input bundle required')
     require(bundle.fixture_id==spec.fixture_id,'fixture identity mismatch')
     require(digest(bundle)==spec.input_sha256,'input hash mismatch')
@@ -33,6 +39,16 @@ def validate_inputs(spec,bundle):
     require(bundle.snapshot.origin=='SYNTHETIC','non-synthetic snapshot')
     require(bundle.suitability.at==spec.decision_at,'suitability cutoff mismatch')
     require(not bundle.suitability.operational_authorized and not bundle.execution.operational_authorized,'operational evidence prohibited')
+    membership = None
+    if bundle.universe_version is not None or bundle.suitability.ranked:
+        membership = universe_as_of(bundle.snapshot, spec.decision_at.astimezone(IST).date(), spec.decision_at)
+        require(bundle.universe_version in (None, membership.version), 'unsupported universe version claim')
+        require(bundle.config.data.universe_version in (None, membership.version), 'configured universe mismatch')
+        require(all(row.request.signal.instrument_id in membership.members for row in bundle.suitability.ranked),
+                'ranked instrument excluded from dated universe')
+    claimed = membership if bundle.universe_version is not None else None
+    require(spec.membership_sha256 == (digest(claimed) if claimed is not None else None),
+            'dated universe evidence differs from run specification')
     rows=bundle.suitability.ranked+bundle.suitability.other
     for row in rows:
         require(row.at==spec.decision_at and row.request.signal.candidate==spec.candidate,'row candidate/cutoff mismatch')
@@ -48,13 +64,15 @@ def validate_inputs(spec,bundle):
     require(len(set(visible_ids))==len(visible_ids),'duplicate/conflicting visible evidence ID')
     # A receipt becomes visible at its recording time, including at the cutoff.
     # A repeated identical audit represents one fact. Keep the original tuple intact.
-    outcomes = {}
+    visible_outcomes = tuple(a for a in bundle.outcomes if a.command.recorded_at <= spec.evaluation_at)
+    command_sources = {}
     event_sources = {}
-    for audit in bundle.outcomes:
-        if audit.command.recorded_at > spec.evaluation_at:
+    receipts = bundle.execution.audit + visible_outcomes
+    for audit in receipts:
+        if audit.outcome == 'REDELIVERED':
             continue
         identity = audit.command.command_id
-        if identity in outcomes and outcomes[identity] != audit:
+        if identity in command_sources and command_sources[identity] != audit:
             raise ConfigError(f'conflicting visible outcome receipts for {identity}')
         if audit.command.event is not None:
             event_id = audit.command.event.event_id
@@ -63,18 +81,34 @@ def validate_inputs(spec,bundle):
             if previous != audit and replace(previous, command=replace(
                     previous.command, command_id=identity)) != audit:
                 raise ConfigError(f'conflicting visible event receipts for {event_id}')
-        outcomes[identity] = audit
+        command_sources[identity] = audit
+
+    # Reconcile aliases only after indexing the underlying receipts (input order is immaterial).
+    for audit in receipts:
+        if audit.outcome != 'REDELIVERED':
+            continue
+        alias = audit.command
+        original = event_sources.get(alias.event.event_id) if alias.event else None
+        require(original is not None and replace(original.command, command_id=alias.command_id) == alias,
+                'redelivery without matching visible event')
+        resolved = replace(original, command=alias)
+        require(command_sources.setdefault(alias.command_id, resolved) == resolved,
+                'conflicting visible redelivery command identifier')
+
+    # Underlying and redelivery receipts may describe the same verified fact.
+    # Resolve the exact referenced receipt only after checking all identities.
+    outcomes = {(a.command.command_id, digest(a)): a for a in visible_outcomes}
 
     for e in bundle.evidence:
         if e.kind=='OUTCOME' and e.recorded_at>spec.evaluation_at: continue
         if e.kind=='OUTCOME':
-            audit = outcomes.get(e.source_ref)
-            require(audit is not None and digest(audit) == e.payload_sha256,
+            audit = outcomes.get((e.source_ref, e.payload_sha256))
+            require(audit is not None,
                     'outcome source/hash mismatch')
             observed=audit.command.event.occurred_at if audit.command.event else (audit.command.point.at if audit.command.point else audit.command.recorded_at)
             require(e.observed_at==observed,'outcome occurrence mismatch')
             require(e.available_at>=audit.command.recorded_at,'outcome predates execution evidence')
-            require(e.state==('CONFIRMED' if audit.outcome=='APPLIED' else 'UNRESOLVED'),'outcome resolution mismatch')
+            require(e.state==('CONFIRMED' if command_sources[e.source_ref].outcome=='APPLIED' else 'UNRESOLVED'),'outcome resolution mismatch')
         if e.kind=='FEATURE':
             require(e.recorded_at<=spec.decision_at,'future feature receipt')
             if e.timeframe=='DAILY':
@@ -94,19 +128,19 @@ def validate_inputs(spec,bundle):
                 candle=completed_candle(bundle.snapshot,e.source_ref,e.period_start,e.timeframe,spec.decision_at)
                 require(e.observed_at==candle.final_session_close and e.available_at>=candle.available_at,'period evidence timing mismatch')
                 require(digest(candle)==e.payload_sha256,'candle vintage/hash mismatch')
-    return bundle
+    return claimed
 
 
 def assemble(spec,bundle):
     preflight(spec)
-    validate_inputs(spec, bundle)
+    membership = _validate_inputs(spec, bundle)
     # Outcomes available later are diagnostics only, never injected into any upstream calculation.
     visible=tuple(sorted((e for e in bundle.evidence if e.recorded_at<=
                         (spec.decision_at if e.kind=='FEATURE' else spec.evaluation_at)),key=lambda e:e.evidence_id))
     missing=tuple('missing/unresolved required evidence:'+name for name in spec.required_evidence
                   if not any(e.evidence_id==name and e.state=='CONFIRMED' for e in visible))
     missing+=tuple('missing profile:'+name for name in ('fee_profile','execution_profile') if getattr(bundle,name) is None)
-    if any(e.state!='CONFIRMED' for e in visible) or any(a.outcome!='APPLIED' for a in bundle.execution.audit) or bundle.execution.entry_blocks:
+    if any(e.state!='CONFIRMED' for e in visible) or any(a.outcome in ('REJECTED','UNRESOLVED') for a in bundle.execution.audit) or bundle.execution.entry_blocks:
         missing+=('execution has rejected/unresolved facts; no completed-trade inference',)
     stages=(Stage('validate_inputs','PASS',()),Stage('assemble_evidence','PASS',()),
             Stage('validate_consistency','BLOCKED' if missing else 'PASS',missing),
@@ -115,7 +149,7 @@ def assemble(spec,bundle):
     return ResearchReport(spec.run_id,spec,'INCOMPLETE' if missing else 'PASS',stages,visible,spec.input_sha256,
         digest(bundle.snapshot),bundle.snapshot.calendar.version,tuple(sorted({b.provider+'@'+b.provider_version for b in bundle.snapshot.bars if b.available_at<=spec.decision_at})),bundle.universe_version,bundle.fee_profile,
         bundle.execution_profile,digest(bundle.suitability),digest(bundle.execution),LIMITATIONS+
-        (() if bundle.universe_version else ('Historical universe unavailable; not unbiased historical validation.',)))
+        (() if membership is not None else (UNIVERSE_LIMITATION,)), membership=membership)
 
 
 def execute(spec,journal,attempt_id,recorded_at,load_fixture):
@@ -125,7 +159,7 @@ def execute(spec,journal,attempt_id,recorded_at,load_fixture):
     """
     require(type(journal) is ResearchJournal,'dedicated research journal required')
     prior=journal.attempt(attempt_id)
-    start=AttemptEvent(attempt_id+':start',attempt_id,spec.run_id,encoded(spec).decode(),recorded_at,'STARTED',())
+    start=AttemptEvent(attempt_id+':start',attempt_id,spec.run_id,encoded(spec.identity_document()).decode(),recorded_at,'STARTED',())
     if prior is not None:
         if prior.events[0]!=start: journal.append(start)
         return journal.attempt(attempt_id)  # no implicit rerun; retry needs a new attempt ID

@@ -124,7 +124,7 @@ class Position(Validated):
 @dataclass(frozen=True, slots=True)
 class Audit(Validated):
     command: Command
-    outcome: Literal['APPLIED', 'REJECTED', 'UNRESOLVED']
+    outcome: Literal['APPLIED', 'REJECTED', 'UNRESOLVED', 'REDELIVERED']
     reasons: tuple[str, ...]
     lineage: tuple[str, ...] = ()
 

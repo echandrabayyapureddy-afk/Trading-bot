@@ -1,3 +1,71 @@
+# Prompt 11 closure · independent adversarial QA
+
+The owner approved closure and publication after the separate read-only re-review
+returned GO. The verified candidate diff against the primary Prompt 10 parent was
+`4118b3666d0c8543618a796f49b31746ea4ced794b630a3d1181e1a6e823c727`.
+Only README.md, TEST_RESULTS.md and this handoff received closure edits.
+
+The reviewer checked alias reuse immediately before, at and after receipt
+visibility through restart, valid redelivery and unique exits. A correctly
+rehashed unsupported universe claim remained BLOCKED under the original STARTED
+receipt after restart, with the original receipt retained. See TEST_RESULTS.md
+for release checks. The real manifest remains UNSEALED. Research and execution
+remain synthetic-only. Submission and operational readiness remain blocked.
+Prompt 12 requires separate owner authorization.
+
+## Historical Prompt 11 correction notes
+
+The following notes record the earlier candidate and its review instructions.
+
+The candidate is based on primary Prompt 10 commit
+`050957bd76c111363a0a82c07a97bc269d8b6fe6`. Execution replay now remembers
+command aliases for identical event deliveries. Research checks command and event
+identities across the decision account audit and visible outcome receipts.
+Suitability requires visible dated membership for ranking and binds the membership
+record to the proposal dependencies. Research verifies an asserted universe version
+at the decision cutoff. An absent claim retains the historical universe limitation.
+
+Re-run the execution, suitability, research and walk-forward suites, then the full
+suite. Challenge the alias reuse exit, the 110/109 fill at the later receipt boundary
+through restart, and membership exclusion, missing evidence and future publication.
+The checked-in Prompt 10 example and review manifest identify the published release.
+Prompt 11 closure and publication require separate approval.
+
+## Historical cross-layer corrections
+
+The incoming seven-file diff had SHA-256
+`2f90ae3801a4cbba541856a1576eb5673038a3a4e99d057a0250c2f7a0bdf8e2`.
+Both independent-review failures were reproduced before editing.
+
+* Each accepted alternate command ID gets one `REDELIVERED` audit receipt.
+  The underlying event, applied receipt, cash, holdings and proceeds keep their
+  original values. Research resolves redeliveries against the underlying visible
+  event and checks reserved IDs across the decision account and outcome receipts.
+  The accounting and walk-forward owners count applied fills only.
+* A research run claiming a universe version must set `RunSpec.membership_sha256`
+  to the digest of the exact dated Universe selected from the synthetic snapshot.
+  The run ID commits to this pin before evaluation. The saved report carries that
+  record. Construction and journal reconstruction verify the version, membership
+  digest, inclusive publication cutoff, half-open effective dates and the
+  survivorship statement. With no claim, omit the pin and retain the warning.
+  Historical unpinned no-claim reports with the warning remain readable under
+  their original run IDs. Historical unsupported claims reconstruct as BLOCKED
+  and their original receipts remain available. These checks establish internal
+  consistency within a synthetic run. External provenance remains unverified.
+
+**Independent re-review.** Start from this uncommitted checkout on
+`prompt9-research`. Use the five unittest commands in the correction request
+with bytecode disabled and run `git diff --check`. Use disposable stores outside
+the checkout. Replay a fill and its alias, then supply a separate applied exit
+receipt using the alias. Check one microsecond before, at and after visibility,
+reopen the journal, and compare balances with the original fill. Repeat with a
+unique exit ID and with an identical redelivery. For universe evidence, try
+substituting both the claimed version and membership payload under the original
+STARTED record. Remove the warning from a no-claim report, recompute each
+terminal checksum, and verify that replay retains the receipts and returns
+BLOCKED before and after restart. Check valid pinned and historical no-claim
+controls. Repeat the earlier F1–F4 probes. Prompt 11 remains open.
+
 # Prompt 10 closure · 2026-11-22
 
 The owner approved closure and publication after a separate independent GO review.

@@ -6,7 +6,7 @@ from decimal import Decimal as D
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from config import ConfigError, canonical_json, Candidate
-from data_records import digest
+from data_records import Universe, digest
 from execution_records import Account
 from accounting_adapter import AccountingDependencies, CostEvidence
 from suitability import Request, evaluate, weekly_report, revalidation_issues
@@ -19,6 +19,10 @@ class SuitabilityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         ef.ExecutionTests.setUpClass(); cls.f=ef.ExecutionTests()
+        cal = cls.f.snapshot.calendar
+        members = Universe('synthetic-members', cal.start, cal.end, cal.available_at,
+                           ('AAA', 'STOCK'), 'synthetic dated fixture')
+        cls.f.snapshot = replace(cls.f.snapshot, universes=(members,))
         cls.at=cls.f.open
         cls.account=Account(D(10000))
         cls.adapter=AccountingDependencies(cls.f.cfg,cls.f.funding,'acct',af.schedule(cls.at),(),
@@ -190,3 +194,21 @@ class SuitabilityTests(unittest.TestCase):
         blocked=replace(state,entry_blocks=('suspended',))
         self.assertEqual(self.row(account=blocked).quantity,0)
         self.assertEqual(blocked.positions[0].quantity,0)
+
+    def test_dated_membership_controls_row_and_rank(self):
+        snap = self.f.snapshot
+        member, = snap.universes
+        future = replace(member, members=('OTHER',), available_at=self.at+timedelta(microseconds=1))
+        for records, eligible in (((member,), True), ((member, future), True),
+                                  ((replace(member, members=('OTHER',)),), False),
+                                  ((future,), False), ((), False)):
+            with self.subTest(records=records):
+                snapshot = replace(snap, universes=records)
+                row = self.row(snapshot=snapshot)
+                report = weekly_report(snapshot, self.f.cfg, self.account, self.adapter, self.f.cap,
+                                       (self.request,), self.at)
+                self.assertEqual(row.status == 'BUY-CANDIDATE', eligible)
+                self.assertEqual(report.ranked, (row,) if eligible else ())
+                if not eligible:
+                    self.assertEqual(row.quantity, 0)
+                    self.assertIn('universe', str(row.reasons))

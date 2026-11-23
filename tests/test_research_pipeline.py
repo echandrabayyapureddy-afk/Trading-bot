@@ -30,6 +30,8 @@ class ResearchTests(unittest.TestCase):
         s=RunSpec(b.fixture_id,'SYNTHETIC','ENGINEERING',b.config.strategy.candidate,
                   self.at.date(),self.at.date()+timedelta(days=1),b.snapshot.calendar.start,b.snapshot.calendar.end,
                   self.at,self.at,BASE,digest(tuple((p,__import__('hashlib').sha256(Path(p).read_bytes()).hexdigest()) for p in ('research_records.py','research_pipeline.py','research_journal.py','tests/test_research_pipeline.py'))),content_hash(b.config),content_hash(b.manifest),digest(b),('report',))
+        if b.universe_version is not None and len(b.snapshot.universes) == 1:
+            s = replace(s, membership_sha256=digest(b.snapshot.universes[0]))
         return replace(s,**changes)
     def run_attempt(self,b=None,**spec):
         b=b or self.bundle
@@ -309,3 +311,179 @@ with patch('builtins.open',side_effect=AssertionError('open')),patch('sqlite3.co
         report = self.result(attempt)
         self.assertEqual(report.evidence[0].source_ref, 'suitability')
         self.assertEqual(report.evidence[0].payload_sha256, report.suitability_sha256)
+
+    def test_account_and_outcome_fill_collision_visibility_restart(self):
+        h = self.f.f
+        account = h.run_sim(h.chain(), as_of=self.at)
+        late = self.at + timedelta(minutes=1)
+        chain = list(h.chain(price=sf.D(109)))
+        fill = chain[-1]
+        chain[-1] = replace(fill, recorded_at=late, event=replace(fill.event, recorded_at=late, notified_at=late))
+        conflicting = h.run_sim(chain, as_of=late).audit[-1]
+        self.assertEqual(conflicting.outcome, 'APPLIED')
+        self.assertEqual(account.audit[-1].command.event.price, 110)
+        report = self.f.report(())
+        feature = replace(self.bundle.evidence[0], payload_sha256=digest(report))
+        for alias in ('fill', 'other-command'):
+            receipt = replace(conflicting, command=replace(conflicting.command, command_id=alias))
+            evidence = EvidenceItem('later', 'OUTCOME', self.at, late, late, alias, digest(receipt), 'CONFIRMED')
+            bundle = replace(self.bundle, execution=account, suitability=report,
+                             outcomes=(receipt,), evidence=(feature, evidence))
+            for offset, expected in ((-1, 'PASS'), (0, 'FAILED'), (1, 'FAILED')):
+                key = f'{alias}-{offset}'
+                spec = self.spec(bundle, evaluation_at=late+timedelta(microseconds=offset))
+                attempt = execute(spec, self.j, key, late+timedelta(seconds=1), lambda:bundle)
+                self.assertEqual(attempt.status, expected, attempt.reasons)
+                if offset >= 0:
+                    self.assertIn('conflicting visible', str(attempt.events[-1].reasons))
+                self.j.close()
+                self.j = ResearchJournal(self.path)
+                self.assertEqual(self.j.attempt(key), attempt)
+
+    def test_universe_claim_needs_visible_applicable_snapshot_record(self):
+        report = self.f.report(())
+        feature = replace(self.bundle.evidence[0], payload_sha256=digest(report))
+        base = replace(self.bundle, suitability=report, evidence=(feature,))
+        member, = base.snapshot.universes
+        for i, (records, claim, expected) in enumerate((
+                ((), None, 'PASS'), ((), 'never-published', 'FAILED'),
+                ((member,), 'other', 'FAILED'), ((member,), member.version, 'PASS'),
+                ((replace(member, available_at=self.at+timedelta(microseconds=1)),), member.version, 'FAILED'),
+                ((replace(member, end=self.at.date()),), member.version, 'FAILED'))):
+            bundle = replace(base, snapshot=replace(base.snapshot, universes=records), universe_version=claim)
+            attempt = execute(self.spec(bundle), self.j, str(i), self.at, lambda:bundle)
+            self.assertEqual(attempt.status, expected, attempt.reasons)
+            if expected == 'PASS':
+                self.assertEqual(any('Historical universe unavailable' in s for s in self.result(attempt).limitations),
+                                 claim is None)
+
+    def test_split_replay_exit_reusing_fill_alias(self):
+        sim = self.f.f
+        chain = sim.chain()
+        alias = replace(chain[-1], command_id='zz-fill-copy')
+        decision = sim.run_sim(chain+(alias, alias), as_of=self.at)
+        original = sim.run_sim(chain, as_of=self.at)
+        self.assertEqual([(a.command.command_id, a.outcome) for a in decision.audit[len(original.audit):]],
+                         [(alias.command_id, 'REDELIVERED')])
+        exit_prefix = chain + sim.protect() + (sim.trigger(),)
+        report = self.f.report(())
+        feature = replace(self.bundle.evidence[0], payload_sha256=digest(report))
+        for command_id in (alias.command_id, 'unique-exit'):
+            exit_fill = replace(sim.exit_fill(), command_id=command_id)
+            receipt = sim.run_sim(exit_prefix+(exit_fill,)).audit[-1]
+            self.assertEqual(receipt.outcome, 'APPLIED')
+            at = exit_fill.recorded_at
+            evidence = EvidenceItem('later', 'OUTCOME', exit_fill.event.occurred_at, at, at,
+                                    command_id, digest(receipt), 'CONFIRMED')
+            bundle = replace(self.bundle, execution=decision, suitability=report,
+                             evidence=(feature, evidence), outcomes=(receipt,))
+            for micros in (-1, 0, 1):
+                cutoff = at + timedelta(microseconds=micros)
+                key = f'{command_id}-{micros}'
+                attempt = execute(self.spec(bundle, evaluation_at=cutoff), self.j, key, at+timedelta(seconds=1),
+                                  lambda: bundle)
+                conflict = command_id == alias.command_id and micros >= 0
+                self.assertEqual(attempt.status, 'FAILED' if conflict else 'PASS', attempt.reasons)
+                if conflict:
+                    self.assertIn('conflicting visible redelivery', str(attempt.events[-1].reasons))
+                self.j.close()
+                self.j = ResearchJournal(self.path)
+                self.assertEqual(self.j.attempt(key), attempt)
+        self.assertEqual((decision.positions, decision.settled_cash, decision.unsettled_proceeds),
+                         (original.positions, original.settled_cash, original.unsettled_proceeds))
+        self.assertEqual((decision.positions[0].quantity, decision.settled_cash, decision.unsettled_proceeds),
+                         (2, 9779, 0))
+
+    def test_saved_universe_membership_is_pinned_and_visible(self):
+        member, = self.bundle.snapshot.universes
+        attempt = self.run_attempt(replace(self.bundle, universe_version=member.version))
+        self.assertEqual(attempt.status, 'PASS')
+        report = self.result(attempt)
+        self.assertEqual(report.membership, member)
+        self.assertEqual(report.spec.membership_sha256, digest(member))
+        self.j.close()
+        self.j = ResearchJournal(self.path)
+        self.assertEqual(self.j.attempt(attempt.attempt_id), attempt)
+        for wrong in (None, replace(member, version='unpublished'), replace(member, evidence='different source')):
+            with self.assertRaises(ConfigError):
+                replace(report, membership=wrong)
+        for wrong in (replace(member, available_at=self.at+timedelta(microseconds=1)),
+                      replace(member, end=self.at.date())):
+            spec = replace(report.spec, membership_sha256=digest(wrong))
+            with self.assertRaises(ConfigError):
+                replace(report, spec=spec, run_id=spec.run_id, membership=wrong)
+
+    def test_rehashed_universe_claim_without_membership(self):
+        report = self.f.report(())
+        bundle = replace(self.bundle, snapshot=replace(self.bundle.snapshot, universes=()), suitability=report,
+                         evidence=(replace(self.bundle.evidence[0], payload_sha256=digest(report)),))
+        attempt = self.run_attempt(bundle)
+        self.assertEqual(attempt.status, 'PASS')
+        start, end = attempt.events
+        saved = self.result(attempt)
+        warning = 'Historical universe unavailable; not unbiased historical validation.'
+        self.assertIn(warning, saved.limitations)
+        silent = tuple(s for s in saved.limitations if s != warning)
+        for label, claim, member in (('omitted-warning', None, None), ('invented', 'never-published', None),
+                                     ('substituted-record', 'never-published',
+                                      replace(self.bundle.snapshot.universes[0], version='never-published'))):
+            doc = json.loads(end.output_json)
+            doc.update(universe_version=claim, membership=json.loads(encoded(member)), limitations=silent)
+            payload = encoded(doc).decode()
+            altered = replace(end, output_json=payload, output_sha256=digest(doc))
+            with self.assertRaises(ConfigError):
+                replace(saved, universe_version=claim, membership=member, limitations=silent)
+            path = Path(self.tmp.name)/('research-'+label)
+            journal = ResearchJournal.create(path)
+            journal.append(start, altered)
+            before = journal.attempt(start.attempt_id)
+            journal.close()
+            journal = ResearchJournal(path)
+            try:
+                self.assertEqual(before.status, 'BLOCKED')
+                self.assertEqual(before, journal.attempt(start.attempt_id))
+                self.assertEqual(journal.events(), (start, altered))
+            finally:
+                journal.close()
+
+    def test_confirmed_alias_receipt_preserves_original_and_exact_redelivery(self):
+        sim = self.f.f
+        chain = sim.chain()
+        alias = replace(chain[-1], command_id='zz-redelivery')
+        account = sim.run_sim(chain+(alias,), as_of=self.at)
+        original, redelivery = account.audit[-2:]
+        self.assertEqual(original, sim.run_sim(chain, as_of=self.at).audit[-1])
+        # A separate replay can legitimately use the alias as its first delivery.
+        independent = sim.run_sim(chain[:-1]+(alias,), as_of=self.at).audit[-1]
+        report = self.f.report(())
+        feature = replace(self.bundle.evidence[0], payload_sha256=digest(report))
+        for i, receipts in enumerate(((redelivery, independent), (independent, redelivery))):
+            outcome = EvidenceItem('alias', 'OUTCOME', self.at, self.at, self.at,
+                                   alias.command_id, digest(redelivery), 'CONFIRMED')
+            b = replace(self.bundle, execution=account, suitability=report, outcomes=receipts,
+                        evidence=(feature, outcome))
+            a = execute(self.spec(b), self.j, str(i), self.at, lambda: b)
+            self.assertEqual(a.status, 'PASS', a.reasons)
+
+    def test_legacy_unpinned_report_replay(self):
+        start, end = self.run_attempt().events
+        spec = json.loads(start.spec_json)
+        self.assertNotIn('membership_sha256', spec)
+        legacy_start = replace(start, spec_json=encoded(spec).decode())
+        for claim, expected in ((None, 'PASS'), ('unsupported', 'BLOCKED')):
+            doc = json.loads(end.output_json)
+            doc['spec'] = spec
+            del doc['membership']
+            doc['universe_version'] = claim
+            legacy_end = replace(end, spec_json=legacy_start.spec_json, output_json=encoded(doc).decode(),
+                                 output_sha256=digest(doc))
+            journal = ResearchJournal.create(Path(self.tmp.name)/('research-old-'+expected))
+            try:
+                journal.append(legacy_start, legacy_end)
+                self.assertEqual(journal.attempt(start.attempt_id).status, expected)
+                replayed = execute(self.spec(), journal, start.attempt_id, start.recorded_at,
+                                   Mock(side_effect=AssertionError('legacy retry must not reload')))
+                self.assertEqual(replayed.status, expected)
+                self.assertEqual(journal.events(), (legacy_start, legacy_end))
+            finally:
+                journal.close()

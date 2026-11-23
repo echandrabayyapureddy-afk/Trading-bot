@@ -4,12 +4,13 @@ from datetime import date, datetime
 from typing import Literal
 import re
 from config import Validated, Candidate, BotConfig, ResearchManifest, ConfigError, _sha, content_hash
-from data_records import Snapshot, digest, IST
+from data_records import Snapshot, Universe, canonical, digest, IST
 from execution_engine import require
 from suitability import Report
 from execution_records import Account, Audit
 
 VERSION='RESEARCH-1'
+UNIVERSE_LIMITATION = 'Historical universe unavailable; not unbiased historical validation.'
 
 @dataclass(frozen=True, slots=True)
 class RunSpec(Validated):
@@ -30,7 +31,10 @@ class RunSpec(Validated):
     input_sha256: str
     required_evidence: tuple[str, ...]
     schema_version: Literal['RESEARCH-1'] = VERSION
+    membership_sha256: str | None = None
     def validate(self):
+        if self.membership_sha256 is not None:
+            _sha(self.membership_sha256, 'dated universe membership')
         if not re.fullmatch('[0-9a-f]{40}',self.source_commit): raise ConfigError('full source commit required')
         for n in ('dirty_source_sha256','config_sha256','manifest_sha256','input_sha256'): _sha(getattr(self,n),n)
         if len(set(self.required_evidence))!=len(self.required_evidence): raise ConfigError('duplicate required evidence')
@@ -42,8 +46,15 @@ class RunSpec(Validated):
         require(self.decision_at<=self.evaluation_at,'evaluation before decision')
         require(self.start<=self.decision_at.astimezone(IST).date()<self.end,'decision outside requested interval')
 
+    def identity_document(self):
+        document = canonical(self)
+        # Match the original start receipt exactly for runs without a universe pin.
+        if self.membership_sha256 is None:
+            del document['membership_sha256']
+        return document
+
     @property
-    def run_id(self): return digest(self)
+    def run_id(self): return digest(self.identity_document())
 
 @dataclass(frozen=True, slots=True)
 class EvidenceItem(Validated):
@@ -106,8 +117,20 @@ class ResearchReport(Validated):
     label: Literal['SYNTHETIC / NON-OPERATIONAL'] = 'SYNTHETIC / NON-OPERATIONAL'
     operational_authorized: Literal[False] = False
 
+    membership: Universe | None = None
+
     def validate(self):
         self.spec.validate_engineering_scope()
+        if self.universe_version is None:
+            require(self.membership is None and self.spec.membership_sha256 is None
+                    and UNIVERSE_LIMITATION in self.limitations, 'absent universe requires survivorship limitation')
+        else:
+            record = self.membership
+            day = self.spec.decision_at.astimezone(IST).date()
+            require(record is not None and record.version == self.universe_version
+                    and record.start <= day < record.end and record.available_at <= self.spec.decision_at
+                    and digest(record) == self.spec.membership_sha256 and UNIVERSE_LIMITATION not in self.limitations,
+                    'unsupported saved universe claim or inconsistent survivorship limitation')
         for name in ('run_id', 'input_sha256', 'snapshot_sha256', 'suitability_sha256', 'execution_sha256'):
             _sha(getattr(self, name), name)
         require(self.run_id == self.spec.run_id, 'report run identity mismatch')

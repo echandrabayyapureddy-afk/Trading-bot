@@ -6,7 +6,7 @@ from fractions import Fraction as F
 from typing import Literal
 from config import Validated, ConfigError, Candidate, content_hash, canonical_json
 from data_records import digest, IST
-from data_validator import daily_as_of
+from data_validator import daily_as_of, universe_as_of
 from strategy import StrategyResult, latest_period, entry_price_issues
 from regime_detector import RegimeResult
 from execution_records import Command, Account, Capabilities, PricePoint
@@ -85,6 +85,9 @@ def evaluate(snapshot, config, account, adapter, capabilities, request, at):
         c=command(request,config,at,1)
         levels=_signal(snapshot,config,c,at)
         _identity(snapshot,s.instrument_id,at)
+        membership = universe_as_of(snapshot, at.astimezone(IST).date(), at)
+        require(s.instrument_id in membership.members, 'instrument excluded from dated universe')
+        require(config.data.universe_version in (None, membership.version), 'universe version mismatch')
         require(s.candidate==config.strategy.candidate,'candidate mismatch')
         r=request.regime
         require(digest(r)==s.regime_sha256 and r.config_sha256==content_hash(config) and
@@ -123,7 +126,7 @@ def evaluate(snapshot, config, account, adapter, capabilities, request, at):
             pending=sum((o.quantity*(F(o.levels.ceiling)-F(o.levels.stop)+F(adapter.costs.remaining_exit_cost_per_share)+F(adapter.costs.adverse_per_share))+F(o.fee)
                          for o in account.orders if o.role=='BUY' and o.state=='PENDING'),F(0))
             aggregate=exact(F(risk)+pending+sum((F(x.r_position) for x in gate.positions),F(0)))
-            dep=digest((gate.evidence,adapter.schedule,adapter.costs,capabilities)); reasons=[]; break
+            dep=digest((gate.evidence,adapter.schedule,adapter.costs,capabilities,membership)); reasons=[]; break
         if not q: reasons=reasons or ['no affordable shares']
     except ConfigError as error: reasons=[str(error)]
     status='BUY-CANDIDATE' if q and not reasons else ('WATCH' if s.opportunity and s.opportunity.state=='ACTIVE' else 'SKIP')

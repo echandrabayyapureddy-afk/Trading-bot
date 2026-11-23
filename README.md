@@ -1,3 +1,16 @@
+# Prompt 11 release · independent adversarial QA
+
+Prompt 11 is closed following independent re-review and owner approval.
+Execution preserves command aliases across research receipt checks. Weekly
+suitability requires dated universe membership, and saved research reports
+bind universe claims to membership evidence visible at the decision cutoff.
+The real manifest remains UNSEALED. Submission and operational readiness
+remain blocked. Prompt 12 requires separate authorization.
+
+[Release tests](TEST_RESULTS.md) · [Project handoff](PROJECT_HANDOFF.md)
+
+Earlier phase-status entries are historical.
+
 # Prompt 10 release · synthetic walk-forward validation
 
 Prompt 10 is closed following independent read-only review and owner approval.

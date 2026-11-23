@@ -77,7 +77,8 @@ class ResearchJournal:
         issues=[];state='INCOMPLETE';start=events[0];last=None
         for i,e in enumerate(events):
             try:
-                spec=from_dict(RunSpec,json.loads(e.spec_json))
+                spec_doc = parse_json(e.spec_json)
+                spec = from_dict(RunSpec, {'membership_sha256': None, **spec_doc})
                 if spec.run_id!=e.run_id or e.run_id!=start.run_id: raise ConfigError('run/spec mismatch')
                 if any(x.event_id==e.event_id and x!=e for x in all_events): raise ConfigError('conflicting event ID')
                 if last is not None and e.recorded_at<last: raise ConfigError('receipt out of order')
@@ -85,7 +86,11 @@ class ResearchJournal:
                 if i>0 and (i!=1 or e.state=='STARTED'): raise ConfigError('conflicting terminal event')
                 if e.output_json is not None:
                     if hashlib.sha256(e.output_json.encode()).hexdigest()!=e.output_sha256: raise ConfigError('output hash mismatch')
-                    report=from_dict(ResearchReport,parse_json(e.output_json))
+                    doc = parse_json(e.output_json)
+                    if isinstance(doc.get('spec'), dict):
+                        doc['spec'].setdefault('membership_sha256', None)
+                    doc.setdefault('membership', None)
+                    report = from_dict(ResearchReport, doc)
                     if report.run_id!=e.run_id or report.spec!=spec or report.status!=e.state: raise ConfigError('output binding mismatch')
                     blocked_reasons = tuple(reason for stage in report.stages if stage.status == 'BLOCKED'
                                             for reason in stage.reasons)

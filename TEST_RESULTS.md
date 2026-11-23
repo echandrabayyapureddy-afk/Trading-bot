@@ -1,3 +1,23 @@
+# Prompt 11 closure verification
+
+The independent re-review recommended GO, and the owner approved closure and
+publication. The release check verified candidate diff SHA-256
+`4118b3666d0c8543618a796f49b31746ea4ced794b630a3d1181e1a6e823c727`
+before documentation edits. Reviewed Python files stayed byte-identical.
+
+| Release command | Passed | Seconds |
+|---|---:|---:|
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_execution.py -q` | 55 | 22.223 |
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_research_pipeline.py -q` | 50 | 17.602 |
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_suitability.py -q` | 34 | 26.083 |
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_walk_forward.py -q` | 20 | 139.139 |
+| `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -q` | 485 | 258.975 |
+
+All five offline runs exited successfully with zero failures, errors, skips or
+emitted warnings. The focused tests are included in the full count.
+Git whitespace checks passed. Only the README, handoff and test record received
+closure edits. Earlier results below refer to their respective release trees.
+
 # Prompt 10 closure verification · 2026-11-22
 
 The independent reviewer recommended GO and the owner approved closure and
