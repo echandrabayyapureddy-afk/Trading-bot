@@ -1,3 +1,20 @@
+# Development-data readiness preparation · closure verification
+
+The independent review recommended GO for preparation. Before closure edits,
+the release check matched the reviewed hashes of the implementation, tests,
+readiness report and handoff. The implementation and tests stayed byte-identical.
+
+| Release command | Result |
+|---|---|
+| `PYTHONDONTWRITEBYTECODE=1 python -W error -m unittest discover -s tests -p test_development_readiness.py -q` | 7 passed in 0.181 s |
+| `PYTHONDONTWRITEBYTECODE=1 python -W error -m unittest discover -s tests -q` | 492 passed in 254.520 s |
+| `PYTHONDONTWRITEBYTECODE=1 python development_readiness.py` | Real research BLOCKED, manifest UNSEALED, zero pinned profiles |
+| `git diff --check` and staged whitespace check including new files | Passed |
+
+Both test runs had zero failures, errors, skips or emitted warnings. The seven
+focused tests are included in the full count. Prompt 12’s one-time final holdout
+evaluation remains pending.
+
 # Prompt 11 closure verification
 
 The independent re-review recommended GO, and the owner approved closure and

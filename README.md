@@ -1,3 +1,13 @@
+# Development-data readiness preparation · closed
+
+The independently reviewed metadata check and synthetic loader probe are approved.
+Run `PYTHONDONTWRITEBYTECODE=1 python development_readiness.py` for the inventory.
+Real research remains BLOCKED and the real manifest remains UNSEALED. Prompt 12’s
+one-time final holdout evaluation remains pending. The next integration phase
+requires separate authorization.
+
+[Development readiness](DEVELOPMENT_READINESS.md) · [Release checks](TEST_RESULTS.md)
+
 # Prompt 11 release · independent adversarial QA
 
 Prompt 11 is closed following independent re-review and owner approval.

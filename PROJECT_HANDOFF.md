@@ -1,3 +1,20 @@
+# Development-data readiness preparation · closed
+
+The owner approved closure and publication after an independent read-only GO review.
+The review exercised the exclusive development boundary, mismatched hashes, the
+UNSEALED manifest and approval revocation. The release check verified all four
+reviewed file hashes before closure edits. The Python implementation, its tests
+and DEVELOPMENT_READINESS.md retain their reviewed bytes.
+
+Run `PYTHONDONTWRITEBYTECODE=1 python development_readiness.py` to inspect the
+current evidence gaps without reading market rows. See DEVELOPMENT_READINESS.md
+for the evidence inventory and TEST_RESULTS.md for the release checks.
+
+Real research remains BLOCKED and the real manifest remains UNSEALED. Prompt 12’s
+one-time final holdout evaluation remains pending. Broker connections and submission
+remain blocked. Real-data evidence preparation and restricted development integration
+await a separate bounded implementation prompt.
+
 # Prompt 11 closure · independent adversarial QA
 
 The owner approved closure and publication after the separate read-only re-review
