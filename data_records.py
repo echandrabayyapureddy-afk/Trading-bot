@@ -6,7 +6,7 @@ from hashlib import sha256
 import json
 from typing import Literal
 from zoneinfo import ZoneInfo
-from config import Validated, ConfigError
+from config import Validated, ConfigError, utc_instant
 
 IST = ZoneInfo('Asia/Kolkata')
 
@@ -47,7 +47,7 @@ class Segment(Validated):
     closes: datetime
 
     def validate(self):
-        if self.opens >= self.closes:
+        if utc_instant(self.opens) >= utc_instant(self.closes):
             raise ConfigError('invalid session segment')
 
 
@@ -63,7 +63,7 @@ class TradingDay(Validated):
         for i, seg in enumerate(self.segments):
             if any(t.astimezone(IST).date() != self.trading_date for t in (seg.opens, seg.closes)):
                 raise ConfigError('segment outside exchange trading date')
-            if i and self.segments[i-1].closes >= seg.opens:
+            if i and utc_instant(self.segments[i-1].closes) >= utc_instant(seg.opens):
                 raise ConfigError('segments unordered or overlapping')
 
 

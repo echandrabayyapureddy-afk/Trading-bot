@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal as D, localcontext
 from typing import Literal
-from config import Validated, ConfigError, _sha, _typed, content_hash
+from config import Validated, ConfigError, _sha, _typed, content_hash, utc_instant
 
 Purpose = Literal['SYNTHETIC', 'RESEARCH', 'OPERATIONAL']
 Protection = Literal['UNKNOWN', 'PLANNED', 'SUBMITTED', 'BROKER_HELD_CONDITIONAL',
@@ -55,9 +55,9 @@ class ProfileBody(Validated):
     def validate(self):
         if (self.effective_start is None) != (self.effective_end is None):
             raise ConfigError('both profile validity endpoints required')
-        if self.effective_start is not None and self.effective_start >= self.effective_end:
+        if self.effective_start is not None and utc_instant(self.effective_start) >= utc_instant(self.effective_end):
             raise ConfigError('empty profile validity')
-        if self.verified_at and any(e.available_at > self.verified_at for e in self.evidence):
+        if self.verified_at and any(utc_instant(e.available_at) > utc_instant(self.verified_at) for e in self.evidence):
             raise ConfigError('verification predates evidence')
 
 @dataclass(frozen=True, slots=True)
@@ -74,16 +74,16 @@ class ProfileApproval(Validated):
     revoked_at: datetime | None = None
 
     def validate(self):
-        if self.validity_mode == 'EXPIRES' and (self.valid_until is None or self.valid_until <= self.approved_at):
+        if self.validity_mode == 'EXPIRES' and (self.valid_until is None or utc_instant(self.valid_until) <= utc_instant(self.approved_at)):
             raise ConfigError('approval expiry must follow approval')
         if self.validity_mode != 'EXPIRES' and self.valid_until is not None:
             raise ConfigError('expiry requires EXPIRES mode')
-        if self.revoked_at is not None and self.revoked_at < self.approved_at:
+        if self.revoked_at is not None and utc_instant(self.revoked_at) < utc_instant(self.approved_at):
             raise ConfigError('revocation precedes approval')
         _sha(self.content_sha256, 'approved profile hash')
         if len(set(self.reviewers)) < 2:
             raise ConfigError('two distinct profile reviewers required')
-        if self.evidence.available_at > self.approved_at:
+        if utc_instant(self.evidence.available_at) > utc_instant(self.approved_at):
             raise ConfigError('approval evidence unavailable')
 
 @dataclass(frozen=True, slots=True)
@@ -110,11 +110,14 @@ class VerificationProfile(Validated):
         are [start,end); retrospective assumptions are explicitly labelled.
         """
         _typed(as_of, datetime, 'as_of', decode=False)
+        as_of = utc_instant(as_of)
         _typed(purpose, Purpose, 'purpose', decode=False)
         historical = historical_start is not None or historical_end is not None
         if historical:
             _typed(historical_start, datetime, 'historical_start', decode=False)
             _typed(historical_end, datetime, 'historical_end', decode=False)
+            historical_start = utc_instant(historical_start)
+            historical_end = utc_instant(historical_end)
             if purpose != 'RESEARCH' or not historical_start < historical_end <= as_of:
                 raise ConfigError('invalid historical research window/cutoff')
         b, a = self.body, self.approval
@@ -139,10 +142,10 @@ class VerificationProfile(Validated):
                 result.append('point-in-time source unavailable at historical start')
         if a is None or a.approved_at > as_of: result.append('approval unavailable')
         else:
-            if b.verified_at is None or a.approved_at < b.verified_at: result.append('approval before verification')
+            if b.verified_at is None or utc_instant(a.approved_at) < utc_instant(b.verified_at): result.append('approval before verification')
             if a.validity_mode == 'UNVERIFIED' or a.validity_evidence is None:
                 result.append('approval validity unverified')
-            elif a.validity_evidence.available_at > min(as_of, a.approved_at):
+            elif a.validity_evidence.available_at > min(as_of, utc_instant(a.approved_at)):
                 result.append('approval validity evidence unavailable')
             if a.valid_until is not None and as_of >= a.valid_until: result.append('approval expired')
             if a.revoked_at is not None and as_of >= a.revoked_at: result.append('approval revoked')

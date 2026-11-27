@@ -1,3 +1,144 @@
+# Restricted development reader engineering phase closed
+
+The owner approved closure and publication after an independent read-only GO.
+The reviewer reported 505 passing tests. The overlapping calendar was rejected
+with zero row opens. Equivalent UTC and New York closes returned identical rows
+with the same partition pin. The genuinely later close was rejected.
+
+This heading and closure note are the only post-review edit. The pre-closure
+handoff starts at the next heading and extends to EOF. Apply its documented
+normalization to those bytes to reproduce its reviewed fingerprint. The seven
+other candidate files retain their reviewed bytes. Earlier pending-review
+statements below describe the candidate before approval.
+
+Real development research, optimization, manifest sealing, final holdout
+evaluation, broker submission and live operation remain blocked.
+
+# Restricted development integration · local review candidate
+
+Start with REAL_DATA_EVIDENCE.md for official documentation, scope of each claim,
+unknown real coverage, and outstanding approvals. Both real research and submission
+remain BLOCKED. No real partition is approved. The manifest remains UNSEALED.
+
+restricted_development.read_development is the new synthetic-only entry point.
+Supply a trusted open development-directory descriptor and independently provisioned
+pins for the manifest and Partition catalogue. The catalogue covers the development
+directory identity (POSIX device/inode), row-free synthetic metadata, snapshot ID/digest
+and dated daily object hashes. Provisioning is a custodian trust boundary. The existing
+guard checks the entire [warmup_start,end) using the actual authorization time and four
+profiles. The decision cutoff is separate. Session, membership and catalogue checks
+precede all row opens. Relative names come only from validated session dates.
+Files must be regular, single-link objects; final symlinks are refused. The reader checks
+bytes and headers, validates raw series and returns only visible revisions. The trace
+records the request, successful opens and selected identities/dates/revisions. Rejection
+publishes no partial result. No cache, implicit retry, directory scan or network access.
+
+This POSIX adapter exercises an immutable, custodian-controlled synthetic layout.
+Device/inode binding is mount-local; it does not authenticate an untrusted custodian
+or confine arbitrary Python. The caller must keep the descriptor valid and the
+directory immutable. There is no production mount, signed catalogue, real-data decoder
+or downstream study run. All manifest instruments need consistent coverage in this
+narrow adapter. Nonbenchmark instruments require visible membership for each session.
+Raw rows do not implement corporate-action conversions. The reader returns the vintage
+at one decision; historical replay must call it at each actual cutoff.
+
+New files: REAL_DATA_EVIDENCE.md (register), restricted_development.py (reader),
+tests/test_restricted_development.py (physical storage probes). The repeated-hour correction below also changes config.py and config_contracts.py. Reproduce in this checkout with bytecode disabled:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python -W error -m unittest discover -s tests -p test_restricted_development.py -q
+PYTHONDONTWRITEBYTECODE=1 python -W error -m unittest discover -s tests -p test_development_readiness.py -q
+PYTHONDONTWRITEBYTECODE=1 python -W error -m unittest discover -s tests -q
+git diff --check
+```
+
+The reviewer should instrument os.open, repeat the end-boundary, revocation,
+sentinel change, wrong-directory and revision-cutoff probes, and verify that no
+holdout object opens and no rejected read returns rows. All release policies stand.
+Separate independent read-only review is pending.
+
+## Pre-open eligibility correction · awaiting read-only re-review
+
+For each authorized daily object, the reader checks type and link count using
+descriptor-relative stat with follow_symlinks=False. In the immutable custodian
+directory model a pre-existing multi-link or nonregular object is refused before
+any row-file open attempt for it. O_NOFOLLOW remains active. After a successful
+open the reader checks the descriptor's type, link count and device/inode against
+the pre-open observation before reading bytes. A replacement observed at this
+stage can produce an open trace but yields no rows. The two system calls do not
+provide atomic exclusion of a concurrent writer. Production still requires
+separate immutable provisioning and restricted storage permissions.
+
+Independent reviewer: add a second hard link to the first valid synthetic daily
+object. Keep the catalogue pin and request fixed and instrument os.open. The
+incoming candidate made one attempt; the corrected reader makes zero, traces
+only the request, and raises ConfigError. Remove only the link and repeat:
+two authorized opens return four rows. Also try replacing the checked object
+with an identical-byte different inode between stat and open. Confirm rejection
+before data consumption. Repeat the existing interval, revision, approval,
+sentinel and partial-failure checks.
+
+## Repeated-hour authorization correction · local independent review pending
+
+Baseline e18e4e81bdddbaf59aaee5b317c31661b651b61e, branch prompt9-research.
+A New York approval boundary of 2024-11-03 01:45 fold=0 is 05:45 UTC.
+Authorization at 01:15 fold=1 is 06:15 UTC. Before this correction, both
+revocation and expiry allowed that request in local time (two opens, four rows)
+while rejecting its UTC equivalent (zero opens). Python compares wall times
+when two aware datetimes share the same timezone object.
+
+config.py supplies a UTC comparison key and checks snapshot/seal order, the
+authorization cutoff and fee interval binding. config_contracts.py uses instant
+order for historical coverage, evidence, verification and approval checks.
+restricted_development.py uses a UTC decision instant for comparisons after
+checking the exchange date in Asia/Kolkata. Request traces retain the supplied
+timestamps. Configuration serialization, hash inputs, session dates and the
+exclusive development end use the existing contracts.
+
+Independent reviewer: run the commands above and the test_config.py,
+test_contracts.py and test_review_regressions.py suites with the same flags.
+Repeat both denial probes with one shared ZoneInfo("America/New_York") and
+in UTC. Keep the decision and partition fixed. One microsecond before the
+boundary expect two authorized opens and four rows. At the boundary, one
+microsecond later, and at 06:15 UTC, expect ConfigError, zero calls to os.open
+and only a request trace. Check the snapshot/seal and evidence chronology tests
+in tests/test_restricted_development.py. The reader remains synthetic-only.
+
+## Calendar corrections · pending independent read-only re-review
+
+On the synthetic 2022-11-06 session, the incoming reader accepted overlapping
+segments ending at 06:50 and 06:10 UTC. A decision at 06:15 opened one object
+and returned two rows. TradingDay now rejects that calendar during construction,
+before any row open. Segment duration and ordering use utc_instant in
+data_records.py. A forward segment spanning the clock rollback is valid.
+Reversed and touching segments are rejected. Exchange dates still use Asia/Kolkata.
+
+The incoming reader accepted a 05:45 UTC calendar close but rejected the same
+close represented as 01:45 EDT with the same partition pin. data_validator.py
+now compares both session closes as instants. The reader returns identical rows
+for those two representations. The 01:45 EST control, one hour later, fails
+row validation after one authorized open, with no returned selection.
+
+This correction edits data_records.py, data_validator.py, the reader tests and
+this handoff. The other four files below carry forward the earlier candidate.
+Re-review all eight fingerprints, then repeat the three new synthetic
+test_restricted_development.py probes with os.open instrumented. Run the data,
+Prompt 3 correction, reader, readiness, config, contract and review-regression
+suites and the complete suite using the warnings-as-errors commands above.
+
+Review candidate SHA-256 (raw file bytes except the handoff):
+
+* `437761b30043ae69c343b2bcbea0519a167930e711c15ebabaefda214a4f9226` — REAL_DATA_EVIDENCE.md
+* `ffe40ee9c18d8171f509735e932b304d4c7c87ab4541315d5f75b667f0c175b7` — config.py
+* `ed4087e87ff168b03b0a2a2e877d05704bc94f6d13a82d2f3749c3b83baa84f2` — config_contracts.py
+* `2fc7c8923a4731291961d9e6f3090d29847a3f6fd8c4b971c3cb11b275803086` — data_records.py
+* `002480cefd59c9f5257ba345660be01b16fbdef0e772d11a0b937337bd4a2493` — data_validator.py
+* `700fb867dbb8b59e57c04c857bc1d4a82d4a2779599dfa2e13e9abe1b9ec88d2` — restricted_development.py
+* `9fb5dc2ca78d1a79f8987852445a04af2fc6a1efb6a2a52b803e791e378eee4e` — tests/test_restricted_development.py
+
+Handoff fingerprint convention: hash the entire file with the 64 digits on the next line replaced by zeros.
+Handoff-SHA256: 8a56d13e0012269dce44671e7594f4d1e6fb653f850991804dfcfe5a5eeb930b
+
 # Development-data readiness preparation · closed
 
 The owner approved closure and publication after an independent read-only GO review.

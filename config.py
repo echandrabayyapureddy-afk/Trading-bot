@@ -12,7 +12,7 @@ import json
 import re
 import types
 from dataclasses import dataclass, field, fields, is_dataclass
-from datetime import date, datetime, time
+from datetime import UTC, date, datetime, time
 from decimal import Decimal
 from enum import Enum
 from pathlib import Path
@@ -22,6 +22,13 @@ from zoneinfo import ZoneInfo
 
 class ConfigError(ValueError):
     """Invalid configuration, provenance, boundary, or readiness."""
+
+
+def utc_instant(value: datetime) -> datetime:
+    """Comparison key for an aware timestamp, including either fold of a repeated hour."""
+    if value.utcoffset() is None:
+        raise ConfigError("timezone-aware instant required")
+    return value.astimezone(UTC)
 
 
 class Provenance(str, Enum):
@@ -395,7 +402,7 @@ class ResearchManifest(Validated):
             for f in fields(self):
                 if f.name != "software_commit" and getattr(self, f.name) in (None, ()):
                     raise ConfigError(f"sealed manifest missing {f.name}")
-            if self.snapshot_created_at > self.sealed_at:
+            if utc_instant(self.snapshot_created_at) > utc_instant(self.sealed_at):
                 raise ConfigError("snapshot cannot be created after sealing")
 
 
@@ -526,7 +533,7 @@ def authorize_development_window(config: BotConfig, manifest: ResearchManifest,
         raise ConfigError('research profile pins mismatch')
     cutoff = manifest.sealed_at if authorization_at is None else authorization_at
     _typed(cutoff, datetime, 'research authorization cutoff', decode=False)
-    if cutoff < manifest.sealed_at:
+    if utc_instant(cutoff) < utc_instant(manifest.sealed_at):
         raise ConfigError('research authorization precedes sealing')
     zone = ZoneInfo('Asia/Kolkata')
     window_start, window_end = (datetime.combine(d, time.min, zone) for d in (start, end))
@@ -550,7 +557,7 @@ def authorize_development_window(config: BotConfig, manifest: ResearchManifest,
                 raise ConfigError('research fee profile version mismatch')
             if assumptions.fee_source_reference != execution.fee_source_reference:
                 raise ConfigError('fee source reference mismatch')
-            if (body.effective_start, body.effective_end) != (
+            if (utc_instant(body.effective_start), utc_instant(body.effective_end)) != (
                     datetime.combine(execution.fee_effective_start, time.min, zone),
                     datetime.combine(execution.fee_effective_end, time.min, zone)):
                 raise ConfigError('fee applicability interval mismatch')

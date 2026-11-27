@@ -1,6 +1,6 @@
 """Rejection reports and point-in-time selection. Never forward fills."""
 from datetime import timedelta
-from config import ConfigError
+from config import ConfigError, utc_instant
 from data_records import DailyBar, Snapshot, QualityResult, digest, IST
 
 
@@ -17,7 +17,7 @@ def validate_daily(bar: DailyBar, calendar):
     day = next((d for d in calendar.days if d.trading_date == bar.trading_date), None)
     if day is None or not day.segments:
         reasons.append('unexpected_session')
-    elif bar.session_close != day.segments[-1].closes:
+    elif utc_instant(bar.session_close) != utc_instant(day.segments[-1].closes):
         reasons.append('session_completion_mismatch')
     if bar.session_close.astimezone(IST).date() != bar.trading_date:
         reasons.append('trading_date_mismatch')
